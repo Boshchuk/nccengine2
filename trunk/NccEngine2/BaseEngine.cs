@@ -94,10 +94,7 @@ namespace NccEngine2
         /// </summary>
         //public static BloomComponent Bloom;
 
-        /// <summary>
-        /// The frames per second counter.
-        /// </summary>
-        public static FrameRateCounter FrameRateCounter { get; private set; }
+        
 
         /// <summary>
         /// The input helper for menus, gamepads, keyboard and mouse.
@@ -168,9 +165,7 @@ namespace NccEngine2
             Input = new Input(this);
             Components.Add(Input);
 
-            // Init the FrameRateCounter
-            FrameRateCounter = new FrameRateCounter(this);
-            Components.Add(FrameRateCounter);
+           
 
             // Init camera Managers
             CameraManagers = new CameraManager(this);

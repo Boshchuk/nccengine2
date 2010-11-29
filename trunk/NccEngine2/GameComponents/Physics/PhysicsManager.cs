@@ -7,7 +7,8 @@ namespace NccEngine2.GameComponents.Physics
     internal class PhysicsManager : GameComponent
     {
         private static PhysicsSystem physicsSystem;
-        private static int collisionIndex;
+        //Note restore when needed
+        //private static int collisionIndex;
 
         public static bool UseSweepAndPrune { get; set; }
 

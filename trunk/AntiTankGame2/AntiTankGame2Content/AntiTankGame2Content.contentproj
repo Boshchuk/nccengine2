@@ -165,11 +165,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="rocks.bmp">
+    <Content Include="rocks.bmp">
       <Name>rocks</Name>
       <Importer>TextureImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
-    </Compile>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Font.spritefont">

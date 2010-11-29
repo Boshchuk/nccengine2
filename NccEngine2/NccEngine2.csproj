@@ -1,0 +1,181 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{5E26402F-C7A4-4881-B2A3-C724E11C9A72}</ProjectGuid>
+    <ProjectTypeGuids>{6D335F3A-9D43-41b4-9D22-F6F17C4BE596};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NccEngine2</RootNamespace>
+    <AssemblyName>NccEngine2</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <XnaFrameworkVersion>v4.0</XnaFrameworkVersion>
+    <XnaPlatform>Windows</XnaPlatform>
+    <XnaProfile>Reach</XnaProfile>
+    <XnaCrossPlatformGroupID>676f8c1c-3602-4ae5-af5a-1e0f148ff812</XnaCrossPlatformGroupID>
+    <XnaOutputType>Library</XnaOutputType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\x86\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;WINDOWS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <PlatformTarget>x86</PlatformTarget>
+    <XnaCompressContent>false</XnaCompressContent>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\x86\Release</OutputPath>
+    <DefineConstants>TRACE;WINDOWS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <PlatformTarget>x86</PlatformTarget>
+    <XnaCompressContent>true</XnaCompressContent>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.GamerServices, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Xact, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Video, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Avatar, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Net, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Storage, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="mscorlib">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Net">
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BaseEngine.cs" />
+    <Compile Include="EngineManager.cs" />
+    <Compile Include="GameComponents\CameraManagment\Camera.cs" />
+    <Compile Include="GameComponents\CameraManagment\CameraManager.cs" />
+    <Compile Include="GameComponents\CameraManagment\FirstPersonCamera.cs" />
+    <Compile Include="GameComponents\Graphics\FX\Bloom\BloomComponent.cs" />
+    <Compile Include="GameComponents\Graphics\FX\Bloom\BloomSettings.cs" />
+    <Compile Include="GameComponents\Graphics\Screens\Menu\MenuEntry.cs" />
+    <Compile Include="GameComponents\Graphics\Screens\Menu\MenuScreen.cs" />
+    <Compile Include="GameComponents\Graphics\Textures\NccTexture.cs" />
+    <Compile Include="GameDebugTools\Layout.cs" />
+    <Compile Include="GameDebugTools\RemoteDebugCommand.cs" />
+    <Compile Include="GameDebugTools\StringBuilderExtension.cs" />
+    <Compile Include="GameDebugTools\TimeRuler.cs" />
+    <Compile Include="Helpers\ConstantNames.cs" />
+    <Compile Include="Helpers\FrameRateCounter.cs" />
+    <Compile Include="GameComponents\Models\NccModel.cs" />
+    <Compile Include="GameComponents\Models\Terrain\HeightMapTerrain.cs" />
+    <Compile Include="GameComponents\Scene\Graph\INccOcclusion.cs" />
+    <Compile Include="GameComponents\Scene\Graph\Interfaces\INccUpdateable.cs" />
+    <Compile Include="GameComponents\Scene\Graph\Interfaces\INccLoadable.cs" />
+    <Compile Include="GameComponents\Models\INccModel.cs" />
+    <Compile Include="GameComponents\Models\ModelManager.cs" />
+    <Compile Include="GameComponents\NccInput\IAcceptNccInput.cs" />
+    <Compile Include="GameComponents\NccInput\Input.cs" />
+    <Compile Include="GameComponents\Graphics\FX\Particles\ParticleEmitter.cs" />
+    <Compile Include="GameComponents\Graphics\FX\Particles\ParticleSystem.cs" />
+    <Compile Include="GameComponents\Graphics\FX\Particles\ParticleVertex.cs" />
+    <Compile Include="GameComponents\Graphics\FX\Particles\Projectile.cs" />
+    <Compile Include="GameComponents\Physics\INccPhysics.cs" />
+    <Compile Include="GameComponents\Physics\PhysicsManager.cs" />
+    <Compile Include="GameComponents\Graphics\Screens\GameScreen.cs" />
+    <Compile Include="GameComponents\Graphics\Screens\ScreenManager.cs" />
+    <Compile Include="GameComponents\Graphics\Screens\ScreenState.cs" />
+    <Compile Include="GameComponents\Graphics\Textures\INccTexture.cs" />
+    <Compile Include="GameComponents\Graphics\Textures\TextureManager.cs" />
+    <Compile Include="GameComponents\Scene\Graph\Interfaces\INccCullable.cs" />
+    <Compile Include="GameComponents\Scene\Graph\Node.cs" />
+    <Compile Include="GameComponents\Scene\Graph\SceneObjectNode.cs" />
+    <Compile Include="GameComponents\Scene\SceneObject\Material.cs" />
+    <Compile Include="GameComponents\Scene\SceneObject\NccSceneObject.cs" />
+    <Compile Include="GameDebugTools\DebugCommandUI.cs" />
+    <Compile Include="GameDebugTools\DebugManager.cs" />
+    <Compile Include="GameDebugTools\DebugSystem.cs" />
+    <Compile Include="GameDebugTools\FpsCounter.cs" />
+    <Compile Include="GameDebugTools\IDebugCommandHost.cs" />
+    <Compile Include="HeightMapInfo.cs" />
+    <Compile Include="Helpers\KeyboardUtils.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="GameComponents\Scene\SceneGraphManager.cs" />
+    <Compile Include="GameComponents\Scene\SceneObject\INccSceneObject.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\JigLibX\JigLibX.csproj">
+      <Project>{8A7CEF45-3501-491D-AEDA-0164060F5348}</Project>
+      <Name>JigLibX</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NccHeighMapPipeline\NccHeightMapPipeline.csproj">
+      <Project>{5996CF9B-6726-4D2F-BB5B-AF9AD3BB58DE}</Project>
+      <Name>NccHeightMapPipeline</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NccParticleSettings\NccParticleSettings.csproj">
+      <Project>{92E2EECA-DCD3-4718-A937-CA0A58B582C5}</Project>
+      <Name>NccParticleSettings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NccPcGamePad\NccPcGamePad.csproj">
+      <Project>{E67B3ED4-9B52-4054-985B-123EA63053A0}</Project>
+      <Name>NccPcGamePad</Name>
+    </ProjectReference>
+    <ProjectReference Include="NccEngine2Content\NccEngine2Content.contentproj">
+      <Project>{80261308-9D1D-45BB-BD82-7504953607F3}</Project>
+      <Name>NccEngine2Content</Name>
+      <XnaReferenceType>Content</XnaReferenceType>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
+  <!--
+      To modify your build process, add your task inside one of the targets below and uncomment it. 
+      Other similar extension points exist, see Microsoft.Common.targets.
+      <Target Name="BeforeBuild">
+      </Target>
+      <Target Name="AfterBuild">
+      </Target>
+    -->
+</Project>

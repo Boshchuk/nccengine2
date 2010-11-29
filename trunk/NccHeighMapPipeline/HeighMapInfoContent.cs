@@ -80,14 +80,14 @@ namespace NccHeightMapPipeline
             {
                 // ... and look up its position and normal.
                 Vector3 position = geometry.Vertices.Positions[i];
-                Vector3 normal = (Vector3)geometry.Vertices.Channels
+                var normal = (Vector3)geometry.Vertices.Channels
                     [VertexChannelNames.Normal()][i];
 
                 // from the position's X and Z value, we can tell what X and Y
                 // coordinate of the arrays to put the height and normal into.
-                int arrayX = (int)
+                var arrayX = (int)
                     ((position.X / terrainScale) + (terrainWidth - 1) / 2.0f);
-                int arrayY = (int)
+                var arrayY = (int)
                     ((position.Z / terrainScale) + (terrainLength - 1) / 2.0f);
 
                 Height[arrayX, arrayY] = position.Y;

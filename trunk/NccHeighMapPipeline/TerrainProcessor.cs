@@ -92,15 +92,13 @@ namespace NccHeightMapPipeline
         public override ModelContent Process(Texture2DContent input,
                                              ContentProcessorContext context)
         {
-            PixelBitmapContent<float> heightfield;
-
             MeshBuilder builder = MeshBuilder.StartMesh("terrain");
 
             // Convert the input texture to float format, for ease of processing.
             input.ConvertBitmapType(typeof(PixelBitmapContent<float>));
 
 
-            heightfield = (PixelBitmapContent<float>)input.Mipmaps[0];
+            var heightfield = (PixelBitmapContent<float>)input.Mipmaps[0];
 
             // Create the terrain vertices.
             for (int y = 0; y < heightfield.Height; y++)
@@ -121,13 +119,15 @@ namespace NccHeightMapPipeline
             }
 
             // Create a material, and point it at our terrain texture.
-            BasicMaterialContent material = new BasicMaterialContent();
+            var material = new BasicMaterialContent();
             material.SpecularColor = new Vector3(.4f, .4f, .4f);
 
             if (!string.IsNullOrEmpty(TerrainTexture))
             {
                 string directory = Path.GetDirectoryName(input.Identity.SourceFilename);
+// ReSharper disable AssignNullToNotNullAttribute
                 string texture = Path.Combine(directory, TerrainTexture);
+// ReSharper restore AssignNullToNotNullAttribute
 
                 material.Texture = new ExternalReference<TextureContent>(texture);
             }
@@ -135,8 +135,7 @@ namespace NccHeightMapPipeline
             builder.SetMaterial(material);
 
             // Create a vertex channel for holding texture coordinates.
-            int texCoordId = builder.CreateVertexChannel<Vector2>(
-                                            VertexChannelNames.TextureCoordinate(0));
+            int texCoordId = builder.CreateVertexChannel<Vector2>(VertexChannelNames.TextureCoordinate(0));
 
             // Create the individual triangles that make up our terrain.
             for (int y = 0; y < heightfield.Height - 1; y++)
@@ -157,13 +156,11 @@ namespace NccHeightMapPipeline
             MeshContent terrainMesh = builder.FinishMesh();
 
 
-            ModelContent model = context.Convert<MeshContent, ModelContent>(terrainMesh,
-                                                              "ModelProcessor");
+            ModelContent model = context.Convert<MeshContent, ModelContent>(terrainMesh,"ModelProcessor");
 
             // generate information about the height map, and attach it to the finished
             // model's tag.
-            model.Tag = new HeightMapInfoContent(terrainMesh, scale,
-                heightfield.Width, heightfield.Height);
+            model.Tag = new HeightMapInfoContent(terrainMesh, scale,heightfield.Width, heightfield.Height);
 
             return model;
         }

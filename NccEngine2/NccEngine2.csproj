@@ -10,7 +10,8 @@
     <RootNamespace>NccEngine2</RootNamespace>
     <AssemblyName>NccEngine2</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <XnaFrameworkVersion>v4.0</XnaFrameworkVersion>
     <XnaPlatform>Windows</XnaPlatform>
     <XnaProfile>Reach</XnaProfile>
@@ -107,7 +108,6 @@
     <Compile Include="GameDebugTools\StringBuilderExtension.cs" />
     <Compile Include="GameDebugTools\TimeRuler.cs" />
     <Compile Include="Helpers\ConstantNames.cs" />
-    <Compile Include="Helpers\FrameRateCounter.cs" />
     <Compile Include="GameComponents\Models\NccModel.cs" />
     <Compile Include="GameComponents\Models\Terrain\HeightMapTerrain.cs" />
     <Compile Include="GameComponents\Scene\Graph\INccOcclusion.cs" />

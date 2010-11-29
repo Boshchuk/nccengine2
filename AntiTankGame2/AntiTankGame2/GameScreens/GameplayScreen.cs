@@ -47,20 +47,23 @@ namespace AntiTankGame2.GameScreens
         private bool drawCross = true;
         private bool clearSunCross;
 
-        private int bloomSettingsIndex;
+        //Note restore when needed
+        //private int bloomSettingsIndex;
 
         #endregion
 
         #region Particles
 
+#pragma warning disable 649
         ParticleSystem explosionParticles;
+
         ParticleSystem explosionSmokeParticles;
         ParticleSystem projectileTrailParticles;
         ParticleSystem smokePlumeParticles;
         ParticleSystem fireParticles;
 
         ParticleState currentState = ParticleState.Explosions;
-
+#pragma warning restore 649
 
         // The explosions effect works by firing projectiles up into the
         // air, so we need to keep track of all the active projectiles.

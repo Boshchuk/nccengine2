@@ -101,10 +101,40 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Land\ground.png">
+    <None Include="Models\Land\ground.png">
       <Name>ground</Name>
       <Importer>TextureImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
+    </None>
+    <Compile Include="SkyBox\back.tga">
+      <Name>back</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="SkyBox\bottom.tga">
+      <Name>bottom</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="SkyBox\front.tga">
+      <Name>front</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="SkyBox\left.tga">
+      <Name>left</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="SkyBox\right.tga">
+      <Name>right</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="SkyBox\top.tga">
+      <Name>top</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -165,11 +195,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="rocks.bmp">
+    <None Include="rocks.bmp">
       <Name>rocks</Name>
       <Importer>TextureImporter</Importer>
-      <Processor>PassThroughProcessor</Processor>
-    </Content>
+      <Processor>TextureProcessor</Processor>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Font.spritefont">
@@ -178,6 +208,7 @@
       <Processor>FontDescriptionProcessor</Processor>
     </Compile>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -100,9 +100,13 @@
     <Compile Include="GameComponents\CameraManagment\FirstPersonCamera.cs" />
     <Compile Include="GameComponents\Graphics\FX\Bloom\BloomComponent.cs" />
     <Compile Include="GameComponents\Graphics\FX\Bloom\BloomSettings.cs" />
+    <Compile Include="GameComponents\Graphics\Screens\Menu\BoolMenuEntry.cs" />
+    <Compile Include="GameComponents\Graphics\Screens\Menu\FloatMenuEntry.cs" />
     <Compile Include="GameComponents\Graphics\Screens\Menu\MenuEntry.cs" />
     <Compile Include="GameComponents\Graphics\Screens\Menu\MenuScreen.cs" />
     <Compile Include="GameComponents\Graphics\Textures\NccTexture.cs" />
+    <Compile Include="GameComponents\Scene\SceneObject\BaseNccSceneObject.cs" />
+    <Compile Include="GameComponents\Scene\SimpleObjects\Skybox.cs" />
     <Compile Include="GameDebugTools\Layout.cs" />
     <Compile Include="GameDebugTools\RemoteDebugCommand.cs" />
     <Compile Include="GameDebugTools\StringBuilderExtension.cs" />

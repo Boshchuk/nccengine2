@@ -321,7 +321,7 @@ namespace AntiTankGame2.GameScreens
             //HandleCube();
         }
 
-        bool changeState;
+       // bool changeState;
 
         public override void HandleInput(GameTime gameTime, Input input)
         {

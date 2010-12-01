@@ -11,43 +11,9 @@ using NccEngine2.GameComponents.Scene.SceneObject;
 
 namespace AntiTankGame2.GameObjects.Tanks
 {
-    public class BaseTank : NccSceneObject, INccLoadable, INccUpdateable, INccOcclusion
+    public class BaseTank : BaseNccSceneObject, INccLoadable
     {
-        #region fields
-
-        public BoundingBox BoundingBox { get; private set; }
-
-        public string OcclusionModelName { get; set; }
-
-        public bool BoundingBoxCreated { get; private set; }
-
-        public bool Occluded { get; set; }
-
-        // ReSharper disable AccessToStaticMemberViaDerivedType
-        OcclusionQuery query; //= new OcclusionQuery(EngineManager.Device);
-        // ReSharper restore AccessToStaticMemberViaDerivedType
-        public OcclusionQuery Query
-        {
-            get
-            {
-                if (GraphicsAdapter.DefaultAdapter.IsProfileSupported(GraphicsProfile.Reach))
-                {
-                    if (query == null)
-                    {
-                        query = new OcclusionQuery(EngineManager.Device);
-                    }
-                    else
-                    {
-                        return query;
-                    }
-                }
-                return null;
-            }
-        }
-
-        public bool Culled { get; set; }
-
-        #endregion
+        
 
 
         #region Load and Unload
@@ -67,7 +33,7 @@ namespace AntiTankGame2.GameObjects.Tanks
 
        
 
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
             //var elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -99,16 +65,7 @@ namespace AntiTankGame2.GameObjects.Tanks
                 ReadyToRender = true;
             }
         }
-
-
-        public BoundingBox GetBoundingBoxTransformed()
-        {
-            var min = Vector3.Transform(BoundingBox.Min, World);
-            var max = Vector3.Transform(BoundingBox.Max, World);
-
-            return new BoundingBox(min, max);
-        }
-
+        
     }
 
 }

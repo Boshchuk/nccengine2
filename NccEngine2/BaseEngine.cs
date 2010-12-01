@@ -101,7 +101,8 @@ namespace NccEngine2
         /// </summary>
         public static Input Input { get; private set; }
 
-        private static bool checkedGraphicsOptions;
+        //Note Dont forget Restore
+        //private static bool checkedGraphicsOptions;
 
         private static bool applyDeviceChanges;
 
@@ -270,7 +271,8 @@ namespace NccEngine2
                 throw new InvalidOperationException("Graphics Device is not created yet!");
             }
 
-            checkedGraphicsOptions = true;
+            //Note Don't forget restore
+            //checkedGraphicsOptions = true;
         }
 
         public static void ApplyResolutionChange()
@@ -402,11 +404,15 @@ namespace NccEngine2
            // while (stopwatch.ElapsedMilliseconds < 1) ;
 
             // Update other components.
+            UpdateZoomyText(gameTime);
+
             base.Update(gameTime);
 
             // Stop measuring time for "Update".
           //  debugSystem.TimeRuler.EndMark("Update");
         }
+
+       
 
         /// <summary>
         /// This is called when the game should draw itself.
@@ -418,9 +424,14 @@ namespace NccEngine2
 
             Device.Clear(BackgroundColor);
 
-            GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+            //GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+
+            ScaleMatrix = Matrix.CreateScale(GraphicsDeviceManager.PreferredBackBufferWidth / 480f, GraphicsDeviceManager.PreferredBackBufferHeight / 800f, 1);
 
             base.Draw(gameTime);
+
+
+            DrawZoomyText();
 
             // Apply device changes
             if (!applyDeviceChanges) return;
@@ -597,5 +608,94 @@ namespace NccEngine2
         }
 
         #endregion
+
+        /// <summary>
+        /// Creates a new zoomy text menu item selection effect.
+        /// </summary>
+        public static void SpawnZoomyText(string text, Vector2 position)
+        {
+            zoomyTexts.Add(new ZoomyText { Text = text, Position = position });
+        }
+
+
+        const float ZoomyTextLifespan = 0.75f;
+
+        static List<ZoomyText> zoomyTexts = new List<ZoomyText>();
+        public SpriteBatch SpriteBatch { get; private set; } //TODO Group wuth ather fields
+        public Matrix ScaleMatrix { get; private set; }
+        public SpriteFont Font { get; private set; }
+        public SpriteFont BigFont { get; private set; }
+
+        // Zoomy text provides visual feedback when selecting menu items.
+        // This is implemented by the main game, rather than any individual menu
+        // screen, because the zoomy effect from selecting a menu item needs to
+        // display across the transition while that menu makes way for a new one.
+        class ZoomyText
+        {
+            public string Text;
+            public Vector2 Position;
+            public float Age;
+        }
+
+        /// <summary>
+        /// Updates the zoomy text animations.
+        /// </summary>
+        static void UpdateZoomyText(GameTime gameTime)
+        {
+            int i = 0;
+
+            while (i < zoomyTexts.Count)
+            {
+                zoomyTexts[i].Age += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                if (zoomyTexts[i].Age >= ZoomyTextLifespan)
+                    zoomyTexts.RemoveAt(i);
+                else
+                    i++;
+            }
+        }
+
+        /// <summary>
+        /// Draws the zoomy text animations.
+        /// </summary>
+        void DrawZoomyText()
+        {
+            if (zoomyTexts.Count <= 0)
+                return;
+
+            SpriteBatch.Begin(0, null, null, null, null, null, ScaleMatrix);
+
+            foreach (ZoomyText zoomyText in zoomyTexts)
+            {
+                Vector2 pos = zoomyText.Position + Font.MeasureString(zoomyText.Text) / 2;
+
+                float age = zoomyText.Age / ZoomyTextLifespan;
+                float sqrtAge = (float)Math.Sqrt(age);
+
+                float scale = 0.333f + sqrtAge * 2f;
+
+                float alpha = 1 - age;
+
+                SpriteFont font = BigFont;
+
+                // Our BigFont only contains characters a-z, so if the text
+                // contains any numbers, we have to use the other font instead.
+                foreach (char ch in zoomyText.Text)
+                {
+                    if (char.IsDigit(ch))
+                    {
+                        font = Font;
+                        scale *= 2;
+                        break;
+                    }
+                }
+
+                Vector2 origin = font.MeasureString(zoomyText.Text) / 2;
+
+                SpriteBatch.DrawString(font, zoomyText.Text, pos, Color.Lerp(new Color(64, 64, 255), Color.White, sqrtAge) * alpha, 0, origin, scale, 0, 0);
+            }
+
+            SpriteBatch.End();
+        }
     }
 }

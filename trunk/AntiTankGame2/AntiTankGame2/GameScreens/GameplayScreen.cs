@@ -37,11 +37,11 @@ namespace AntiTankGame2.GameScreens
 
         //readonly HoffmanAtmosphere atmosphere = new HoffmanAtmosphere();
 
-#pragma warning disable 649
-      //  private HeightMapInfo heightMapInfo;
-#pragma warning restore 649
 
-      //  private TankHeight targetTank;
+        private HeightMapInfo heightMapInfo;
+
+
+        private TankHeight targetTank;
       //  private EndPoint endPoint;
 
         private bool drawCross = true;
@@ -271,9 +271,12 @@ namespace AntiTankGame2.GameScreens
 
             var simlePlane = new SimplePlane(); 
             SceneGraphManager.AddObject(simlePlane);
-            simlePlane.Scale = new Vector3(100, 100, 100);
-            SceneGraphManager.AddObject(simlePlane);
             simlePlane.Scale = new Vector3(1,1,1);
+
+            var simpleSkyBox = new SimpleSkybox();
+            simpleSkyBox.Position = new Vector3(0,0,0);
+            simpleSkyBox.Scale = new Vector3(750, 750, 750);
+            SceneGraphManager.AddObject(simpleSkyBox);
 
 
 
@@ -284,8 +287,8 @@ namespace AntiTankGame2.GameScreens
             SceneGraphManager.AddObject(simpleTank);
 
 
-            //targetTank = new TankHeight(heightMapInfo, new Vector3(2000, 0, -4000));
-            //SceneGraphManager.AddObject(targetTank);
+            targetTank = new TankHeight(heightMapInfo, new Vector3(2000, 0, -4000));
+            SceneGraphManager.AddObject(targetTank);
 
 
             //endPoint = new EndPoint { Position = new Vector3(100.0f, 0.0f, 0.0f), Scale = new Vector3(20f, 20f, 20f) };

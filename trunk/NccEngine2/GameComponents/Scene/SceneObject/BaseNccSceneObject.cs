@@ -30,9 +30,12 @@ namespace NccEngine2.GameComponents.Scene.SceneObject
                         {
                             //effect.EnableDefaultLighting();
                             //effect.PreferPerPixelLighting = true;
-                            effect.World = World;
+                            effect.World =World;
                             effect.View = CameraManager.ActiveCamera.View;
                             effect.Projection = CameraManager.ActiveCamera.Projection;
+
+                           // BaseEngine.Device.RasterizerState = new RasterizerState {FillMode = FillMode.WireFrame};
+
                         }
                         mesh.Draw();
                     }

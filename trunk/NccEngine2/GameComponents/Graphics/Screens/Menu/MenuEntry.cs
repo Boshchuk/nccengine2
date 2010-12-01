@@ -15,7 +15,7 @@ namespace NccEngine2.GameComponents.Graphics.Screens.Menu
         /// <summary>
         /// Gets or sets the text of this menu entry.
         /// </summary>
-        public string Text { get; set; }
+        public virtual string Text { get; set; }
 
         /// <summary>
         /// Tracks a fading selection effect on the entry.
@@ -29,7 +29,6 @@ namespace NccEngine2.GameComponents.Graphics.Screens.Menu
         /// Event raised when the menu entry is selected.
         /// </summary>
         public event EventHandler<EventArgs> Selected;
-
 
         /// <summary>
         /// Method for raising the Selected event.
@@ -107,6 +106,64 @@ namespace NccEngine2.GameComponents.Graphics.Screens.Menu
         public static int GetHeight(MenuScreen screen)
         {
             return ScreenManager.Font.LineSpacing;
+        }
+
+        //New fechares
+
+        public const int Height = 64;
+        public const int Border = 32;
+
+        public Vector2 Position { get; set; }
+        public bool IsFocused { get; set; }
+
+        public bool IsDraggable { get; set; }
+        public Action Clicked { get; set; }
+
+        public Color Color { get { return IsFocused ? Color.Blue : Color.White; } }
+
+        Vector2 positionOffset;
+
+        protected MenuEntry()
+        {
+            
+        }
+
+
+        /// <summary>
+        /// Draws the menu entry.
+        /// </summary>
+        public virtual void Draw(SpriteBatch spriteBatch, SpriteFont font, Texture2D blankTexture)
+        {
+            positionOffset = new Vector2(0, (Height - font.LineSpacing) / 2);
+
+            spriteBatch.DrawString(font, Text, Position + positionOffset, Color);
+        }
+
+
+        /// <summary>
+        /// Handles clicks on this menu entry.
+        /// </summary>
+        public virtual void OnClicked()
+        {
+            // If we have a click delegate, call that now.
+            if (Clicked != null)
+            {
+                Clicked();
+            }
+            // If we are not draggable, spawn a visual feedback effect.
+            if (!IsDraggable)
+            {
+             //TODO Impiment
+                BaseEngine.SpawnZoomyText(Text, Position + positionOffset);
+            }
+        }
+
+
+        /// <summary>
+        /// Handles dragging this menu entry from left to right.
+        /// </summary>
+        public virtual void OnDragged(float delta)
+        {
         }
     }
 

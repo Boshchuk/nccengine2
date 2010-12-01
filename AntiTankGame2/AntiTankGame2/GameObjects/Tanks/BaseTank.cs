@@ -1,11 +1,7 @@
 using System;
 using AntiTankGame2.Localization;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using NccEngine2;
-using NccEngine2.GameComponents.CameraManagment;
 using NccEngine2.GameComponents.Models;
-using NccEngine2.GameComponents.Scene.Graph;
 using NccEngine2.GameComponents.Scene.Graph.Interfaces;
 using NccEngine2.GameComponents.Scene.SceneObject;
 
@@ -14,8 +10,6 @@ namespace AntiTankGame2.GameObjects.Tanks
     public class BaseTank : BaseNccSceneObject, INccLoadable
     {
         
-
-
         #region Load and Unload
         public void LoadContent()
         {

@@ -172,7 +172,7 @@ namespace NccEngine2.GameComponents.Scene.SceneObject
 
                             BaseEngine.Device.DepthStencilState = new DepthStencilState {DepthBufferEnable = true};
 
-                            BaseEngine.Device.RasterizerState = new RasterizerState {CullMode = CullMode.None};
+                           // BaseEngine.Device.RasterizerState = new RasterizerState {CullMode = CullMode.None};
                             //BaseEngine.Device.RasterizerState = new RasterizerState {FillMode = FillMode.WireFrame};
 
                             effect.World = transforms[mesh.ParentBone.Index] * World;

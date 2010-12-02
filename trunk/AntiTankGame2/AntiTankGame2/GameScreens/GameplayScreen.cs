@@ -1,7 +1,7 @@
-//#define DRAWPARTICLE
+#define DRAWPARTICLE
 //#define USEHOFFMAN
 //#defene LENSFLARE
-#define USEBLOOM
+//#define USEBLOOM
 
 #region Using Statement
 
@@ -228,11 +228,11 @@ namespace AntiTankGame2.GameScreens
 #if (DRAWPARTICLE)
             #region init particles
             //// Construct our particle system components.
-            explosionParticles = new ParticleSystem(EngineManager.Game,NccEngine.NccEngine.ContentManager, ContentConstants.ExplosionSettings);
-            explosionSmokeParticles = new ParticleSystem(EngineManager.Game,NccEngine.NccEngine.ContentManager, ContentConstants.ExplosionSmokeSettings);
-            projectileTrailParticles = new ParticleSystem(EngineManager.Game, NccEngine.NccEngine.ContentManager, ContentConstants.ProjectileTrailSettings);
-            smokePlumeParticles = new ParticleSystem(EngineManager.Game, NccEngine.NccEngine.ContentManager, ContentConstants.SmokePlumeSettings);
-            fireParticles = new ParticleSystem(EngineManager.Game, NccEngine.NccEngine.ContentManager, ContentConstants.FireSettings);
+            explosionParticles = new ParticleSystem(EngineManager.Game, BaseEngine.ContentManager, ContentConstants.ExplosionSettings);
+            explosionSmokeParticles = new ParticleSystem(EngineManager.Game, BaseEngine.ContentManager, ContentConstants.ExplosionSmokeSettings);
+            projectileTrailParticles = new ParticleSystem(EngineManager.Game, BaseEngine.ContentManager, ContentConstants.ProjectileTrailSettings);
+            smokePlumeParticles = new ParticleSystem(EngineManager.Game, BaseEngine.ContentManager, ContentConstants.SmokePlumeSettings);
+            fireParticles = new ParticleSystem(EngineManager.Game, BaseEngine.ContentManager, ContentConstants.FireSettings);
 
             // Set the draw order so the explosions and fire
             // will appear over the top of the smoke.
@@ -265,36 +265,35 @@ namespace AntiTankGame2.GameScreens
 
 
 
-            //var heightMapTerrain = new HeightMapTerrain();
-            //SceneGraphManager.AddObject(heightMapTerrain);
+            var heightMapTerrain = new HeightMapTerrain();
+            SceneGraphManager.AddObject(heightMapTerrain);
 
 
             //var simlePlane = new SimplePlane(); 
             //SceneGraphManager.AddObject(simlePlane);
             //simlePlane.Scale = new Vector3(1,1,1);
 
-            //var simpleSkyBox = new SimpleSkybox {Position = new Vector3(0, 0, 0), Scale = new Vector3(750, 750, 750)};
-            //SceneGraphManager.AddObject(simpleSkyBox);
+            var simpleSkyBox = new SimpleSkybox {Position = new Vector3(0, 0, 0), Scale = new Vector3(750, 750, 750)};
+            SceneGraphManager.AddObject(simpleSkyBox);
 
 
-
-           // var simpleTank = new Tank{ Position = new Vector3(200, -571, 95) };
-           // SceneGraphManager.AddObject(simpleTank);
-
-
-          //  targetTank = new TankHeight(heightMapInfo, new Vector3(113, -571, 95));
-          //  SceneGraphManager.AddObject(targetTank);
+         // var simpleTank = new Tank{ Position = new Vector3(200, -571, 95) };
+         // SceneGraphManager.AddObject(simpleTank);
 
 
-            var bloomTank = new BloomTank{Position = new Vector3(80,-571,95), Scale = new Vector3(0.001f,0.001f,0.001f)};
-            SceneGraphManager.AddObject(bloomTank);
+            targetTank = new TankHeight(heightMapInfo, new Vector3(113, -571, 95));
+            SceneGraphManager.AddObject(targetTank);
+
+
+         //   var bloomTank = new BloomTank{Position = new Vector3(80,-571,95), Scale = new Vector3(0.001f,0.001f,0.001f)};
+         //   SceneGraphManager.AddObject(bloomTank);
 
 
             //endPoint = new EndPoint { Position = new Vector3(100.0f, 0.0f, 0.0f), Scale = new Vector3(20f, 20f, 20f) };
             //SceneGraphManager.AddObject(endPoint);
 
 
-            EngineManager.Bloom.Visible = true;
+            EngineManager.Bloom.Visible = false;
 
             SceneGraphManager.LoadContent();
 
@@ -515,8 +514,21 @@ namespace AntiTankGame2.GameScreens
         {
             //base.Draw(gameTime);
 
+            EngineManager.Bloom.BeginDraw();
+
+            EngineManager.Device.Clear(BaseEngine.BackgroundColor);
+
+
+            SceneGraphManager.DrawCulling(gameTime);
+
+            // ReSharper disable AccessToStaticMemberViaDerivedType
+            EngineManager.Device.Clear(EngineManager.BackgroundColor);
+            // ReSharper restore AccessToStaticMemberViaDerivedType
+
+            SceneGraphManager.Draw(gameTime);
 
             base.Draw(gameTime);
+
 #if (LENSFLARE)
             #region  setting LensFlare
             if (SceneGraphManager.Paused != true)
@@ -556,66 +568,63 @@ namespace AntiTankGame2.GameScreens
                 #endregion
             }
 #endif
-            SceneGraphManager.DrawCulling(gameTime);
 
-            // ReSharper disable AccessToStaticMemberViaDerivedType
-            EngineManager.Device.Clear(EngineManager.BackgroundColor);
-            // ReSharper restore AccessToStaticMemberViaDerivedType
+           
 
-            SceneGraphManager.Draw(gameTime);
 
+          
         }
 
         public override void PostUIDraw(GameTime gameTime)
         {
             base.PostUIDraw(gameTime);
 
-            //if (SceneGraphManager.Paused != true)
-            //{
-            //    if (drawCross)
-            //    {
-            //        DrawHUDCrossBar();
-            //    }
-            //}
-            //// ReSharper disable AccessToStaticMemberViaDerivedType
-            ////var fpsMessage = string.Format("FPS:  {0} Culled:  {1} Occluded:  {2}", EngineManager.FrameRateCounter.FPS, SceneGraphManager.Culled, SceneGraphManager.Occluded);
+            if (SceneGraphManager.Paused != true)
+            {
+                if (drawCross)
+                {
+                    DrawHUDCrossBar();
+                }
+            }
+            // ReSharper disable AccessToStaticMemberViaDerivedType
+            //var fpsMessage = string.Format("FPS:  {0} Culled:  {1} Occluded:  {2}", EngineManager.FrameRateCounter.FPS, SceneGraphManager.Culled, SceneGraphManager.Occluded);
 
 
-            //var cameraMessage = string.Format("cam pos x{0} y{1} z{2}", CameraManager.ActiveCamera.Position.X, CameraManager.ActiveCamera.Position.Y, CameraManager.ActiveCamera.Position.Z);
+            var cameraMessage = string.Format("cam pos x{0} y{1} z{2}", CameraManager.ActiveCamera.Position.X, CameraManager.ActiveCamera.Position.Y, CameraManager.ActiveCamera.Position.Z);
 
-            ////var rocketPos = string.Format("EndPoint x{0} y{1} z{2}", endPoint.Position.X, endPoint.Position.Y, endPoint.Position.Z);
+            //var rocketPos = string.Format("EndPoint x{0} y{1} z{2}", endPoint.Position.X, endPoint.Position.Y, endPoint.Position.Z);
 
-            //var cameraAngle = string.Format("Angle hor {0} vert {1}", MathHelper.ToDegrees(CameraManager.ActiveCamera.Yaw), MathHelper.ToDegrees(CameraManager.ActiveCamera.Pitch));
-
-
-            ////var bloomInfo = string.Format("F5 = settings ({0}{1}F6 = toggle bloom ({2}){1}F7 = show buffer ({3})", EngineManager.Bloom.Settings.Name, Environment.NewLine, (EngineManager.Bloom.Visible ? "on" : "off"), EngineManager.Bloom.ShowBuffer);
+            var cameraAngle = string.Format("Angle hor {0} vert {1}", MathHelper.ToDegrees(CameraManager.ActiveCamera.Yaw), MathHelper.ToDegrees(CameraManager.ActiveCamera.Pitch));
 
 
-            ////var particleMessage = string.Format("Current effect: {0}!!!{1}Hit space bar to switch.",currentState,Environment.NewLine);
+            //var bloomInfo = string.Format("F5 = settings ({0}{1}F6 = toggle bloom ({2}){1}F7 = show buffer ({3})", EngineManager.Bloom.Settings.Name, Environment.NewLine, (EngineManager.Bloom.Visible ? "on" : "off"), EngineManager.Bloom.ShowBuffer);
 
-            //// ReSharper restore AccessToStaticMemberViaDerivedType
 
-            //// Center the text in the viewport.
-            //var textPosition = new Vector2(10, 20);
+            //var particleMessage = string.Format("Current effect: {0}!!!{1}Hit space bar to switch.",currentState,Environment.NewLine);
 
-            //var color = new Color(255, 255, 255, TransitionAlpha);
+            // ReSharper restore AccessToStaticMemberViaDerivedType
 
-            //#region SpriteBatch Drawing
-            //ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend/*AlphaBlend*//*,SaveStateMode.SaveState*/);
-            ////ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, fpsMessage, textPosition, color);
+            // Center the text in the viewport.
+            var textPosition = new Vector2(10, 20);
 
-            //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, cameraMessage,new Vector2(textPosition.X,textPosition.Y+30), color);
+            var color = new Color(255, 255, 255, TransitionAlpha);
 
-            ////ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, rocketPos, new Vector2(textPosition.X, textPosition.Y + 60), color);
+            #region SpriteBatch Drawing
+            ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend/*AlphaBlend*//*,SaveStateMode.SaveState*/);
+            //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, fpsMessage, textPosition, color);
 
-            ////ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, particleMessage, new Vector2(textPosition.X, textPosition.Y + 120), color);
+            ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, cameraMessage, new Vector2(textPosition.X, textPosition.Y + 30), color);
 
-            ////ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, cameraAngle, new Vector2(textPosition.X, textPosition.Y + 90), color);
+            //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, rocketPos, new Vector2(textPosition.X, textPosition.Y + 60), color);
 
-            ////ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, bloomInfo, new Vector2(textPosition.X+550, textPosition.Y ), color);
+            //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, particleMessage, new Vector2(textPosition.X, textPosition.Y + 120), color);
 
-            //ScreenManager.SpriteBatch.End();
-            //#endregion
+            //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, cameraAngle, new Vector2(textPosition.X, textPosition.Y + 90), color);
+
+            //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, bloomInfo, new Vector2(textPosition.X+550, textPosition.Y ), color);
+
+            ScreenManager.SpriteBatch.End();
+            #endregion
 
 
         }

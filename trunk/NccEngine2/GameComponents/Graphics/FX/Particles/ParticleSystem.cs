@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Graphics.PackedVector;
-using NccParticleSettings;
 
 namespace NccEngine2.GameComponents.Graphics.FX.Particles
 {
@@ -207,7 +206,7 @@ namespace NccEngine2.GameComponents.Graphics.FX.Particles
         /// </summary>
         void LoadParticleEffect()
         {
-            Effect effect = content.Load<Effect>("ParticleEffect");
+            var effect = content.Load<Effect>("Content/ParticleSettings/ParticleEffect");
 
             // If we have several particle systems, the content manager will return
             // a single shared effect instance to them all. But we want to preconfigure

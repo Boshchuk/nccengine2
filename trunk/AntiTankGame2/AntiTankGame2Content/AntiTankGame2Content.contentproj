@@ -53,6 +53,10 @@
       <Project>{67970F83-993D-4921-B3E1-465F2B0569BA}</Project>
       <Name>LocalizationPipeline</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\NccEngine2\NccEngine2.csproj">
+      <Project>{5E26402F-C7A4-4881-B2A3-C724E11C9A72}</Project>
+      <Name>NccEngine2</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\NccHeighMapPipeline\NccHeightMapPipeline.csproj">
       <Project>{5996CF9B-6726-4D2F-BB5B-AF9AD3BB58DE}</Project>
       <Name>NccHeightMapPipeline</Name>
@@ -177,6 +181,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ParticleSettings\ParticleEffect.fx">
+      <Name>ParticleEffect</Name>
+      <Importer>EffectImporter</Importer>
+      <Processor>EffectProcessor</Processor>
+    </Compile>
     <None Include="SkyBox\back.jpg">
       <Name>back</Name>
       <Importer>TextureImporter</Importer>
@@ -233,6 +242,50 @@
   <ItemGroup>
     <Compile Include="Models\terrain.bmp">
       <Name>terrain</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ParticleSettings\ExplosionSettings.xml">
+      <Name>ExplosionSettings</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+    </Compile>
+    <Compile Include="ParticleSettings\ExplosionSmokeSettings.xml">
+      <Name>ExplosionSmokeSettings</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+    </Compile>
+    <Compile Include="ParticleSettings\FireSettings.xml">
+      <Name>FireSettings</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+    </Compile>
+    <Compile Include="ParticleSettings\ProjectileTrailSettings.xml">
+      <Name>ProjectileTrailSettings</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+    </Compile>
+    <Compile Include="ParticleSettings\SmokePlumeSettings.xml">
+      <Name>SmokePlumeSettings</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ParticleSettings\explosion.png">
+      <Name>explosion</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="ParticleSettings\fire.png">
+      <Name>fire</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="ParticleSettings\smoke.png">
+      <Name>smoke</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

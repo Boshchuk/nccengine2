@@ -148,6 +148,7 @@
   <ItemGroup>
     <Content Include="Game.ico" />
     <Content Include="GameThumbnail.png" />
+    <Content Include="logo.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\NccEngine2\NccEngine2.csproj">

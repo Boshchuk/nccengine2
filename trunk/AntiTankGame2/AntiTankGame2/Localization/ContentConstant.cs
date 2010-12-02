@@ -29,12 +29,11 @@ namespace AntiTankGame2.Localization
         public const string BlackRactangeleName = "blackCross";
         public const string BlackRactangleTexturePath = "Content/Textures/blackCross";
 
-        public const string ExplosionSettings = "ExplosionSettings";
-        public const string ExplosionSmokeSettings = "ExplosionSmokeSettings";
-
-        public const string ProjectileTrailSettings = "ProjectileTrailSettings";
-        public const string SmokePlumeSettings = "SmokePlumeSettings";
-        public const string FireSettings = "FireSettings";
+        public const string ExplosionSettings = "Content/ParticleSettings/ExplosionSettings";
+        public const string ExplosionSmokeSettings = "Content/ParticleSettings/ExplosionSmokeSettings";
+        public const string ProjectileTrailSettings = "Content/ParticleSettings/ProjectileTrailSettings";
+        public const string SmokePlumeSettings = "Content/ParticleSettings/SmokePlumeSettings";
+        public const string FireSettings = "Content/ParticleSettings/FireSettings";
 
         public const string TankHeightModel = "Content/Models/Tanks/new"; //m1a1
         public const string TankModelName = "tankH";

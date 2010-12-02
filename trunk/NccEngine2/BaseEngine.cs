@@ -17,7 +17,6 @@ using NccEngine2.GameComponents.Physics;
 using NccEngine2.GameComponents.Scene;
 using NccEngine2.GameDebugTools;
 
-
 #endregion
 
 namespace NccEngine2

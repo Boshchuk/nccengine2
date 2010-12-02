@@ -21,7 +21,7 @@ namespace AntiTankGame2.GameScreens
             TransitionOffTime = TimeSpan.FromSeconds(0.5f);
 
             // ReSharper disable AccessToStaticMemberViaDerivedType
-            // EngineManager.Bloom.Visible = false;
+            EngineManager.Bloom.Visible = false;
             // ReSharper restore AccessToStaticMemberViaDerivedType
         }
 
@@ -59,7 +59,7 @@ namespace AntiTankGame2.GameScreens
 
             byte fade = TransitionAlpha;
             //BUG
-            ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Opaque);
+            ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
 
             if (TextureManager.GetTexture(BackGroundTextureName).ReadyToRender)
             {

@@ -39,6 +39,10 @@ namespace AntiTankGame2.Localization
         public const string TankHeightModel = "Content/Models/Tanks/new"; //m1a1
         public const string TankModelName = "tankH";
 
+        public const string BloomTankModel = "Content/Models/Tanks/Bloomed/tank";
+        public const string BloomTankName = "bloomTnak";
+
+
 
     }
 }

@@ -152,6 +152,8 @@ namespace NccEngine2.GameComponents.Scene.SceneObject
 
             if (ReadyToRender)
             {
+                BaseEngine.Device.DepthStencilState = new DepthStencilState { DepthBufferEnable = true };
+
                 var model = ModelManager.GetModel(ModelName);
                 if (model != null && model.ReadyToRender)
                 {
@@ -162,22 +164,17 @@ namespace NccEngine2.GameComponents.Scene.SceneObject
                     {
                         foreach (BasicEffect effect in mesh.Effects)
                         {
-                            //effect.EnableDefaultLighting();
-                            //effect.PreferPerPixelLighting = true;
-
-                            //effect.DiffuseColor = new Vector3(0.5f, 1.0f, 0.5f);
-                            // TODO Сделать так , что бы свет был от солнца позиции
-                            //  effect.SpecularPower = 1000.0f;
-                            //  effect.SpecularColor = new Vector3(1.0f, 0.5f, 0.5f);
-
-                            BaseEngine.Device.DepthStencilState = new DepthStencilState {DepthBufferEnable = true};
-
-                           // BaseEngine.Device.RasterizerState = new RasterizerState {CullMode = CullMode.None};
-                            //BaseEngine.Device.RasterizerState = new RasterizerState {FillMode = FillMode.WireFrame};
+                            
+                         // BaseEngine.Device.RasterizerState = new RasterizerState {CullMode = CullMode.None};
+                         // BaseEngine.Device.RasterizerState = new RasterizerState {FillMode = FillMode.WireFrame};
 
                             effect.World = transforms[mesh.ParentBone.Index] * World;
                             effect.View = CameraManager.ActiveCamera.View;
                             effect.Projection = CameraManager.ActiveCamera.Projection;
+
+                           // effect.EnableDefaultLighting();
+
+                           // effect.SpecularColor = Vector3.One;
                         }
                         mesh.Draw();
                     }

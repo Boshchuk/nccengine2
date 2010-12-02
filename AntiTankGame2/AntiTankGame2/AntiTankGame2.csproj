@@ -124,6 +124,7 @@
   <ItemGroup>
     <Compile Include="GameObjects\SimpleSkybox.cs" />
     <Compile Include="GameObjects\Tanks\AlphaTank.cs" />
+    <Compile Include="GameObjects\Tanks\BloomTank.cs" />
     <Compile Include="GameObjects\Tanks\TankHeight.cs" />
     <Compile Include="GameObjects\Terrain\SimplePlane.cs" />
     <Compile Include="GameObjects\Tanks\BaseTank.cs" />

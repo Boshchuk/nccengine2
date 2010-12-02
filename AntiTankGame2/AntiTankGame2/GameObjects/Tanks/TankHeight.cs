@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using NccEngine.GameComponents;
 using NccEngine2;
+using NccEngine2.GameComponents.CameraManagment;
 using NccEngine2.GameComponents.Models;
 using NccEngine2.GameComponents.NccInput;
 
@@ -57,6 +58,29 @@ namespace AntiTankGame2.GameObjects.Tanks
        #endregion
         
         private float turn;
+        
+      
+        #region construtcors
+        // ReSharper disable AccessToStaticMemberViaDerivedType
+        public TankHeight(HeightMapInfo heightMapInfoParam, Vector3 newPosition)
+        {
+            Position = newPosition;
+            Scale = new Vector3(1.0f, 1.0f, 1.0f);
+            heightMapInfo = heightMapInfoParam;
+
+
+            var tempModel = new NccModel
+                                {
+                                    BaseModel = EngineManager.ContentManager.Load<Model>("Content/terrain")
+                                };
+            ModelManager.AddModel(tempModel, "tempHeightModel");
+         
+            heightMapInfo = ModelManager.GetModel("tempHeightModel").BaseModel.Tag as HeightMapInfo;
+            
+        }
+        #endregion
+        // ReSharper restore AccessToStaticMemberViaDerivedType
+
         /// <summary>
         /// This function is called when the game is Updating in response to user input.
         /// It'll move the tank around the heightmap, and update all of the tank's 
@@ -69,12 +93,12 @@ namespace AntiTankGame2.GameObjects.Tanks
             // First, we want to check to see if the tank should turn. turnAmount will 
             // be an accumulation of all the different possible inputs.
             var turnAmount = -currentGamePadState.ThumbSticks.Left.X;
-            if (currentKeyboardState.IsKeyDown(Keys.NumPad4) ||currentGamePadState.DPad.Left == ButtonState.Pressed)
+            if (currentKeyboardState.IsKeyDown(Keys.NumPad4) || currentGamePadState.DPad.Left == ButtonState.Pressed)
             {
                 turnAmount += 10;
             }
 
-            if (currentKeyboardState.IsKeyDown(Keys.NumPad6)||currentGamePadState.DPad.Right == ButtonState.Pressed)
+            if (currentKeyboardState.IsKeyDown(Keys.NumPad6) || currentGamePadState.DPad.Right == ButtonState.Pressed)
             {
                 turnAmount -= 10;
             }
@@ -91,7 +115,7 @@ namespace AntiTankGame2.GameObjects.Tanks
             var movement = Vector3.Zero;
             movement.Z = -currentGamePadState.ThumbSticks.Left.Y;
 
-            if (currentKeyboardState.IsKeyDown(Keys.NumPad8) ||currentGamePadState.DPad.Up == ButtonState.Pressed)
+            if (currentKeyboardState.IsKeyDown(Keys.NumPad8) || currentGamePadState.DPad.Up == ButtonState.Pressed)
             {
                 movement.Z = -10;
             }
@@ -115,7 +139,7 @@ namespace AntiTankGame2.GameObjects.Tanks
                 // now that we know we're on the heightmap, we need to know the correct
                 // height and normal at this position.
                 Vector3 normal;
-                heightMapInfo.GetHeightAndNormal(newPosition,out newPosition.Y, out normal);
+                heightMapInfo.GetHeightAndNormal(newPosition, out newPosition.Y, out normal);
 
 
                 // As discussed in the doc, we'll use the normal of the heightmap
@@ -145,26 +169,33 @@ namespace AntiTankGame2.GameObjects.Tanks
 
             turn = turnAmount;
         }
-      
-        #region construtcors
-        // ReSharper disable AccessToStaticMemberViaDerivedType
-        public TankHeight(HeightMapInfo heightMapInfoParam, Vector3 newPosition)
-        {
-            Position = newPosition;
-            Scale = new Vector3(1.0f, 1.0f, 1.0f);
-            heightMapInfo = heightMapInfoParam;
+
+        //public override void Update(GameTime gameTime)
+        //{
+        //   // EngineManager.Device.DepthStencilState = DepthStencilState.Default;
 
 
-            var tempModel = new NccModel
-                                {
-                                    BaseModel = EngineManager.ContentManager.Load<Model>("Content/terrain")
-                                };
-            ModelManager.AddModel(tempModel, "tempHeightModel");
-         
-            heightMapInfo = ModelManager.GetModel("tempHeightModel").BaseModel.Tag as HeightMapInfo;
-            
-        }
-        #endregion
-        // ReSharper restore AccessToStaticMemberViaDerivedType
+          
+        //        var time = (float)gameTime.TotalGameTime.TotalSeconds;
+
+        //        var model = ModelManager.GetModel(ModelName);
+              
+        //        var transforms = new Matrix[model.BaseModel.Bones.Count];
+        //        model.BaseModel.CopyAbsoluteBoneTransformsTo(transforms);
+
+        //        var world = Matrix.CreateRotationY(time * 0.42f);
+
+
+        //        //foreach (var mesh in model.BaseModel.Meshes)
+        //        //{
+
+        //        //    foreach (BasicEffect effect in mesh.Effects)
+        //        //    {
+        //        //        effect.World = transforms[mesh.ParentBone.Index] * world;
+        //        //    }
+               
+        //        //}
+          
+        //}
     }
 }

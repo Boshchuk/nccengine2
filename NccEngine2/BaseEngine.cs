@@ -92,7 +92,7 @@ namespace NccEngine2
         /// <summary>
         /// Bloom Component to manage settings
         /// </summary>
-        //public static BloomComponent Bloom;
+        public static BloomComponent Bloom;
 
         
 
@@ -199,8 +199,8 @@ namespace NccEngine2
             //LensFlareComponent = new LensFlareComponent(this);
             //Components.Add(LensFlareComponent);
 
-            //Bloom = new BloomComponent(this);
-            //Components.Add(Bloom);
+            Bloom = new BloomComponent(this);
+            Components.Add(Bloom);
 
             //TODO include other inits here!
         }

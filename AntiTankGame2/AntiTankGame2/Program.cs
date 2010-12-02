@@ -1,4 +1,4 @@
-//#define TRY
+#define TRY
 
 using System;
 using AntiTankGame2.GameScreens;

@@ -157,9 +157,7 @@ namespace AntiTankGame2.GameObjects.Tanks
 
             var tempModel = new NccModel
                                 {
-
-                                    BaseModel = EngineManager.ContentManager.Load<Model>("Content/Models/terrain")
-
+                                    BaseModel = EngineManager.ContentManager.Load<Model>("Content/terrain")
                                 };
             ModelManager.AddModel(tempModel, "tempHeightModel");
          

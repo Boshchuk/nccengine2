@@ -214,7 +214,7 @@ namespace AntiTankGame2.GameScreens
         {
             #region camera setup
             CameraManager.SetActiveCamera(CameraManager.CameraNumber.Default);
-            CameraManager.ActiveCamera.Position = new Vector3(-4345.0f, -610.0f, 4242.0f);
+            CameraManager.ActiveCamera.Position = new Vector3(-1500.0f, -630.0f, 1787.0f);
 
             CameraManager.SetCamerasFrustum(0.1f, 40000.0f, (float)EngineManager.Device.Viewport.Width / EngineManager.Device.Viewport.Height);
 
@@ -269,9 +269,9 @@ namespace AntiTankGame2.GameScreens
             SceneGraphManager.AddObject(heightMapTerrain);
 
 
-            var simlePlane = new SimplePlane(); 
-            SceneGraphManager.AddObject(simlePlane);
-            simlePlane.Scale = new Vector3(1,1,1);
+            //var simlePlane = new SimplePlane(); 
+            //SceneGraphManager.AddObject(simlePlane);
+            //simlePlane.Scale = new Vector3(1,1,1);
 
             var simpleSkyBox = new SimpleSkybox();
             simpleSkyBox.Position = new Vector3(0,0,0);
@@ -280,14 +280,11 @@ namespace AntiTankGame2.GameScreens
 
 
 
-            var simpleTank = new Tank
-                                 {
-                                     Position = new Vector3(-4000.0f, -710.0f, 4000.0f)
-                                 };
+            var simpleTank = new Tank{ Position = new Vector3(4000.0f, -710.0f, 4000.0f) };
             SceneGraphManager.AddObject(simpleTank);
 
 
-            targetTank = new TankHeight(heightMapInfo, new Vector3(2000, 0, -4000));
+            targetTank = new TankHeight(heightMapInfo, new Vector3(113, -571, 95));
             SceneGraphManager.AddObject(targetTank);
 
 
@@ -601,7 +598,7 @@ namespace AntiTankGame2.GameScreens
             ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend/*AlphaBlend*//*,SaveStateMode.SaveState*/);
             //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, fpsMessage, textPosition, color);
 
-            //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, cameraMessage,new Vector2(textPosition.X,textPosition.Y+30), color);
+            ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, cameraMessage,new Vector2(textPosition.X,textPosition.Y+30), color);
 
             //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, rocketPos, new Vector2(textPosition.X, textPosition.Y + 60), color);
 

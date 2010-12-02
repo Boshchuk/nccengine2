@@ -177,38 +177,53 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SkyBox\back.jpg">
+    <None Include="SkyBox\back.jpg">
       <Name>back</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="SkyBox\bottom.jpg">
+    </None>
+    <None Include="SkyBox\bottom.jpg">
       <Name>bottom</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="SkyBox\front.jpg">
+    </None>
+    <None Include="SkyBox\front.jpg">
       <Name>front</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="SkyBox\left.jpg">
+    </None>
+    <None Include="SkyBox\left.jpg">
       <Name>left</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="SkyBox\right.jpg">
+    </None>
+    <None Include="SkyBox\right.jpg">
       <Name>right</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="SkyBox\top.jpg">
+    </None>
+    <None Include="SkyBox\top.jpg">
       <Name>top</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
-    </Compile>
+    </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Tanks\Bloomed\tank.fbx">
+      <Name>tank</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <None Include="Models\Tanks\Bloomed\engine_diff_tex.tga">
+      <Name>engine_diff_tex</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </None>
+    <None Include="Models\Tanks\Bloomed\turret_alt_diff_tex.tga">
+      <Name>turret_alt_diff_tex</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </None>
     <None Include="rocks.bmp">
       <Name>rocks</Name>
       <Importer>TextureImporter</Importer>

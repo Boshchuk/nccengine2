@@ -135,7 +135,7 @@ namespace NccEngine2.GameDebugTools
         /// <summary>
         /// Layouting specified region
         /// </summary>
-     //   /// <param name="region">placing region</param>
+   //   /// <param name="region">placing region</param>
         /// <returns>Placed position</returns>
         public Vector2 Place(Vector2 size, float horizontalMargin,
                                             float verticalMargine, Alignment alignment)

@@ -8,8 +8,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("AntiTankGame2")]
 [assembly: AssemblyProduct("AntiTankGame2")]
 [assembly: AssemblyDescription("")]
-[assembly: AssemblyCompany("WIN7XP")]
-[assembly: AssemblyCopyright("Copyright © WIN7XP 2010")]
+[assembly: AssemblyCompany("Ncc")]
+[assembly: AssemblyCopyright("Copyright ©Ncc 2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

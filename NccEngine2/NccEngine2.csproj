@@ -100,6 +100,7 @@
     <Compile Include="GameComponents\CameraManagment\FirstPersonCamera.cs" />
     <Compile Include="GameComponents\Graphics\FX\Bloom\BloomComponent.cs" />
     <Compile Include="GameComponents\Graphics\FX\Bloom\BloomSettings.cs" />
+    <Compile Include="GameComponents\Graphics\FX\Particles\ParticleSettings.cs" />
     <Compile Include="GameComponents\Graphics\Screens\Menu\BoolMenuEntry.cs" />
     <Compile Include="GameComponents\Graphics\Screens\Menu\FloatMenuEntry.cs" />
     <Compile Include="GameComponents\Graphics\Screens\Menu\MenuEntry.cs" />

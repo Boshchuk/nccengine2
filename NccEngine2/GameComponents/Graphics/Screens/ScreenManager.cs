@@ -228,13 +228,13 @@ namespace NccEngine2.GameComponents.Graphics.Screens
         public static void FadeBackBufferToBlack(int alpha)
         {
             var viewport = BaseEngine.Device.Viewport;
-           
+
             //TODO CHEK FOR BUG
             //BUG can make error
             //SpriteBatch.Begin( SpriteBlendMode.AlphaBlend, SpriteSortMode.Deferred,SaveStateMode.SaveState);
             SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Opaque);//when pause
 
-            SpriteBatch.Draw(TextureManager.GetTexture("blank").BaseTexture as Texture2D, new Rectangle(0, 0, viewport.Width, viewport.Height),new Color(0, 0, 0, (byte)alpha));
+            SpriteBatch.Draw(TextureManager.GetTexture("blank").BaseTexture as Texture2D, new Rectangle(0, 0, viewport.Width, viewport.Height), new Color(0, 0, 0, (byte)alpha));
 
             SpriteBatch.End();
         }

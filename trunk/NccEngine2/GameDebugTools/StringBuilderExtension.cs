@@ -131,8 +131,7 @@ namespace NccEngine2.GameDebugTools
             }
             else
             {
-                int intNumber =
-                        (int)(number * (float)Math.Pow(10, decimalCount) + 0.5f);
+                var intNumber = (int)(number * (float)Math.Pow(10, decimalCount) + 0.5f);
 
                 AppendNumbernternal(builder, intNumber, decimalCount, options);
             }

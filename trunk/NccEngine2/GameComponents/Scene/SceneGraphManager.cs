@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 using Microsoft.Xna.Framework;
-using NccEngine.GameComponents;
+using NccEngine2.GameComponents.NccInput;
 using NccEngine2.GameComponents.Physics;
 using NccEngine2.GameComponents.Scene.Graph;
 using NccEngine2.GameComponents.Scene.SceneObject;

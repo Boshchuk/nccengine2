@@ -415,6 +415,8 @@ namespace NccEngine2.GameComponents.Graphics.FX.Particles
             }
 
             drawCounter++;
+            
+            BaseEngine.SetCurrentAlphaMode(BaseEngine.AlphaMode.Default);
         }
 
 
@@ -509,7 +511,7 @@ namespace NccEngine2.GameComponents.Graphics.FX.Particles
 
             // Choose four random control values. These will be used by the vertex
             // shader to give each particle a different size, rotation, and color.
-            Color randomValues = new Color((byte)random.Next(255),
+            var randomValues = new Color((byte)random.Next(255),
                                            (byte)random.Next(255),
                                            (byte)random.Next(255),
                                            (byte)random.Next(255));

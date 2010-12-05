@@ -9,13 +9,11 @@ using System;
 using System.Collections.Generic;
 using AntiTankGame2.GameObjects;
 using AntiTankGame2.GameObjects.Tanks;
-using AntiTankGame2.GameObjects.Terrain;
 using AntiTankGame2.Localization;
 using AntiTankGame2.ParcileHelpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using NccEngine.GameComponents;
 using NccEngine2;
 using NccEngine2.GameComponents.CameraManagment;
 using NccEngine2.GameComponents.Graphics.FX.Bloom;
@@ -23,6 +21,7 @@ using NccEngine2.GameComponents.Graphics.FX.Particles;
 using NccEngine2.GameComponents.Graphics.Screens;
 using NccEngine2.GameComponents.Graphics.Textures;
 using NccEngine2.GameComponents.Models.Terrain;
+using NccEngine2.GameComponents.NccInput;
 using NccEngine2.GameComponents.Scene;
 
 #endregion
@@ -38,7 +37,9 @@ namespace AntiTankGame2.GameScreens
         //readonly HoffmanAtmosphere atmosphere = new HoffmanAtmosphere();
 
 
+#pragma warning disable 649
         private HeightMapInfo heightMapInfo;
+#pragma warning restore 649
 
 
         private TankHeight targetTank;
@@ -400,6 +401,39 @@ namespace AntiTankGame2.GameScreens
                     }
                 }
 
+
+
+
+                #region Blend
+
+                if (input.CurrentKeyboardState.IsKeyDown(Keys.Y))
+                {
+                    BaseEngine.SetCurrentAlphaMode(BaseEngine.AlphaMode.DisableAlpha);
+                }
+
+                if (input.CurrentKeyboardState.IsKeyDown(Keys.U))
+                {
+                    BaseEngine.SetCurrentAlphaMode(BaseEngine.AlphaMode.Default);
+                }
+
+                if (input.CurrentKeyboardState.IsKeyDown(Keys.I))
+                {
+                    BaseEngine.SetCurrentAlphaMode(BaseEngine.AlphaMode.SourceAlphaOne);
+                }
+
+                if (input.CurrentKeyboardState.IsKeyDown(Keys.O))
+                {
+                    BaseEngine.SetCurrentAlphaMode(BaseEngine.AlphaMode.OneOne);
+                }
+
+                if (input.CurrentKeyboardState.IsKeyDown(Keys.R))
+                {
+                    BaseEngine.RestorSamplerState();
+                }
+
+                #endregion
+
+
                 #endregion
                 #region camera handle
 
@@ -514,6 +548,8 @@ namespace AntiTankGame2.GameScreens
         {
             //base.Draw(gameTime);
 
+            
+
             EngineManager.Bloom.BeginDraw();
 
             EngineManager.Device.Clear(BaseEngine.BackgroundColor);
@@ -526,6 +562,8 @@ namespace AntiTankGame2.GameScreens
             // ReSharper restore AccessToStaticMemberViaDerivedType
 
             SceneGraphManager.Draw(gameTime);
+
+            
 
             base.Draw(gameTime);
 
@@ -565,14 +603,14 @@ namespace AntiTankGame2.GameScreens
                 smokePlumeParticles.SetCamera(view, projection);
                 fireParticles.SetCamera(view, projection);
 
+               
+
                 #endregion
             }
 #endif
-
-           
-
-
           
+
+
         }
 
         public override void PostUIDraw(GameTime gameTime)
@@ -587,7 +625,6 @@ namespace AntiTankGame2.GameScreens
                 }
             }
             // ReSharper disable AccessToStaticMemberViaDerivedType
-            //var fpsMessage = string.Format("FPS:  {0} Culled:  {1} Occluded:  {2}", EngineManager.FrameRateCounter.FPS, SceneGraphManager.Culled, SceneGraphManager.Occluded);
 
 
             var cameraMessage = string.Format("cam pos x{0} y{1} z{2}", CameraManager.ActiveCamera.Position.X, CameraManager.ActiveCamera.Position.Y, CameraManager.ActiveCamera.Position.Z);
@@ -610,20 +647,20 @@ namespace AntiTankGame2.GameScreens
             var color = new Color(255, 255, 255, TransitionAlpha);
 
             #region SpriteBatch Drawing
-            ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend/*AlphaBlend*//*,SaveStateMode.SaveState*/);
-            //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, fpsMessage, textPosition, color);
+           // ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend/*AlphaBlend*//*,SaveStateMode.SaveState*/);
+            
 
-            ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, cameraMessage, new Vector2(textPosition.X, textPosition.Y + 30), color);
+           //// ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, cameraMessage, new Vector2(textPosition.X, textPosition.Y + 30), color);
 
-            //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, rocketPos, new Vector2(textPosition.X, textPosition.Y + 60), color);
+           // //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, rocketPos, new Vector2(textPosition.X, textPosition.Y + 60), color);
 
-            //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, particleMessage, new Vector2(textPosition.X, textPosition.Y + 120), color);
+           // //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, particleMessage, new Vector2(textPosition.X, textPosition.Y + 120), color);
 
-            //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, cameraAngle, new Vector2(textPosition.X, textPosition.Y + 90), color);
+           // //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, cameraAngle, new Vector2(textPosition.X, textPosition.Y + 90), color);
 
-            //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, bloomInfo, new Vector2(textPosition.X+550, textPosition.Y ), color);
+           // //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, bloomInfo, new Vector2(textPosition.X+550, textPosition.Y ), color);
 
-            ScreenManager.SpriteBatch.End();
+           // ScreenManager.SpriteBatch.End();
             #endregion
 
 
@@ -652,7 +689,7 @@ namespace AntiTankGame2.GameScreens
             // ReSharper restore AccessToStaticMemberViaDerivedType
 
             //BUG Here
-            ScreenManager.SpriteBatch.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend);
+            ScreenManager.SpriteBatch.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend,null,null,null);
 
             ScreenManager.SpriteBatch.Draw(blackTexture, dest1, Color.White);
             ScreenManager.SpriteBatch.Draw(blackTexture, dest2, Color.White);
@@ -677,39 +714,39 @@ namespace AntiTankGame2.GameScreens
         }
 */
 
-        private void HandleCube()
-        {
-            //endPoint.Position = AbstractTargetCoordinates();
-        }
+        //private void HandleCube()
+        //{
+        //    //endPoint.Position = AbstractTargetCoordinates();
+        //}
 
         
 
-        /// <summary>
-        /// ¬озвращает координаты, той точки, до которой может долететь ракета...
-        /// </summary>
-        /// <returns></returns>
-        private static Vector3 AbstractTargetCoordinates()
-        {
-            var result = Vector3.Zero;
+        ///// <summary>
+        ///// ¬озвращает координаты, той точки, до которой может долететь ракета...
+        ///// </summary>
+        ///// <returns></returns>
+        //private static Vector3 AbstractTargetCoordinates()
+        //{
+        //    var result = Vector3.Zero;
 
-            // Vector3.
-            const int radius = 4000;
+        //    // Vector3.
+        //    const int radius = 4000;
 
 
-            var heihgt = -(float)Math.Sin(CameraManager.ActiveCamera.Pitch) * radius;
+        //    var heihgt = -(float)Math.Sin(CameraManager.ActiveCamera.Pitch) * radius;
 
-            //****** VERTICAL PLANE ***********************************
-            result.Y = CameraManager.ActiveCamera.Position.Y + heihgt;
-            var projectionLine = radius * (float)Math.Cos(CameraManager.ActiveCamera.Pitch);
-            //**********************************************************
-            //******  HORIZONTAL PLANE ***********************************************
-            result.X = CameraManager.ActiveCamera.Position.X + (float)Math.Sin((((CameraManager.ActiveCamera.Yaw)))) * projectionLine;
+        //    //****** VERTICAL PLANE ***********************************
+        //    result.Y = CameraManager.ActiveCamera.Position.Y + heihgt;
+        //    var projectionLine = radius * (float)Math.Cos(CameraManager.ActiveCamera.Pitch);
+        //    //**********************************************************
+        //    //******  HORIZONTAL PLANE ***********************************************
+        //    result.X = CameraManager.ActiveCamera.Position.X + (float)Math.Sin((((CameraManager.ActiveCamera.Yaw)))) * projectionLine;
 
-            result.Z = CameraManager.ActiveCamera.Position.Z + (float)Math.Cos((((CameraManager.ActiveCamera.Yaw)))) * projectionLine;
-            //**************************************************************************
+        //    result.Z = CameraManager.ActiveCamera.Position.Z + (float)Math.Cos((((CameraManager.ActiveCamera.Yaw)))) * projectionLine;
+        //    //**************************************************************************
 
-            return result;
-        }
+        //    return result;
+        //}
      
         /* TODO  спр€тать это куда-нить а лучше и сжечь вовсе ....
 ’очу теб€ обн€ть,

@@ -3,10 +3,10 @@ using System;
 using AntiTankGame2.Localization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using NccEngine.GameComponents;
 using NccEngine2;
 using NccEngine2.GameComponents.Graphics.Screens;
 using NccEngine2.GameComponents.Graphics.Textures;
+using NccEngine2.GameComponents.NccInput;
 
 namespace AntiTankGame2.GameScreens
 {
@@ -119,7 +119,7 @@ namespace AntiTankGame2.GameScreens
             var color = new Color(255, 255, 255, TransitionAlpha);
 
             //Bug Place HERE
-            ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+            ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend,null,null,null);
 
             if (TextureManager.GetTexture(Texture).ReadyToRender)
             {

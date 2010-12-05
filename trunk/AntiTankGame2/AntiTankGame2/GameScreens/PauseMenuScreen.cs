@@ -43,8 +43,6 @@ namespace AntiTankGame2.GameScreens
 
         static void AbortThisGameMenuEntrySelected(object sender, EventArgs e)
         {
-//TODO  Optimize Here
-            //Note loke for samless
 
             //TODO коректрно почитстиь ресурсы, так как начиная игру заново тормозит несустветно
             var message = Strings.AreYouWantToAbort;

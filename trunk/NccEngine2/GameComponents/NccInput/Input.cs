@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-
-#if !XBOX
 using NccPcGamePad.DualShock;
-using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
-using Keys = Microsoft.Xna.Framework.Input.Keys;
+#if !XBOX
+
 #endif
 
-namespace NccEngine.GameComponents
+namespace NccEngine2.GameComponents.NccInput
 {
     public class Input : GameComponent
     {
@@ -61,34 +59,34 @@ namespace NccEngine.GameComponents
             CurrentGamePadState = GamePad.GetState(PlayerIndex.One);
 
 #if !XBOX
-            LastMouseState = CurrentMouseState;
+                LastMouseState = CurrentMouseState;
 
-            CurrentMouseState = Mouse.GetState();
+                CurrentMouseState = Mouse.GetState();
 
-            LastSimpleGamePadState = CurrentSimpleGamePadState;
+                LastSimpleGamePadState = CurrentSimpleGamePadState;
 
-            //#warning может плодить ошибки если джойстик не подключен... //TODO придумать решение проблемыс октлюченным контролером
-            if (!wasError)
-            {
-                try
+                //#warning может плодить ошибки если джойстик не подключен... //TODO придумать решение проблемыс октлюченным контролером
+                if (!wasError)
                 {
-#if !DEGUG
-                    //TODO check the type of geme pad...
-                    CurrentSimpleGamePadState = PcDualShock.GetState(PlayerIndex.One);
+                    try
+                    {
+       // #if !DEGUG
+                            //TODO check the type of geme pad...
+                            CurrentSimpleGamePadState = PcDualShock.GetState(PlayerIndex.One);
 
-#endif
+      //  #endif
+                    }
+                    catch (Exception) //If Any exception
+                    {
+        #if !XBOX
+                            wasError = true;
+        #endif
+                    }
                 }
-                catch (Exception) //If Any exception
-                {
-#if !XBOX
-                    wasError = true;
-#endif
-                }
-            }
 
 
-            MouseMoved = new Vector2(LastMouseState.X - CurrentMouseState.X, LastMouseState.Y - CurrentMouseState.Y);
-            lastMouseLocation = new Point(CurrentMouseState.X, CurrentMouseState.Y);
+                MouseMoved = new Vector2(LastMouseState.X - CurrentMouseState.X, LastMouseState.Y - CurrentMouseState.Y);
+                lastMouseLocation = new Point(CurrentMouseState.X, CurrentMouseState.Y);
 #endif
         }
 
@@ -102,7 +100,7 @@ namespace NccEngine.GameComponents
                 return IsNewKeyPress(Keys.Up) ||
 #if !XBOX
  (CurrentSimpleGamePadState.DPad.Up == ButtonState.Pressed &&
-                     LastGamePadState.DPad.Up == ButtonState.Released) ||
+ LastGamePadState.DPad.Up == ButtonState.Released) ||
 #endif
  (CurrentGamePadState.DPad.Up == ButtonState.Pressed &&
                         LastGamePadState.DPad.Up == ButtonState.Released) ||

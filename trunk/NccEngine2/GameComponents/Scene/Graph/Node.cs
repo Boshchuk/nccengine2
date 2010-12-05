@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using NccEngine.GameComponents;
+using NccEngine2.GameComponents.NccInput;
 using NccEngine2.GameComponents.Scene.SceneObject;
 
 namespace NccEngine2.GameComponents.Scene.Graph

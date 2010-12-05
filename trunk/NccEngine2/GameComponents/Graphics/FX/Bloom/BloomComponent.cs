@@ -154,8 +154,7 @@ namespace NccEngine2.GameComponents.Graphics.FX.Bloom
 
             // Pass 1: draw the scene into rendertarget 1, using a
             // shader that extracts only the brightest parts of the image.
-            bloomExtractEffect.Parameters["BloomThreshold"].SetValue(
-                Settings.BloomThreshold);
+            bloomExtractEffect.Parameters["BloomThreshold"].SetValue(Settings.BloomThreshold);
 
             DrawFullscreenQuad(sceneRenderTarget, renderTarget1,
                                bloomExtractEffect,
@@ -313,11 +312,9 @@ namespace NccEngine2.GameComponents.Graphics.FX.Bloom
         {
             var theta = Settings.BlurAmount;
 
-            return (float)((1.0 / Math.Sqrt(2 * Math.PI * theta)) *
-                                  Math.Exp(-(n * n) / (2 * theta * theta)));
+            return (float)((1.0 / Math.Sqrt(2 * Math.PI * theta)) * Math.Exp(-(n * n) / (2 * theta * theta)));
         }
-
-
+        
 
 
         #endregion
@@ -348,18 +345,17 @@ namespace NccEngine2.GameComponents.Graphics.FX.Bloom
             
             //RenderState renderState = GraphicsDevice.RenderState;
 
-             var ds = new  DepthStencilState();
-             ds.DepthBufferEnable = true;
+             var ds = new  DepthStencilState {DepthBufferEnable = true};
 
-            var bs = new BlendState();
+             var bs = new BlendState
+                          {
+                              AlphaSourceBlend = Blend.Zero,
+                              ColorSourceBlend = Blend.Zero,
+                              AlphaDestinationBlend = Blend.Zero,
+                              ColorDestinationBlend = Blend.Zero
+                          };
              //bs = BlendState.Opaque;
 
-             bs.AlphaSourceBlend = Blend.Zero;
-             bs.ColorSourceBlend = Blend.Zero;
-
-             bs.AlphaDestinationBlend = Blend.Zero;
-             bs.ColorDestinationBlend = Blend.Zero;
-           
 
              //var at = new AlphaTestEffect();
             
@@ -368,10 +364,11 @@ namespace NccEngine2.GameComponents.Graphics.FX.Bloom
             //renderState.AlphaTestEnable = false;
             //renderState.AlphaBlendEnable = false;
 
-            SamplerState samplerState = new SamplerState();//GraphicsDevice.SamplerStates[0];
-
-            samplerState.AddressU = TextureAddressMode.Wrap;
-            samplerState.AddressV = TextureAddressMode.Wrap;
+            var samplerState = new SamplerState
+                                   {
+                                       AddressU = TextureAddressMode.Wrap,
+                                       AddressV = TextureAddressMode.Wrap
+                                   };//GraphicsDevice.SamplerStates[0];
 
              GraphicsDevice.DepthStencilState = ds;
              GraphicsDevice.BlendState = bs;

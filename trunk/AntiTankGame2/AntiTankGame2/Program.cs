@@ -23,11 +23,7 @@ namespace AntiTankGame2
 
         static void Main()
         {
-//#if DEBUG
-           // StartUnitTests();
-//#else
             StartGame();
-//#endif
         }
         #region StartGame
 

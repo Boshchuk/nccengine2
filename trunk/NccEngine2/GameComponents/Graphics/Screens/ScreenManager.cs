@@ -180,12 +180,10 @@ namespace NccEngine2.GameComponents.Graphics.Screens
 
             foreach (var screen in Screens)
             {
-                if (screen != null)
-                {
-                    if (screen.ScreenState == ScreenState.Hidden)
-                        continue;
-                    screen.PostUIDraw(gameTime);
-                }
+                if (screen == null) continue;
+                if (screen.ScreenState == ScreenState.Hidden)
+                    continue;
+                screen.PostUIDraw(gameTime);
             }
         }
 
@@ -232,7 +230,7 @@ namespace NccEngine2.GameComponents.Graphics.Screens
             //TODO CHEK FOR BUG
             //BUG can make error
             //SpriteBatch.Begin( SpriteBlendMode.AlphaBlend, SpriteSortMode.Deferred,SaveStateMode.SaveState);
-            SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Opaque);//when pause
+            SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend,null,null,null);//when pause
 
             SpriteBatch.Draw(TextureManager.GetTexture("blank").BaseTexture as Texture2D, new Rectangle(0, 0, viewport.Width, viewport.Height), new Color(0, 0, 0, (byte)alpha));
 

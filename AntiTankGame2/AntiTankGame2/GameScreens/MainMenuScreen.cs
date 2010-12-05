@@ -59,7 +59,7 @@ namespace AntiTankGame2.GameScreens
         /// Event handler for when the user selects ok on the "are you sure
         /// you want to exit" message box.
         /// </summary>
-        void ExitMessageBoxAccepted(object sender, EventArgs e)
+        static void ExitMessageBoxAccepted(object sender, EventArgs e)
         {
             EngineManager.Game.Exit();
         }

@@ -501,6 +501,7 @@ namespace NccEngine2.GameDebugTools
         /// Pressing check with key repeating.
         /// </summary>
         /// <param name="key"></param>
+        /// <param name="dt"></param>
         /// <returns></returns>
         bool IsKeyPressed(Keys key, float dt)
         {
@@ -548,15 +549,14 @@ namespace NccEngine2.GameDebugTools
             rect.Width = (int)(w * 0.8f);
             rect.Height = (int)(MaxLineCount * font.LineSpacing);
 
-            Matrix mtx = Matrix.CreateTranslation(
-                        new Vector3(0, -rect.Height * (1.0f - stateTransition), 0));
+            Matrix mtx = Matrix.CreateTranslation(new Vector3(0, -rect.Height * (1.0f - stateTransition), 0));
 
             spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, mtx);
 
             spriteBatch.Draw(whiteTexture, rect, new Color(0, 0, 0, 200));
 
             // Draw each lines.
-            Vector2 pos = new Vector2(leftMargin, topMargin);
+            var pos = new Vector2(leftMargin, topMargin);
             foreach (string line in lines)
             {
                 spriteBatch.DrawString(font, line, pos, Color.White);

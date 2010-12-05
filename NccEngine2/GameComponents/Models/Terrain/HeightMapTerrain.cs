@@ -58,7 +58,7 @@ namespace NccEngine2.GameComponents.Models.Terrain
         public override void DrawCulling(GameTime gameTime)
         {
             Occluded = false;
-            //var lastFillModeState = EngineManager.Device.RasterizerState.FillMode; /*   RenderState.FillMode;*/
+            var lastFillModeState = EngineManager.Device.RasterizerState.FillMode; /*   RenderState.FillMode;*/
             //  if (ReadyToRender && !Culled)
             {
                 //query.Begin();
@@ -73,9 +73,9 @@ namespace NccEngine2.GameComponents.Models.Terrain
                         foreach (BasicEffect effect in mesh.Effects)
                         {
 
-                            effect.EnableDefaultLighting();
+                            //effect.EnableDefaultLighting();
                             //effect.PreferPerPixelLighting = true;
-                            effect.World = World;
+                            effect.World = transforms[mesh.ParentBone.Index];
                             effect.View = CameraManager.ActiveCamera.View;
                             effect.Projection = CameraManager.ActiveCamera.Projection;
 
@@ -86,6 +86,15 @@ namespace NccEngine2.GameComponents.Models.Terrain
                             //   effect.FogColor = new Vector3(Color.LightBlue.R,Color.LightBlue.G,Color.LightBlue.B);
                             //  effect.FogStart = 1000;
                             //  effect.FogEnd = 3200;
+
+                            effect.EnableDefaultLighting();
+                            effect.PreferPerPixelLighting = true;
+
+                            // Set the fog to match the black background color
+                            //effect.FogEnabled = true;
+                            //effect.FogColor = Vector3.Zero;
+                            //effect.FogStart = 1000;
+                            //effect.FogEnd = 3200;
                         }
                         mesh.Draw();
                     }
@@ -98,12 +107,54 @@ namespace NccEngine2.GameComponents.Models.Terrain
                  }*/
 
                 //  if (query.IsComplete && query.PixelCount == 0)
-                {
+               // {
                     // Occluded = true;
-                }
+               // }
             }
             //var rState = new RasterizerState { FillMode = lastFillModeState };
            // BaseEngine.Device.RasterizerState = rState;
+        }
+
+        public override void Draw(GameTime gameTime)
+        {
+
+           // BaseEngine.RestorSamplerState();
+
+            if (ReadyToRender)
+            {
+                BaseEngine.Device.DepthStencilState = new DepthStencilState { DepthBufferEnable = true };
+
+                var model = ModelManager.GetModel(ModelName);
+                if (model != null && model.ReadyToRender)
+                {
+                    var transforms = new Matrix[model.BaseModel.Bones.Count];
+                    model.BaseModel.CopyAbsoluteBoneTransformsTo(transforms);
+
+                    foreach (var mesh in model.BaseModel.Meshes)
+                    {
+                        foreach (BasicEffect effect in mesh.Effects)
+                        {
+
+                            // BaseEngine.Device.RasterizerState = new RasterizerState {CullMode = CullMode.None};
+                            // BaseEngine.Device.RasterizerState = new RasterizerState {FillMode = FillMode.WireFrame};
+
+                            effect.World = transforms[mesh.ParentBone.Index] ;
+                            effect.View = CameraManager.ActiveCamera.View;
+                            effect.Projection = CameraManager.ActiveCamera.Projection;
+
+                            effect.EnableDefaultLighting();
+                            effect.PreferPerPixelLighting = true;
+
+                            // Set the fog to match the black background color
+                            //effect.FogEnabled = true;
+                            //effect.FogColor = Vector3.Zero;
+                            //effect.FogStart = 1000;
+                            //effect.FogEnd = 3200;
+                        }
+                        mesh.Draw();
+                    }
+                }
+            }
         }
 
         public void LoadContent()

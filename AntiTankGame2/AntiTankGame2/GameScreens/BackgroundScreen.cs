@@ -59,7 +59,7 @@ namespace AntiTankGame2.GameScreens
 
             byte fade = TransitionAlpha;
             //BUG
-            ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+            ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend,null,null,null,null);
 
             if (TextureManager.GetTexture(BackGroundTextureName).ReadyToRender)
             {

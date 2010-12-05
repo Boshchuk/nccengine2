@@ -4,15 +4,16 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using NccEngine.GameComponents;
 using NccEngine2.GameComponents.CameraManagment;
 using NccEngine2.GameComponents.Graphics.FX.Bloom;
 using NccEngine2.GameComponents.Graphics.Screens;
 using NccEngine2.GameComponents.Graphics.Textures;
 using NccEngine2.GameComponents.Models;
+using NccEngine2.GameComponents.NccInput;
 using NccEngine2.GameComponents.Physics;
 using NccEngine2.GameComponents.Scene;
 using NccEngine2.GameDebugTools;
@@ -92,7 +93,6 @@ namespace NccEngine2
         /// Bloom Component to manage settings
         /// </summary>
         public static BloomComponent Bloom;
-
         
 
         /// <summary>
@@ -164,7 +164,6 @@ namespace NccEngine2
             // Init the InputHelper
             Input = new Input(this);
             Components.Add(Input);
-
            
 
             // Init camera Managers
@@ -340,7 +339,7 @@ namespace NccEngine2
                 PosCommand          // Command execution delegate
                 );
 
-            SetAlphaBlendingEnabled(true);
+            //SetAlphaBlendingEnabled(true);
 
             base.Initialize();
         }
@@ -364,7 +363,6 @@ namespace NccEngine2
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             font = ContentManager.Load<SpriteFont>("Content/Font");
-
             
 
             // create our blank texture
@@ -560,27 +558,126 @@ namespace NccEngine2
         /// </summary>
         public static void SetCurrentAlphaMode(AlphaMode value)
         {
+            var blendState = new BlendState();
+
             switch (value)
             {
                 case AlphaMode.DisableAlpha:
-                    Device.BlendState.AlphaSourceBlend = Blend.Zero;
-                    Device.BlendState.AlphaDestinationBlend = Blend.One;
+                    //Device.BlendState.AlphaSourceBlend = Blend.Zero;
+                    //Device.BlendState.AlphaDestinationBlend = Blend.One;
+                    blendState.AlphaSourceBlend = Blend.Zero;
+                    blendState.ColorSourceBlend = Blend.Zero;
+
+                    blendState.AlphaDestinationBlend = Blend.One;
+                    blendState.ColorDestinationBlend = Blend.One;
+                    
                     break;
                 case AlphaMode.Default:
-                    Device.BlendState.AlphaSourceBlend = Blend.SourceAlpha;
-                    Device.BlendState.AlphaDestinationBlend = Blend.InverseSourceAlpha;
+                    //Device.BlendState.AlphaSourceBlend = Blend.SourceAlpha;
+                    //Device.BlendState.AlphaDestinationBlend = Blend.InverseSourceAlpha;
+
+                    blendState.AlphaSourceBlend = Blend.SourceAlpha;
+                    blendState.ColorSourceBlend = Blend.SourceAlpha;
+
+                    blendState.AlphaDestinationBlend = Blend.InverseSourceAlpha;
+                    blendState.ColorDestinationBlend = Blend.InverseSourceAlpha;
+
                     break;
                 case AlphaMode.SourceAlphaOne:
-                    Device.BlendState.AlphaSourceBlend = Blend.SourceAlpha;
-                    Device.BlendState.AlphaDestinationBlend = Blend.One;
+                    //Device.BlendState.AlphaSourceBlend = Blend.SourceAlpha;
+                    //Device.BlendState.AlphaDestinationBlend = Blend.One;
+
+                    blendState.AlphaSourceBlend = Blend.SourceAlpha;
+                    blendState.ColorSourceBlend = Blend.SourceAlpha;
+
+                    blendState.AlphaDestinationBlend = Blend.One;
+                    blendState.ColorDestinationBlend = Blend.One;
+                    
                     break;
                 case AlphaMode.OneOne:
-                    Device.BlendState.AlphaSourceBlend = Blend.One;
-                    Device.BlendState.AlphaDestinationBlend = Blend.One;
+                    //Device.BlendState.AlphaSourceBlend = Blend.One;
+                    //Device.BlendState.AlphaDestinationBlend = Blend.One;
+
+                    blendState.AlphaSourceBlend = Blend.One;
+                    blendState.ColorSourceBlend = Blend.One;
+
+                    blendState.AlphaDestinationBlend = Blend.One;
+                    blendState.ColorDestinationBlend = Blend.One;
                     break;
             }
+
+            Device.BlendState = blendState;
         }
+
+
+        public static void RestorSamplerState()
+        {
+            var samplerState = new SamplerState();
+           // samplerState.AddressU = TextureAddressMode.Wrap;
+           // samplerState.AddressV = TextureAddressMode.Wrap;
+           // samplerState.AddressW = TextureAddressMode.Wrap;
+          //  samplerState.MipMapLevelOfDetailBias = 0;
+          //  samplerState.Filter = TextureFilter.Linear;
+            
+
+            
+
+
+            Device.SamplerStates[0] = samplerState;
+
+          //  var rasterState = new RasterizerState();
+          //  rasterState.CullMode = CullMode.CullClockwiseFace;
+
+
+            //var dephState = new DepthStencilState();
+            //dephState.DepthBufferEnable = false;
+            //Device.DepthStencilState = dephState;
+
+         //   Device.RasterizerState = rasterState;
+        
+
+
+            /*
+             
+               GraphicsDevice.RenderState.CullMode = CullMode.CullCounterClockwiseFace;
+    GraphicsDevice.RenderState.DepthBufferEnable = false;
+
+    GraphicsDevice.RenderState.AlphaBlendEnable = true;
+    GraphicsDevice.RenderState.AlphaBlendOperation = BlendFunction.Add;
+    GraphicsDevice.RenderState.SourceBlend = Blend.SourceAlpha;
+    GraphicsDevice.RenderState.DestinationBlend = Blend.InverseSourceAlpha;
+    GraphicsDevice.RenderState.SeparateAlphaBlendEnabled = false;
+
+    GraphicsDevice.RenderState.AlphaTestEnable = true;
+    GraphicsDevice.RenderState.AlphaFunction = CompareFunction.Greater;
+    GraphicsDevice.RenderState.ReferenceAlpha = 0;
+
+    GraphicsDevice.SamplerStates[0].AddressU = TextureAddressMode.Clamp;
+    GraphicsDevice.SamplerStates[0].AddressV = TextureAddressMode.Clamp;
+
+    GraphicsDevice.SamplerStates[0].MagFilter = TextureFilter.Linear;
+    GraphicsDevice.SamplerStates[0].MinFilter = TextureFilter.Linear;
+    GraphicsDevice.SamplerStates[0].MipFilter = TextureFilter.Linear;
+
+    GraphicsDevice.SamplerStates[0].MipMapLevelOfDetailBias = 0.0f;
+    GraphicsDevice.SamplerStates[0].MaxMipLevel = 0;
+
+SpriteBatch also modifies the Vertices, Indices, VertexDeclaration, VertexShader, and PixelShader properties on the GraphicsDevice.
+
+Many of these settings are fine for both 2D and 3D rendering, but before you draw anything in 3D you will probably want to reset these states:
+    GraphicsDevice.RenderState.DepthBufferEnable = true;
+    GraphicsDevice.RenderState.AlphaBlendEnable = false;
+    GraphicsDevice.RenderState.AlphaTestEnable = false;
+
+Depending on your 3D content, you may also want to set:
+    GraphicsDevice.SamplerStates[0].AddressU = TextureAddressMode.Wrap;
+    GraphicsDevice.SamplerStates[0].AddressV = TextureAddressMode.Wrap; 
+             */
+        }
+
         #endregion
+
+
 
 
         #region Debug command test code.
@@ -668,30 +765,26 @@ namespace NccEngine2
             {
                 Vector2 pos = zoomyText.Position + Font.MeasureString(zoomyText.Text) / 2;
 
-                float age = zoomyText.Age / ZoomyTextLifespan;
-                float sqrtAge = (float)Math.Sqrt(age);
+                var age = zoomyText.Age / ZoomyTextLifespan;
+                var sqrtAge = (float)Math.Sqrt(age);
 
                 float scale = 0.333f + sqrtAge * 2f;
 
                 float alpha = 1 - age;
 
-                SpriteFont font = BigFont;
+                SpriteFont bigFont = BigFont;
 
                 // Our BigFont only contains characters a-z, so if the text
                 // contains any numbers, we have to use the other font instead.
-                foreach (char ch in zoomyText.Text)
+                if (zoomyText.Text.Any(ch => char.IsDigit(ch)))
                 {
-                    if (char.IsDigit(ch))
-                    {
-                        font = Font;
-                        scale *= 2;
-                        break;
-                    }
+                    bigFont = Font;
+                    scale *= 2;
                 }
 
-                Vector2 origin = font.MeasureString(zoomyText.Text) / 2;
+                Vector2 origin = bigFont.MeasureString(zoomyText.Text) / 2;
 
-                SpriteBatch.DrawString(font, zoomyText.Text, pos, Color.Lerp(new Color(64, 64, 255), Color.White, sqrtAge) * alpha, 0, origin, scale, 0, 0);
+                SpriteBatch.DrawString(bigFont, zoomyText.Text, pos, Color.Lerp(new Color(64, 64, 255), Color.White, sqrtAge) * alpha, 0, origin, scale, 0, 0);
             }
 
             SpriteBatch.End();

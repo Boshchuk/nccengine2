@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using NccEngine.GameComponents;
+using NccEngine2.GameComponents.NccInput;
 
 namespace NccEngine2.GameComponents.Graphics.Screens.Menu
 {
@@ -103,7 +103,7 @@ namespace NccEngine2.GameComponents.Graphics.Screens.Menu
             // Update each nested MenuEntry object.
             for (var i = 0; i < menuEntries.Count; i++)
             {
-                bool isSelected = IsActive && (i == selectedEntry);
+                var isSelected = IsActive && (i == selectedEntry);
 
                 menuEntries[i].Update(this, isSelected, gameTime);
             }
@@ -122,12 +122,23 @@ namespace NccEngine2.GameComponents.Graphics.Screens.Menu
             var transitionOffset = (float)Math.Pow(TransitionPosition, 2);
 
             if (ScreenState == ScreenState.TransitionOn)
+            {
                 position.X -= transitionOffset * 256;
+            }
             else
-                position.X += transitionOffset * 512;
+            {
+                position.X += transitionOffset*512;
+            }
 
+            // Draw the menu title.
+            var titlePosition = new Vector2(426, 80);
+            var titleOrigin = ScreenManager.Font.MeasureString(menuTitle) / 2;
+            var titleColor = new Color(192, 192, 192, TransitionAlpha);
+            var titleScale = 1.25f;
+
+            titlePosition.Y -= transitionOffset * 100;
             //BUG HERE BUG PLACE
-            ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend /*SaveStateMode.SaveState*/);
+            ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend,null,null,null /*SaveStateMode.SaveState*/);
 
             // Draw each menu entry in turn.
             for (int i = 0; i < menuEntries.Count; i++)
@@ -141,13 +152,7 @@ namespace NccEngine2.GameComponents.Graphics.Screens.Menu
                 position.Y += MenuEntry.GetHeight(this);
             }
 
-            // Draw the menu title.
-            var titlePosition = new Vector2(426, 80);
-            var titleOrigin = ScreenManager.Font.MeasureString(menuTitle) / 2;
-            var titleColor = new Color(192, 192, 192, TransitionAlpha);
-            var titleScale = 1.25f;
-
-            titlePosition.Y -= transitionOffset * 100;
+            
 
             ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, menuTitle, titlePosition, titleColor, 0,titleOrigin, titleScale, SpriteEffects.None, 0);
 

@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
-using NccEngine.GameComponents;
+using NccEngine2.GameComponents.NccInput;
 
 namespace NccEngine2.GameComponents.Graphics.Screens
 {
@@ -83,7 +83,7 @@ namespace NccEngine2.GameComponents.Graphics.Screens
 
         private bool otherScreenHasFocus;
 
-        public GameScreen()
+        protected GameScreen()
         {
             IsExiting = false;
             TransitionPosition = 1;

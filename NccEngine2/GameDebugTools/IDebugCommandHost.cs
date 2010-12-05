@@ -68,8 +68,7 @@ namespace NccEngine2.GameDebugTools
         /// <param name="command">command name</param>
         /// <param name="description">description of command</param>
         /// <param name="callback">Execute delegation</param>
-        void RegisterCommand(string command, string description,
-                                                        DebugCommandExecute callback);
+        void RegisterCommand(string command, string description,DebugCommandExecute callback);
 
         /// <summary>
         /// Unregister command.

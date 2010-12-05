@@ -77,7 +77,7 @@ namespace AntiTankGame2.GameScreens
                 var color = new Color(255, 255, 255, TransitionAlpha);
 
                 //BUG PLACE HERE
-                ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend /*AlphaBlend*//*,SaveStateMode.SaveState*/);
+                ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend,null,null,null /*AlphaBlend*//*,SaveStateMode.SaveState*/);
                 ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, message, textPosition, color);
                 ScreenManager.SpriteBatch.End();
             }

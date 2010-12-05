@@ -1,7 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using NccEngine.GameComponents;
 using NccEngine2;
 using NccEngine2.GameComponents.CameraManagment;
 using NccEngine2.GameComponents.Models;

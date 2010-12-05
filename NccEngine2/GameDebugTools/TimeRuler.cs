@@ -275,9 +275,7 @@ namespace NccEngine2.GameDebugTools
                 throw new InvalidOperationException("DebugManager is not registered.");
 
             // Add "tr" command if DebugCommandHost is registered.
-            IDebugCommandHost host =
-                                Game.Services.GetService(typeof(IDebugCommandHost))
-                                                                    as IDebugCommandHost;
+            var host = Game.Services.GetService(typeof(IDebugCommandHost)) as IDebugCommandHost;
             if (host != null)
             {
                 host.RegisterCommand("tr", "TimeRuler", CommandExecute);
@@ -301,9 +299,8 @@ namespace NccEngine2.GameDebugTools
         {
             Width = (int)(GraphicsDevice.Viewport.Width * 0.8f);
 
-            Layout layout = new Layout(GraphicsDevice.Viewport);
-            position = layout.Place(new Vector2(Width, BarHeight),
-                                                    0, 0.01f, Alignment.BottomCenter);
+            var layout = new Layout(GraphicsDevice.Viewport);
+            position = layout.Place(new Vector2(Width, BarHeight), 0, 0.01f, Alignment.BottomCenter);
 
             base.LoadContent();
         }
@@ -320,7 +317,7 @@ namespace NccEngine2.GameDebugTools
             if (arguments.Count == 0)
                 Visible = !Visible;
 
-            char[] subArgSeparator = new[] { ':' };
+            var subArgSeparator = new[] { ':' };
             foreach (string orgArg in arguments)
             {
                 string arg = orgArg.ToLower();
@@ -725,7 +722,7 @@ namespace NccEngine2.GameDebugTools
             spriteBatch.Begin();
 
             // Draw transparency background.
-            Rectangle rc = new Rectangle((int)position.X, y, width, height);
+            var rc = new Rectangle((int)position.X, y, width, height);
             spriteBatch.Draw(texture, rc, new Color(0, 0, 0, 128));
 
             // Draw markers for each bars.

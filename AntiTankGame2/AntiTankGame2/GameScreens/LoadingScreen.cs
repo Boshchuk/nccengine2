@@ -66,18 +66,17 @@ namespace AntiTankGame2.GameScreens
                 var message = Strings.Loading;
 
                 // Center the text in the viewport.
-
-                // ReSharper disable AccessToStaticMemberViaDerivedType
-                var viewport = EngineManager.Device.Viewport;
-                // ReSharper restore AccessToStaticMemberViaDerivedType
+                
+                var viewport = BaseEngine.Device.Viewport;
+          
                 var viewportSize = new Vector2(viewport.Width, viewport.Height);
                 Vector2 textSize = ScreenManager.Font.MeasureString(message);
-                Vector2 textPosition = (viewportSize - textSize) / 2;
+                Vector2 textPosition = (viewportSize - textSize)/2;
 
                 var color = new Color(255, 255, 255, TransitionAlpha);
 
-                //BUG PLACE HERE
-                ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend,null,null,null /*AlphaBlend*//*,SaveStateMode.SaveState*/);
+                //Note Drawing
+                ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend,null,null,null);
                 ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, message, textPosition, color);
                 ScreenManager.SpriteBatch.End();
             }

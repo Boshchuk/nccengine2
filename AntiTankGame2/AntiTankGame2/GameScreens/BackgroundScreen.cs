@@ -19,10 +19,8 @@ namespace AntiTankGame2.GameScreens
         {
             TransitionOnTime = TimeSpan.FromSeconds(0.5f);
             TransitionOffTime = TimeSpan.FromSeconds(0.5f);
-
-            // ReSharper disable AccessToStaticMemberViaDerivedType
-            EngineManager.Bloom.Visible = false;
-            // ReSharper restore AccessToStaticMemberViaDerivedType
+            
+            BaseEngine.Bloom.Visible = false;
         }
 
         public override void LoadContent()
@@ -31,12 +29,7 @@ namespace AntiTankGame2.GameScreens
 
             TextureManager.AddTexture(new NccTexture(ContentConstants.BackgroundTexurePath), BackGroundTextureName);
         }
-        /*
-        public override void UnloadContent()
-        {
-            base.UnloadContent();
-        }
-        */
+       
         /// <summary>
         /// Updates the background screen. Unlike most screens, this should not
         /// transition off even if it has been covered by another screen: it is
@@ -51,15 +44,14 @@ namespace AntiTankGame2.GameScreens
 
         public override void Draw(GameTime gameTime)
         {
-            // ReSharper disable AccessToStaticMemberViaDerivedType
-            var viewport = EngineManager.Device.Viewport;
-            // ReSharper restore AccessToStaticMemberViaDerivedType
+            var viewport = BaseEngine.Device.Viewport;
 
             var fullscreen = new Rectangle(0, 0, viewport.Width, viewport.Height);
 
-            byte fade = TransitionAlpha;
-            //BUG
-            ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend,null,null,null,null);
+            var fade = TransitionAlpha;
+            
+            //Note drawing perf
+            ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend,null,null,null);
 
             if (TextureManager.GetTexture(BackGroundTextureName).ReadyToRender)
             {

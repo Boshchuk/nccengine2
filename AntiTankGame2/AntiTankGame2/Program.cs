@@ -3,8 +3,6 @@
 using System;
 using AntiTankGame2.GameScreens;
 using AntiTankGame2.Localization;
-using Microsoft.Xna.Framework.GamerServices;
-using Microsoft.Xna.Framework.Graphics;
 using NccEngine2;
 using NccEngine2.GameComponents.Graphics.Screens;
 

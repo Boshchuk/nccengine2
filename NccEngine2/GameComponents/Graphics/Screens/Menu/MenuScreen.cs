@@ -8,7 +8,7 @@ namespace NccEngine2.GameComponents.Graphics.Screens.Menu
 {
     public abstract class MenuScreen : GameScreen
     {
-        List<MenuEntry> menuEntries = new List<MenuEntry>();
+        readonly List<MenuEntry> menuEntries = new List<MenuEntry>();
         /// <summary>
         /// Gets the list of menu entry strings, so derived classes can add
         /// or change the menu contents.
@@ -19,12 +19,12 @@ namespace NccEngine2.GameComponents.Graphics.Screens.Menu
         }
 
         int selectedEntry;
-        string menuTitle;
+        readonly string menuTitle;
 
         /// <summary>
         /// Constructor.
         /// </summary>
-        public MenuScreen(string menuTitle)
+        protected MenuScreen(string menuTitle)
         {
             this.menuTitle = menuTitle;
             TransitionOnTime = TimeSpan.FromSeconds(0.5);
@@ -134,14 +134,14 @@ namespace NccEngine2.GameComponents.Graphics.Screens.Menu
             var titlePosition = new Vector2(426, 80);
             var titleOrigin = ScreenManager.Font.MeasureString(menuTitle) / 2;
             var titleColor = new Color(192, 192, 192, TransitionAlpha);
-            var titleScale = 1.25f;
+            const float titleScale = 1.25f;
 
             titlePosition.Y -= transitionOffset * 100;
-            //BUG HERE BUG PLACE
-            ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend,null,null,null /*SaveStateMode.SaveState*/);
+            //Note DrawingPlace
+            ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null);
 
             // Draw each menu entry in turn.
-            for (int i = 0; i < menuEntries.Count; i++)
+            for (var i = 0; i < menuEntries.Count; i++)
             {
                 var menuEntry = menuEntries[i];
 

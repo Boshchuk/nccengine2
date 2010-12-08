@@ -1,7 +1,7 @@
 #define DRAWPARTICLE
 //#define USEHOFFMAN
 //#defene LENSFLARE
-//#define USEBLOOM
+#define USEBLOOM
 
 #region Using Statement
 
@@ -28,7 +28,7 @@ using NccEngine2.GameComponents.Scene;
 
 namespace AntiTankGame2.GameScreens
 {
-    public class GameplayScreen : GameScreen
+    public class GameplayScreen : GameScreen 
     {
         #region fields
 
@@ -294,7 +294,7 @@ namespace AntiTankGame2.GameScreens
             //SceneGraphManager.AddObject(endPoint);
 
 
-            EngineManager.Bloom.Visible = false;
+            BaseEngine.Bloom.Visible = false;
 
             SceneGraphManager.LoadContent();
 
@@ -341,7 +341,7 @@ namespace AntiTankGame2.GameScreens
                 #region BloomHandle
                 //************************************
                 //***   for bloom ********************
-                // ReSharper disable AccessToStaticMemberViaDerivedType
+             
                 input.LastKeyboardState = input.CurrentKeyboardState;
                 input.LastGamePadState = input.CurrentGamePadState;
 
@@ -356,32 +356,30 @@ namespace AntiTankGame2.GameScreens
 
                     bloomSettingsIndex = (bloomSettingsIndex + 1) % BloomSettings.PresetSettings.Length;
 
-                    EngineManager.Bloom.Settings = BloomSettings.PresetSettings[bloomSettingsIndex];
+                    BaseEngine.Bloom.Settings = BloomSettings.PresetSettings[bloomSettingsIndex];
 
-                    EngineManager.Bloom.Visible = true;
-
-                   // EngineManager.Bloom.Visible = false;
+                    BaseEngine.Bloom.Visible = true;
 
                 }
 
                 // Toggle bloom on or off?
                 if (input.CurrentKeyboardState.IsKeyDown(Keys.F6))
                 {
-                   EngineManager.Bloom.Visible = !EngineManager.Bloom.Visible;
+                   BaseEngine.Bloom.Visible = !BaseEngine.Bloom.Visible;
                 }
 
                 // Cycle through the intermediate buffer debug display modes?
                 if (input.CurrentKeyboardState.IsKeyDown(Keys.F7))
                 {
-                    EngineManager.Bloom.Visible = true;
-                    EngineManager.Bloom.ShowBuffer++;
+                    BaseEngine.Bloom.Visible = true;
+                    BaseEngine.Bloom.ShowBuffer++;
 
-                    if (EngineManager.Bloom.ShowBuffer > BloomComponent.IntermediateBuffer.FinalResult)
+                    if (BaseEngine.Bloom.ShowBuffer > BloomComponent.IntermediateBuffer.FinalResult)
                     {
-                        EngineManager.Bloom.ShowBuffer = 0;
+                        BaseEngine.Bloom.ShowBuffer = 0;
                     }
                 }
-                // ReSharper restore AccessToStaticMemberViaDerivedType
+               
 #endif
                 //* end for bloom          **********************************
 
@@ -550,9 +548,9 @@ namespace AntiTankGame2.GameScreens
 
             
 
-            EngineManager.Bloom.BeginDraw();
+            BaseEngine.Bloom.BeginDraw();
 
-            EngineManager.Device.Clear(BaseEngine.BackgroundColor);
+            BaseEngine.Device.Clear(BaseEngine.BackgroundColor);
 
 
             SceneGraphManager.DrawCulling(gameTime);
@@ -627,11 +625,11 @@ namespace AntiTankGame2.GameScreens
             // ReSharper disable AccessToStaticMemberViaDerivedType
 
 
-            var cameraMessage = string.Format("cam pos x{0} y{1} z{2}", CameraManager.ActiveCamera.Position.X, CameraManager.ActiveCamera.Position.Y, CameraManager.ActiveCamera.Position.Z);
+           // var cameraMessage = string.Format("cam pos x{0} y{1} z{2}", CameraManager.ActiveCamera.Position.X, CameraManager.ActiveCamera.Position.Y, CameraManager.ActiveCamera.Position.Z);
 
             //var rocketPos = string.Format("EndPoint x{0} y{1} z{2}", endPoint.Position.X, endPoint.Position.Y, endPoint.Position.Z);
 
-            var cameraAngle = string.Format("Angle hor {0} vert {1}", MathHelper.ToDegrees(CameraManager.ActiveCamera.Yaw), MathHelper.ToDegrees(CameraManager.ActiveCamera.Pitch));
+            //var cameraAngle = string.Format("Angle hor {0} vert {1}", MathHelper.ToDegrees(CameraManager.ActiveCamera.Yaw), MathHelper.ToDegrees(CameraManager.ActiveCamera.Pitch));
 
 
             //var bloomInfo = string.Format("F5 = settings ({0}{1}F6 = toggle bloom ({2}){1}F7 = show buffer ({3})", EngineManager.Bloom.Settings.Name, Environment.NewLine, (EngineManager.Bloom.Visible ? "on" : "off"), EngineManager.Bloom.ShowBuffer);
@@ -689,7 +687,7 @@ namespace AntiTankGame2.GameScreens
             // ReSharper restore AccessToStaticMemberViaDerivedType
 
             //BUG Here
-            ScreenManager.SpriteBatch.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend,null,null,null);
+            ScreenManager.SpriteBatch.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend, null, null, null);
 
             ScreenManager.SpriteBatch.Draw(blackTexture, dest1, Color.White);
             ScreenManager.SpriteBatch.Draw(blackTexture, dest2, Color.White);
@@ -770,5 +768,7 @@ ps. жду встречи
          
          */
         #endregion
+
+      
     }
 }

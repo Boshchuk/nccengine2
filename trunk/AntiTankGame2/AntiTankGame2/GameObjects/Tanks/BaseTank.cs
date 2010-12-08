@@ -68,7 +68,7 @@ namespace AntiTankGame2.GameObjects.Tanks
         {
             if (ReadyToRender)
             {
-                BaseEngine.Device.DepthStencilState = new DepthStencilState { DepthBufferEnable = true };
+              //  BaseEngine.Device.DepthStencilState = new DepthStencilState { DepthBufferEnable = true };
 
                 var model = ModelManager.GetModel(ModelName);
                 if (model != null && model.ReadyToRender)
@@ -80,9 +80,6 @@ namespace AntiTankGame2.GameObjects.Tanks
                     {
                         foreach (BasicEffect effect in mesh.Effects)
                         {
-
-                            // BaseEngine.Device.RasterizerState = new RasterizerState {CullMode = CullMode.None};
-                            // BaseEngine.Device.RasterizerState = new RasterizerState {FillMode = FillMode.WireFrame};
 
                             effect.World = transforms[mesh.ParentBone.Index] * World;
                             effect.View = CameraManager.ActiveCamera.View;

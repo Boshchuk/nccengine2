@@ -141,6 +141,7 @@ namespace NccEngine2.GameComponents.Graphics.Screens
                         otherScreenHasFocus = true;
                     }
 
+                    
                     // If this is an active non-popup, inform any subsequent
                     // screens that they are covered by it.
                     if (!screen.IsPopup)
@@ -228,9 +229,8 @@ namespace NccEngine2.GameComponents.Graphics.Screens
             var viewport = BaseEngine.Device.Viewport;
 
             //TODO CHEK FOR BUG
-            //BUG can make error
             //SpriteBatch.Begin( SpriteBlendMode.AlphaBlend, SpriteSortMode.Deferred,SaveStateMode.SaveState);
-            SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend,null,null,null);//when pause
+            SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null);//when pause
 
             SpriteBatch.Draw(TextureManager.GetTexture("blank").BaseTexture as Texture2D, new Rectangle(0, 0, viewport.Width, viewport.Height), new Color(0, 0, 0, (byte)alpha));
 

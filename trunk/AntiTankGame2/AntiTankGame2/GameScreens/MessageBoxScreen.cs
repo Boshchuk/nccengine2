@@ -99,9 +99,7 @@ namespace AntiTankGame2.GameScreens
             ScreenManager.FadeBackBufferToBlack(TransitionAlpha * 2 / 3);
 
             // Center the message text in the viewport.
-            // ReSharper disable AccessToStaticMemberViaDerivedType
-            var viewport = EngineManager.Device.Viewport;
-            // ReSharper restore AccessToStaticMemberViaDerivedType
+            var viewport = BaseEngine.Device.Viewport;
             var viewportSize = new Vector2(viewport.Width, viewport.Height);
             var textSize = ScreenManager.Font.MeasureString(message);
             var textPosition = (viewportSize - textSize) / 2;
@@ -118,8 +116,8 @@ namespace AntiTankGame2.GameScreens
             // Fade the popup alpha during transitions.
             var color = new Color(255, 255, 255, TransitionAlpha);
 
-            //Bug Place HERE
-            ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend,null,null,null);
+            //Note Drawing here
+            ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null);
 
             if (TextureManager.GetTexture(Texture).ReadyToRender)
             {

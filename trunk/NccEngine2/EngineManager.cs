@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 
 namespace NccEngine2
 {
@@ -18,9 +17,5 @@ namespace NccEngine2
         public EngineManager(string unitTestName)
             : base(unitTestName)
         { }
-
-       
     }
-        
-
 }

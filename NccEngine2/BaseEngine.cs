@@ -351,7 +351,7 @@ namespace NccEngine2
             // Update width and height
             Width = GraphicsDeviceManager.GraphicsDevice.Viewport.Width;
             Height = GraphicsDeviceManager.GraphicsDevice.Viewport.Height;
-            AspectRatio = Width / Height;
+            AspectRatio = (float) Width / Height;
             CameraManager.SetAllCamerasProjectionMatrix(AspectRatio);
         }
 

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using AntiTankGame2.Localization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -60,7 +60,7 @@ namespace AntiTankGame2.GameScreens
             {
                 otherScreensAreGone = true;
             }
-
+            //Отображаете окно загрузки в случает если загрузка медленная
             if (loadingIsSlow)
             {
                 var message = Strings.Loading;
@@ -75,7 +75,7 @@ namespace AntiTankGame2.GameScreens
 
                 var color = new Color(255, 255, 255, TransitionAlpha);
 
-                //Note Drawing
+                //TODO Draw cool loading screean
                 ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend,null,null,null);
                 ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, message, textPosition, color);
                 ScreenManager.SpriteBatch.End();

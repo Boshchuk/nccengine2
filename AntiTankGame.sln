@@ -5,8 +5,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NccEngine2", "NccEngine2\Nc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JigLibX", "JigLibX\JigLibX.csproj", "{8A7CEF45-3501-491D-AEDA-0164060F5348}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NccPcGamePad", "NccPcGamePad\NccPcGamePad.csproj", "{E67B3ED4-9B52-4054-985B-123EA63053A0}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocalizationPipeline", "LocalizationPipeline\LocalizationPipeline.csproj", "{67970F83-993D-4921-B3E1-465F2B0569BA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NccParticleSettings", "NccParticleSettings\NccParticleSettings.csproj", "{92E2EECA-DCD3-4718-A937-CA0A58B582C5}"
@@ -22,6 +20,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NccHeightMapPipeline", "NccHeighMapPipeline\NccHeightMapPipeline.csproj", "{5996CF9B-6726-4D2F-BB5B-AF9AD3BB58DE}"
 EndProject
 Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -63,20 +65,6 @@ Global
 		{8A7CEF45-3501-491D-AEDA-0164060F5348}.Release|x86.Build.0 = Release|x86
 		{8A7CEF45-3501-491D-AEDA-0164060F5348}.Release|Xbox 360.ActiveCfg = Release|x86
 		{8A7CEF45-3501-491D-AEDA-0164060F5348}.Release|Zune.ActiveCfg = Release|x86
-		{E67B3ED4-9B52-4054-985B-123EA63053A0}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{E67B3ED4-9B52-4054-985B-123EA63053A0}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{E67B3ED4-9B52-4054-985B-123EA63053A0}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{E67B3ED4-9B52-4054-985B-123EA63053A0}.Debug|x86.ActiveCfg = Debug|x86
-		{E67B3ED4-9B52-4054-985B-123EA63053A0}.Debug|x86.Build.0 = Debug|x86
-		{E67B3ED4-9B52-4054-985B-123EA63053A0}.Debug|Xbox 360.ActiveCfg = Debug|x86
-		{E67B3ED4-9B52-4054-985B-123EA63053A0}.Debug|Zune.ActiveCfg = Debug|x86
-		{E67B3ED4-9B52-4054-985B-123EA63053A0}.Release|Any CPU.ActiveCfg = Release|x86
-		{E67B3ED4-9B52-4054-985B-123EA63053A0}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{E67B3ED4-9B52-4054-985B-123EA63053A0}.Release|Mixed Platforms.Build.0 = Release|x86
-		{E67B3ED4-9B52-4054-985B-123EA63053A0}.Release|x86.ActiveCfg = Release|x86
-		{E67B3ED4-9B52-4054-985B-123EA63053A0}.Release|x86.Build.0 = Release|x86
-		{E67B3ED4-9B52-4054-985B-123EA63053A0}.Release|Xbox 360.ActiveCfg = Release|x86
-		{E67B3ED4-9B52-4054-985B-123EA63053A0}.Release|Zune.ActiveCfg = Release|x86
 		{67970F83-993D-4921-B3E1-465F2B0569BA}.Debug|Any CPU.ActiveCfg = Debug|Zune
 		{67970F83-993D-4921-B3E1-465F2B0569BA}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{67970F83-993D-4921-B3E1-465F2B0569BA}.Debug|Mixed Platforms.Build.0 = Debug|x86
@@ -180,9 +168,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(SubversionScc) = preSolution
-		Svn-Managed = True
-		Manager = AnkhSVN - Subversion Support for Visual Studio
 	EndGlobalSection
 EndGlobal

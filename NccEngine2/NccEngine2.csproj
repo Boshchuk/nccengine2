@@ -162,10 +162,6 @@
       <Project>{92E2EECA-DCD3-4718-A937-CA0A58B582C5}</Project>
       <Name>NccParticleSettings</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NccPcGamePad\NccPcGamePad.csproj">
-      <Project>{E67B3ED4-9B52-4054-985B-123EA63053A0}</Project>
-      <Name>NccPcGamePad</Name>
-    </ProjectReference>
     <ProjectReference Include="NccEngine2Content\NccEngine2Content.contentproj">
       <Project>{80261308-9D1D-45BB-BD82-7504953607F3}</Project>
       <Name>NccEngine2Content</Name>

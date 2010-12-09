@@ -36,45 +36,33 @@ namespace AntiTankGame2.GameScreens
 
         //readonly HoffmanAtmosphere atmosphere = new HoffmanAtmosphere();
 
-
-#pragma warning disable 649
         private HeightMapInfo heightMapInfo;
-#pragma warning restore 649
-
 
         private TankHeight targetTank;
-      //  private EndPoint endPoint;
+     //  private EndPoint endPoint;
 
         private bool drawCross = true;
         private bool clearSunCross;
 
-        //Note restore when needed
         private int bloomSettingsIndex;
 
         #endregion
-
+#if DRAWPARTICLE
         #region Particles
-
-#pragma warning disable 649
+        
         ParticleSystem explosionParticles;
-
         ParticleSystem explosionSmokeParticles;
         ParticleSystem projectileTrailParticles;
         ParticleSystem smokePlumeParticles;
         ParticleSystem fireParticles;
 
         ParticleState currentState = ParticleState.Explosions;
-#pragma warning restore 649
 
         // The explosions effect works by firing projectiles up into the
         // air, so we need to keep track of all the active projectiles.
         readonly List<Projectile> projectiles = new List<Projectile>();
 
         TimeSpan timeToNextProjectile = TimeSpan.Zero;
-
-
-        // Random number generator for the fire effect.
-        readonly Random random = new Random();
 
         private void UpdateRarticles(GameTime gameTime)
         {
@@ -130,14 +118,12 @@ namespace AntiTankGame2.GameScreens
         {
             timeToNextProjectile -= gameTime.ElapsedGameTime;
 
-            if (timeToNextProjectile <= TimeSpan.Zero)
-            {
-                // Create a new projectile once per second. The real work of moving
-                // and creating particles is handled inside the Projectile class.
-                projectiles.Add(new Projectile(explosionParticles, explosionSmokeParticles, projectileTrailParticles));
+            if (timeToNextProjectile > TimeSpan.Zero) return;
+            // Create a new projectile once per second. The real work of moving
+            // and creating particles is handled inside the Projectile class.
+            projectiles.Add(new Projectile(explosionParticles, explosionSmokeParticles, projectileTrailParticles));
 
-                timeToNextProjectile += TimeSpan.FromSeconds(1);
-            }
+            timeToNextProjectile += TimeSpan.FromSeconds(1);
         }
 
         /// <summary>
@@ -157,51 +143,17 @@ namespace AntiTankGame2.GameScreens
             const int fireParticlesPerFrame = 20;
 
             // Create a number of fire particles, randomly positioned around a circle.
-            for (int i = 0; i < fireParticlesPerFrame; i++)
+            for (var i = 0; i < fireParticlesPerFrame; i++)
             {
-                fireParticles.AddParticle(RandomPointOnCircle(), Vector3.Zero);
+                fireParticles.AddParticle(ParticleMath.RandomPointOnCircle(), Vector3.Zero);
             }
 
             // Create one smoke particle per frmae, too.
-            smokePlumeParticles.AddParticle(RandomPointOnCircle(), Vector3.Zero);
-        }
-
-        /// <summary>
-        /// Helper used by the UpdateFire method. Chooses a random location
-        /// around a circle, at which a fire particle will be created.
-        /// </summary>
-        Vector3 RandomPointOnCircle()
-        {
-            const float radius = 30;
-            const float height = 40;
-
-            var angle = random.NextDouble() * Math.PI * 2;
-
-            var x = (float)Math.Cos(angle);
-            var y = (float)Math.Sin(angle);
-
-            return new Vector3(x * radius, y * radius + height, 0);
-        }
-
-        /// <summary>
-        /// Helper used by the UpdateFire method. Chooses a random location
-        /// around a circle, at which a fire particle will be created.
-        /// </summary>
-        Vector2 RandomPointOnCircle2D()
-        {
-            const float radius = 30;
-            const float height = 40;
-
-            var angle = random.NextDouble() * Math.PI * 2;
-
-            var x = (float)Math.Cos(angle);
-            var y = (float)Math.Sin(angle);
-
-            return new Vector2(x * radius, y * radius + height);
+            smokePlumeParticles.AddParticle(ParticleMath.RandomPointOnCircle(), Vector3.Zero);
         }
 
         #endregion
-
+#endif
         public GameplayScreen()
         {
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
@@ -218,7 +170,7 @@ namespace AntiTankGame2.GameScreens
             CameraManager.SetActiveCamera(CameraManager.CameraNumber.Default);
             CameraManager.ActiveCamera.Position = new Vector3(-1500.0f, -630.0f, 1787.0f);
 
-            CameraManager.SetCamerasFrustum(0.1f, 40000.0f, (float)EngineManager.Device.Viewport.Width / EngineManager.Device.Viewport.Height);
+            CameraManager.SetCamerasFrustum(0.1f, 40000.0f, (float)BaseEngine.Device.Viewport.Width / BaseEngine.Device.Viewport.Height);
 
             CameraManager.ActiveCamera.RotateY((145));
 
@@ -293,14 +245,13 @@ namespace AntiTankGame2.GameScreens
             //endPoint = new EndPoint { Position = new Vector3(100.0f, 0.0f, 0.0f), Scale = new Vector3(20f, 20f, 20f) };
             //SceneGraphManager.AddObject(endPoint);
 
-
-            BaseEngine.Bloom.Visible = false;
-
             SceneGraphManager.LoadContent();
 
             // once the load has finished, we use ResetElapsedTime to tell the game's
             // timing mechanism that we have just finished a very long frame, and that
             // it should not try to catch up.
+
+            BaseEngine.Bloom.Visible = false;
             EngineManager.Game.ResetElapsedTime();
         }
 
@@ -385,7 +336,8 @@ namespace AntiTankGame2.GameScreens
 
                 #endregion
 
-
+           
+#if DRAWPARTICLE
                 #region Partilces Handle
 
                 // Check for changing the active particle effect.
@@ -398,7 +350,8 @@ namespace AntiTankGame2.GameScreens
                         currentState = 0;
                     }
                 }
-
+                #endregion
+#endif
 
 
 
@@ -429,9 +382,7 @@ namespace AntiTankGame2.GameScreens
                     BaseEngine.RestorSamplerState();
                 }
 
-                #endregion
-
-
+             
                 #endregion
                 #region camera handle
 
@@ -601,8 +552,6 @@ namespace AntiTankGame2.GameScreens
                 smokePlumeParticles.SetCamera(view, projection);
                 fireParticles.SetCamera(view, projection);
 
-               
-
                 #endregion
             }
 #endif
@@ -622,45 +571,28 @@ namespace AntiTankGame2.GameScreens
                     DrawHUDCrossBar();
                 }
             }
-            // ReSharper disable AccessToStaticMemberViaDerivedType
-
 
            // var cameraMessage = string.Format("cam pos x{0} y{1} z{2}", CameraManager.ActiveCamera.Position.X, CameraManager.ActiveCamera.Position.Y, CameraManager.ActiveCamera.Position.Z);
-
             //var rocketPos = string.Format("EndPoint x{0} y{1} z{2}", endPoint.Position.X, endPoint.Position.Y, endPoint.Position.Z);
-
             //var cameraAngle = string.Format("Angle hor {0} vert {1}", MathHelper.ToDegrees(CameraManager.ActiveCamera.Yaw), MathHelper.ToDegrees(CameraManager.ActiveCamera.Pitch));
-
-
             //var bloomInfo = string.Format("F5 = settings ({0}{1}F6 = toggle bloom ({2}){1}F7 = show buffer ({3})", EngineManager.Bloom.Settings.Name, Environment.NewLine, (EngineManager.Bloom.Visible ? "on" : "off"), EngineManager.Bloom.ShowBuffer);
-
-
             //var particleMessage = string.Format("Current effect: {0}!!!{1}Hit space bar to switch.",currentState,Environment.NewLine);
-
-            // ReSharper restore AccessToStaticMemberViaDerivedType
+            
 
             // Center the text in the viewport.
-            var textPosition = new Vector2(10, 20);
+           // var textPosition = new Vector2(10, 20);
 
-            var color = new Color(255, 255, 255, TransitionAlpha);
+           // var color = new Color(255, 255, 255, TransitionAlpha);
 
             #region SpriteBatch Drawing
            // ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend/*AlphaBlend*//*,SaveStateMode.SaveState*/);
-            
-
            //// ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, cameraMessage, new Vector2(textPosition.X, textPosition.Y + 30), color);
-
            // //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, rocketPos, new Vector2(textPosition.X, textPosition.Y + 60), color);
-
            // //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, particleMessage, new Vector2(textPosition.X, textPosition.Y + 120), color);
-
            // //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, cameraAngle, new Vector2(textPosition.X, textPosition.Y + 90), color);
-
            // //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, bloomInfo, new Vector2(textPosition.X+550, textPosition.Y ), color);
-
            // ScreenManager.SpriteBatch.End();
             #endregion
-
 
         }
 
@@ -668,22 +600,15 @@ namespace AntiTankGame2.GameScreens
         {
             var crossBarTexture = TextureManager.GetTexture(ContentConstants.CrossbarName).BaseTexture as Texture2D;
             var blackTexture = TextureManager.GetTexture(ContentConstants.BlackRactangeleName).BaseTexture as Texture2D;
-
-
-
-            // ReSharper disable AccessToStaticMemberViaDerivedType
-            // ReSharper disable PossibleNullReferenceException
-            var pos = new Vector2(EngineManager.Device.Viewport.Width / 2 - crossBarTexture.Width / 2, EngineManager.Device.Viewport.Height / 2 - crossBarTexture.Height / 2);
-            // ReSharper restore PossibleNullReferenceException
-
-
-            var dest1 = new Rectangle(0, 0, EngineManager.Device.Viewport.Width, EngineManager.Device.Viewport.Height / 2 - crossBarTexture.Height / 2);
-            var dest2 = new Rectangle(0, EngineManager.Device.Viewport.Height / 2 - crossBarTexture.Height / 2, EngineManager.Device.Viewport.Width / 2 - crossBarTexture.Width / 2, EngineManager.Device.Viewport.Height);
-
-
-            var dest3 = new Rectangle(EngineManager.Device.Viewport.Height / 2 - crossBarTexture.Width / 2, EngineManager.Device.Viewport.Height / 2 - crossBarTexture.Height / 2 + crossBarTexture.Height, EngineManager.Device.Viewport.Width, EngineManager.Device.Viewport.Height);
-
-            var dest4 = new Rectangle(EngineManager.Device.Viewport.Width / 2 - crossBarTexture.Width / 2 + crossBarTexture.Width, EngineManager.Device.Viewport.Height / 2 - crossBarTexture.Height / 2, EngineManager.Device.Viewport.Width, EngineManager.Device.Viewport.Height);
+        
+// ReSharper disable PossibleNullReferenceException
+            var pos = new Vector2(BaseEngine.Width / 2 - crossBarTexture.Width / 2, BaseEngine.Height / 2 - crossBarTexture.Height / 2);
+// ReSharper restore PossibleNullReferenceException
+            /*Device.Viewport*/
+            var dest1 = new Rectangle(0, 0, BaseEngine.Device.Viewport.Width, BaseEngine.Device.Viewport.Height / 2 - crossBarTexture.Height / 2);
+            var dest2 = new Rectangle(0, BaseEngine.Device.Viewport.Height / 2 - crossBarTexture.Height / 2, BaseEngine.Device.Viewport.Width / 2 - crossBarTexture.Width / 2, BaseEngine.Device.Viewport.Height);
+            var dest3 = new Rectangle(BaseEngine.Height / 2 - crossBarTexture.Width / 2, BaseEngine.Device.Viewport.Height / 2 - crossBarTexture.Height / 2 + crossBarTexture.Height, BaseEngine.Device.Viewport.Width, BaseEngine.Device.Viewport.Height);
+            var dest4 = new Rectangle(BaseEngine.Width / 2 - crossBarTexture.Width / 2 + crossBarTexture.Width, BaseEngine.Device.Viewport.Height / 2 - crossBarTexture.Height / 2, BaseEngine.Device.Viewport.Width, BaseEngine.Device.Viewport.Height);
             // ReSharper restore AccessToStaticMemberViaDerivedType
 
             //BUG Here

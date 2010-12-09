@@ -68,7 +68,7 @@ namespace AntiTankGame2.GameObjects.Tanks
         {
             if (ReadyToRender)
             {
-              //  BaseEngine.Device.DepthStencilState = new DepthStencilState { DepthBufferEnable = true };
+                BaseEngine.Device.DepthStencilState = new DepthStencilState { DepthBufferEnable = true };
 
                 var model = ModelManager.GetModel(ModelName);
                 if (model != null && model.ReadyToRender)

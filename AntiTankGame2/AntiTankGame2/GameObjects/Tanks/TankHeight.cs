@@ -168,33 +168,6 @@ namespace AntiTankGame2.GameObjects.Tanks
 
             turn = turnAmount;
         }
-
-        //public override void Update(GameTime gameTime)
-        //{
-        //   // EngineManager.Device.DepthStencilState = DepthStencilState.Default;
-
-
-          
-        //        var time = (float)gameTime.TotalGameTime.TotalSeconds;
-
-        //        var model = ModelManager.GetModel(ModelName);
-              
-        //        var transforms = new Matrix[model.BaseModel.Bones.Count];
-        //        model.BaseModel.CopyAbsoluteBoneTransformsTo(transforms);
-
-        //        var world = Matrix.CreateRotationY(time * 0.42f);
-
-
-        //        //foreach (var mesh in model.BaseModel.Meshes)
-        //        //{
-
-        //        //    foreach (BasicEffect effect in mesh.Effects)
-        //        //    {
-        //        //        effect.World = transforms[mesh.ParentBone.Index] * world;
-        //        //    }
-               
-        //        //}
-          
-        //}
+       
     }
 }

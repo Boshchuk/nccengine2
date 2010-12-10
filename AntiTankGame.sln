@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NccEngine2Content", "NccEng
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NccHeightMapPipeline", "NccHeighMapPipeline\NccHeightMapPipeline.csproj", "{5996CF9B-6726-4D2F-BB5B-AF9AD3BB58DE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NccPcGamePad", "NccPcGamePad\NccPcGamePad.csproj", "{E67B3ED4-9B52-4054-985B-123EA63053A0}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -165,6 +167,20 @@ Global
 		{5996CF9B-6726-4D2F-BB5B-AF9AD3BB58DE}.Release|Xbox 360.Build.0 = Release|Xbox 360
 		{5996CF9B-6726-4D2F-BB5B-AF9AD3BB58DE}.Release|Zune.ActiveCfg = Release|Xbox 360
 		{5996CF9B-6726-4D2F-BB5B-AF9AD3BB58DE}.Release|Zune.Build.0 = Release|Xbox 360
+		{E67B3ED4-9B52-4054-985B-123EA63053A0}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{E67B3ED4-9B52-4054-985B-123EA63053A0}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{E67B3ED4-9B52-4054-985B-123EA63053A0}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{E67B3ED4-9B52-4054-985B-123EA63053A0}.Debug|x86.ActiveCfg = Debug|x86
+		{E67B3ED4-9B52-4054-985B-123EA63053A0}.Debug|x86.Build.0 = Debug|x86
+		{E67B3ED4-9B52-4054-985B-123EA63053A0}.Debug|Xbox 360.ActiveCfg = Debug|x86
+		{E67B3ED4-9B52-4054-985B-123EA63053A0}.Debug|Zune.ActiveCfg = Debug|x86
+		{E67B3ED4-9B52-4054-985B-123EA63053A0}.Release|Any CPU.ActiveCfg = Release|x86
+		{E67B3ED4-9B52-4054-985B-123EA63053A0}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{E67B3ED4-9B52-4054-985B-123EA63053A0}.Release|Mixed Platforms.Build.0 = Release|x86
+		{E67B3ED4-9B52-4054-985B-123EA63053A0}.Release|x86.ActiveCfg = Release|x86
+		{E67B3ED4-9B52-4054-985B-123EA63053A0}.Release|x86.Build.0 = Release|x86
+		{E67B3ED4-9B52-4054-985B-123EA63053A0}.Release|Xbox 360.ActiveCfg = Release|x86
+		{E67B3ED4-9B52-4054-985B-123EA63053A0}.Release|Zune.ActiveCfg = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

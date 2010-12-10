@@ -105,6 +105,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\box.x">
+      <Name>box</Name>
+      <Importer>XImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
     <None Include="Models\Land\ground.png">
       <Name>ground</Name>
       <Importer>TextureImporter</Importer>

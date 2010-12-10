@@ -130,6 +130,7 @@
     <Compile Include="GameObjects\Terrain\SimplePlane.cs" />
     <Compile Include="GameObjects\Tanks\BaseTank.cs" />
     <Compile Include="GameObjects\Tanks\Tank.cs" />
+    <Compile Include="GameObjects\TestLogic\EndPoint.cs" />
     <Compile Include="GameScreens\BackgroundScreen.cs" />
     <Compile Include="GameScreens\GameplayScreen.cs" />
     <Compile Include="GameScreens\LoadingScreen.cs" />
@@ -161,6 +162,10 @@
     <ProjectReference Include="..\..\NccHeighMapPipeline\NccHeightMapPipeline.csproj">
       <Project>{5996CF9B-6726-4D2F-BB5B-AF9AD3BB58DE}</Project>
       <Name>NccHeightMapPipeline</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\NccPcGamePad\NccPcGamePad.csproj">
+      <Project>{E67B3ED4-9B52-4054-985B-123EA63053A0}</Project>
+      <Name>NccPcGamePad</Name>
     </ProjectReference>
     <ProjectReference Include="..\AntiTankGame2Content\AntiTankGame2Content.contentproj">
       <Name>AntiTankGame2Content</Name>
@@ -296,9 +301,7 @@
       <FileType>Assembly</FileType>
     </PublishFile>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="GameObjects\TestLogic\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
   <!--

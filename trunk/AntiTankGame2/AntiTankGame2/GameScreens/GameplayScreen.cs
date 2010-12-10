@@ -47,7 +47,23 @@ namespace AntiTankGame2.GameScreens
 
         private bool collisionstate;
 
-        //Vector3 roc
+    
+
+        private const int CrossBarTextureHeight = 586;
+
+        private const int CrossBarTextureWidth = 586;
+
+        private const int CrossBarTextureHeightHalf = 293;
+
+        private const int CrossBarTextureWidthHalf = 293;
+
+        //precalculatet optimization
+        static readonly Vector2 Pos = new Vector2(BaseEngine.Width / 2 - CrossBarTextureWidthHalf, BaseEngine.Height / 2 - CrossBarTextureHeightHalf);
+        static readonly Rectangle Dest1 = new Rectangle(0, 0, BaseEngine.Width, BaseEngine.Height / 2 - CrossBarTextureHeightHalf);
+        static readonly Rectangle Dest2 = new Rectangle(0, BaseEngine.Height / 2 - CrossBarTextureHeightHalf, BaseEngine.Width / 2 - CrossBarTextureWidthHalf, BaseEngine.Height);
+        static readonly Rectangle Dest3 = new Rectangle(BaseEngine.Height / 2 - CrossBarTextureWidthHalf, BaseEngine.Height / 2 - CrossBarTextureHeightHalf + CrossBarTextureHeight, BaseEngine.Width, BaseEngine.Height);
+        static readonly Rectangle Dest4 = new Rectangle(BaseEngine.Width / 2 - CrossBarTextureWidthHalf + CrossBarTextureWidth, BaseEngine.Height / 2 - CrossBarTextureHeightHalf, BaseEngine.Width, BaseEngine.Height);
+
 
         private bool drawCross = true;
         private bool clearSunCross;
@@ -180,7 +196,7 @@ namespace AntiTankGame2.GameScreens
             CameraManager.SetActiveCamera(CameraManager.CameraNumber.Default);
             CameraManager.ActiveCamera.Position = new Vector3(-1500.0f, -630.0f, 1787.0f);
 
-            CameraManager.SetCamerasFrustum(0.1f, 40000.0f, (float)BaseEngine.Device.Viewport.Width / BaseEngine.Device.Viewport.Height);
+            CameraManager.SetCamerasFrustum(0.1f, 41000.0f, BaseEngine.AspectRatio);
 
             CameraManager.ActiveCamera.RotateY((145));
 
@@ -286,7 +302,7 @@ namespace AntiTankGame2.GameScreens
             delta = gameTime.ElapsedGameTime.TotalSeconds;
 
             //LinerMoveToTarget(gameTime);
-           // HandleCube();
+            HandleCube();
 
             collisionstate = Collsison(roket, endPoint);
             if (!collisionstate)
@@ -653,26 +669,16 @@ namespace AntiTankGame2.GameScreens
         {
             var crossBarTexture = TextureManager.GetTexture(ContentConstants.CrossbarName).BaseTexture as Texture2D;
             var blackTexture = TextureManager.GetTexture(ContentConstants.BlackRactangeleName).BaseTexture as Texture2D;
-        
-// ReSharper disable PossibleNullReferenceException
-            var pos = new Vector2(BaseEngine.Width / 2 - crossBarTexture.Width / 2, BaseEngine.Height / 2 - crossBarTexture.Height / 2);
-// ReSharper restore PossibleNullReferenceException
-            /*Device.Viewport*/
-            var dest1 = new Rectangle(0, 0, BaseEngine.Device.Viewport.Width, BaseEngine.Device.Viewport.Height / 2 - crossBarTexture.Height / 2);
-            var dest2 = new Rectangle(0, BaseEngine.Device.Viewport.Height / 2 - crossBarTexture.Height / 2, BaseEngine.Device.Viewport.Width / 2 - crossBarTexture.Width / 2, BaseEngine.Device.Viewport.Height);
-            var dest3 = new Rectangle(BaseEngine.Height / 2 - crossBarTexture.Width / 2, BaseEngine.Device.Viewport.Height / 2 - crossBarTexture.Height / 2 + crossBarTexture.Height, BaseEngine.Device.Viewport.Width, BaseEngine.Device.Viewport.Height);
-            var dest4 = new Rectangle(BaseEngine.Width / 2 - crossBarTexture.Width / 2 + crossBarTexture.Width, BaseEngine.Device.Viewport.Height / 2 - crossBarTexture.Height / 2, BaseEngine.Device.Viewport.Width, BaseEngine.Device.Viewport.Height);
-            // ReSharper restore AccessToStaticMemberViaDerivedType
 
             //BUG Here
             ScreenManager.SpriteBatch.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend, null, null, null);
 
-            ScreenManager.SpriteBatch.Draw(blackTexture, dest1, Color.White);
-            ScreenManager.SpriteBatch.Draw(blackTexture, dest2, Color.White);
-            ScreenManager.SpriteBatch.Draw(blackTexture, dest3, Color.White);
-            ScreenManager.SpriteBatch.Draw(blackTexture, dest4, Color.White);
+            ScreenManager.SpriteBatch.Draw(blackTexture, Dest1, Color.White);
+            ScreenManager.SpriteBatch.Draw(blackTexture, Dest2, Color.White);
+            ScreenManager.SpriteBatch.Draw(blackTexture, Dest3, Color.White);
+            ScreenManager.SpriteBatch.Draw(blackTexture, Dest4, Color.White);
 
-            ScreenManager.SpriteBatch.Draw(crossBarTexture, pos, Color.White);
+            ScreenManager.SpriteBatch.Draw(crossBarTexture, Pos, Color.White);
             ScreenManager.SpriteBatch.End();
         }
 

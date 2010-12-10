@@ -352,7 +352,12 @@ namespace NccEngine2
             Width = GraphicsDeviceManager.GraphicsDevice.Viewport.Width;
             Height = GraphicsDeviceManager.GraphicsDevice.Viewport.Height;
             AspectRatio = (float) Width / Height;
+
+
+           // RestorSamplerState();
             CameraManager.SetAllCamerasProjectionMatrix(AspectRatio);
+            CameraManager.SetCamerasFrustum(0.1f, 45000.0f, AspectRatio);
+
         }
 
         /// <summary>

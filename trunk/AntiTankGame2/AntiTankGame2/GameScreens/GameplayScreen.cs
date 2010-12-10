@@ -1,14 +1,16 @@
-#define DRAWPARTICLE
+//#define DRAWPARTICLE
 //#define USEHOFFMAN
 //#defene LENSFLARE
-#define USEBLOOM
+//#define USEBLOOM
 
 #region Using Statement
 
 using System;
 using System.Collections.Generic;
+using AntiTankGame2.GameLogic;
 using AntiTankGame2.GameObjects;
 using AntiTankGame2.GameObjects.Tanks;
+using AntiTankGame2.GameObjects.TestLogic;
 using AntiTankGame2.Localization;
 using AntiTankGame2.ParcileHelpers;
 using Microsoft.Xna.Framework;
@@ -39,12 +41,20 @@ namespace AntiTankGame2.GameScreens
         private HeightMapInfo heightMapInfo;
 
         private TankHeight targetTank;
-     //  private EndPoint endPoint;
+        private EndPoint endPoint;
+        private Vector3 lastendPointPos;
+        private EndPoint roket;
+
+        private bool collisionstate;
+
+        //Vector3 roc
 
         private bool drawCross = true;
         private bool clearSunCross;
 
         private int bloomSettingsIndex;
+
+
 
         #endregion
 #if DRAWPARTICLE
@@ -234,7 +244,7 @@ namespace AntiTankGame2.GameScreens
          // SceneGraphManager.AddObject(simpleTank);
 
 
-            targetTank = new TankHeight(heightMapInfo, new Vector3(113, -571, 95));
+            targetTank = new TankHeight(heightMapInfo, new Vector3(100, 730, 95));
             SceneGraphManager.AddObject(targetTank);
 
 
@@ -242,8 +252,11 @@ namespace AntiTankGame2.GameScreens
          //   SceneGraphManager.AddObject(bloomTank);
 
 
-            //endPoint = new EndPoint { Position = new Vector3(100.0f, 0.0f, 0.0f), Scale = new Vector3(20f, 20f, 20f) };
-            //SceneGraphManager.AddObject(endPoint);
+            endPoint = new EndPoint { Position = new Vector3(100.0f, 0.0f, 0.0f), Scale = new Vector3(20f, 20f, 20f) };
+            SceneGraphManager.AddObject(endPoint);
+
+            roket = new EndPoint { Position = new Vector3(-1600, 337, 1929), Scale = new Vector3(20f, 20f, 20f) };
+            SceneGraphManager.AddObject(roket);
 
             SceneGraphManager.LoadContent();
 
@@ -273,10 +286,29 @@ namespace AntiTankGame2.GameScreens
             delta = gameTime.ElapsedGameTime.TotalSeconds;
 
             //LinerMoveToTarget(gameTime);
-            //HandleCube();
+           // HandleCube();
+
+            collisionstate = Collsison(roket, endPoint);
+            if (!collisionstate)
+            {
+                roket.Position = RocketHelper.RocketPos(gameTime, roket.Position, endPoint.Position, lastendPointPos);
+            }
+
         }
 
-       // bool changeState;
+
+        private bool Collsison(EndPoint rocket, EndPoint target)
+        {
+            var rock = new BoundingSphere(rocket.Position,10);
+            var targ = new BoundingSphere(target.Position,10);
+
+            //return roket.BoundingBox.Intersects(target.BoundingBox);
+
+            return rock.Intersects(targ);
+
+        }
+
+        // bool changeState;
 
         public override void HandleInput(GameTime gameTime, Input input)
         {
@@ -352,9 +384,7 @@ namespace AntiTankGame2.GameScreens
                 }
                 #endregion
 #endif
-
-
-
+                
                 #region Blend
 
                 if (input.CurrentKeyboardState.IsKeyDown(Keys.Y))
@@ -407,6 +437,28 @@ namespace AntiTankGame2.GameScreens
                     atmosphere.SunDirection -= 5f * (float)delta;
                 }
 #endif
+                const float cubeMovment = 10;
+
+                if (input.CurrentKeyboardState.IsKeyDown(Keys.Left))
+                {
+                    endPoint.Position =  new Vector3(endPoint.Position.X - cubeMovment,endPoint.Position.Y,endPoint.Position.Z);
+                }
+
+                if (input.CurrentKeyboardState.IsKeyDown(Keys.Right))
+                {
+                    endPoint.Position = new Vector3(endPoint.Position.X + cubeMovment, endPoint.Position.Y, endPoint.Position.Z);
+                }
+
+                if (input.CurrentKeyboardState.IsKeyDown(Keys.Down))
+                {
+                    endPoint.Position = new Vector3(endPoint.Position.X, endPoint.Position.Y-cubeMovment, endPoint.Position.Z);
+                }
+
+                if (input.CurrentKeyboardState.IsKeyDown(Keys.Up))
+                {
+                    endPoint.Position = new Vector3(endPoint.Position.X, endPoint.Position.Y+cubeMovment, endPoint.Position.Z);
+                }
+
 
                 if (input.CurrentKeyboardState.IsKeyDown(Keys.F1))
                 {
@@ -497,18 +549,15 @@ namespace AntiTankGame2.GameScreens
         {
             //base.Draw(gameTime);
 
-            
-
             BaseEngine.Bloom.BeginDraw();
 
             BaseEngine.Device.Clear(BaseEngine.BackgroundColor);
 
 
-            SceneGraphManager.DrawCulling(gameTime);
+          //  SceneGraphManager.DrawCulling(gameTime);
 
-            // ReSharper disable AccessToStaticMemberViaDerivedType
-            EngineManager.Device.Clear(EngineManager.BackgroundColor);
-            // ReSharper restore AccessToStaticMemberViaDerivedType
+         
+            BaseEngine.Device.Clear(BaseEngine.BackgroundColor);
 
             SceneGraphManager.Draw(gameTime);
 
@@ -572,26 +621,30 @@ namespace AntiTankGame2.GameScreens
                 }
             }
 
-           // var cameraMessage = string.Format("cam pos x{0} y{1} z{2}", CameraManager.ActiveCamera.Position.X, CameraManager.ActiveCamera.Position.Y, CameraManager.ActiveCamera.Position.Z);
-            //var rocketPos = string.Format("EndPoint x{0} y{1} z{2}", endPoint.Position.X, endPoint.Position.Y, endPoint.Position.Z);
+            var cameraMessage = string.Format("cam pos x{0} y{1} z{2}", CameraManager.ActiveCamera.Position.X, CameraManager.ActiveCamera.Position.Y, CameraManager.ActiveCamera.Position.Z);
+            var rocketPos = string.Format("rocket pos x{0} y{1} z{2} radius{3}", roket.Position.X, roket.Position.Y, roket.Position.Z,roket.ModelRadius);
+
+            var col = string.Format("collision was: {0}", collisionstate);
             //var cameraAngle = string.Format("Angle hor {0} vert {1}", MathHelper.ToDegrees(CameraManager.ActiveCamera.Yaw), MathHelper.ToDegrees(CameraManager.ActiveCamera.Pitch));
             //var bloomInfo = string.Format("F5 = settings ({0}{1}F6 = toggle bloom ({2}){1}F7 = show buffer ({3})", EngineManager.Bloom.Settings.Name, Environment.NewLine, (EngineManager.Bloom.Visible ? "on" : "off"), EngineManager.Bloom.ShowBuffer);
             //var particleMessage = string.Format("Current effect: {0}!!!{1}Hit space bar to switch.",currentState,Environment.NewLine);
             
 
-            // Center the text in the viewport.
-           // var textPosition = new Vector2(10, 20);
 
-           // var color = new Color(255, 255, 255, TransitionAlpha);
+            // Center the text in the viewport.
+            var textPosition = new Vector2(10, 20);
+
+            var color = new Color(255, 255, 255, TransitionAlpha);
 
             #region SpriteBatch Drawing
-           // ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend/*AlphaBlend*//*,SaveStateMode.SaveState*/);
-           //// ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, cameraMessage, new Vector2(textPosition.X, textPosition.Y + 30), color);
-           // //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, rocketPos, new Vector2(textPosition.X, textPosition.Y + 60), color);
+            ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend/*AlphaBlend*//*,SaveStateMode.SaveState*/);
+            ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, cameraMessage, new Vector2(textPosition.X, textPosition.Y + 30), color);
+           ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, rocketPos, new Vector2(textPosition.X, textPosition.Y + 60), color);
+           ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, col, new Vector2(textPosition.X, textPosition.Y + 120), color);
            // //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, particleMessage, new Vector2(textPosition.X, textPosition.Y + 120), color);
            // //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, cameraAngle, new Vector2(textPosition.X, textPosition.Y + 90), color);
            // //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, bloomInfo, new Vector2(textPosition.X+550, textPosition.Y ), color);
-           // ScreenManager.SpriteBatch.End();
+            ScreenManager.SpriteBatch.End();
             #endregion
 
         }
@@ -623,8 +676,6 @@ namespace AntiTankGame2.GameScreens
             ScreenManager.SpriteBatch.End();
         }
 
-
-
         #region target lock logic
 
         /*
@@ -637,39 +688,40 @@ namespace AntiTankGame2.GameScreens
         }
 */
 
-        //private void HandleCube()
-        //{
-        //    //endPoint.Position = AbstractTargetCoordinates();
-        //}
-
-        
-
-        ///// <summary>
-        ///// ¬озвращает координаты, той точки, до которой может долететь ракета...
-        ///// </summary>
-        ///// <returns></returns>
-        //private static Vector3 AbstractTargetCoordinates()
-        //{
-        //    var result = Vector3.Zero;
-
-        //    // Vector3.
-        //    const int radius = 4000;
+        private void HandleCube()
+        {
+            lastendPointPos = endPoint.Position;
+            endPoint.Position = AbstractTargetCoordinates();
+        }
 
 
-        //    var heihgt = -(float)Math.Sin(CameraManager.ActiveCamera.Pitch) * radius;
 
-        //    //****** VERTICAL PLANE ***********************************
-        //    result.Y = CameraManager.ActiveCamera.Position.Y + heihgt;
-        //    var projectionLine = radius * (float)Math.Cos(CameraManager.ActiveCamera.Pitch);
-        //    //**********************************************************
-        //    //******  HORIZONTAL PLANE ***********************************************
-        //    result.X = CameraManager.ActiveCamera.Position.X + (float)Math.Sin((((CameraManager.ActiveCamera.Yaw)))) * projectionLine;
+        /// <summary>
+        /// ¬озвращает координаты, той точки, до которой может долететь ракета...
+        /// </summary>
+        /// <returns></returns>
+        private static Vector3 AbstractTargetCoordinates()
+        {
+            var result = Vector3.Zero;
 
-        //    result.Z = CameraManager.ActiveCamera.Position.Z + (float)Math.Cos((((CameraManager.ActiveCamera.Yaw)))) * projectionLine;
-        //    //**************************************************************************
+            // Vector3.
+            const int radius = 4000;
 
-        //    return result;
-        //}
+
+            var heihgt = -(float)Math.Sin(CameraManager.ActiveCamera.Pitch) * radius;
+
+            //****** VERTICAL PLANE ***********************************
+            result.Y = CameraManager.ActiveCamera.Position.Y + heihgt;
+            var projectionLine = radius * (float)Math.Cos(CameraManager.ActiveCamera.Pitch);
+            //**********************************************************
+            //******  HORIZONTAL PLANE ***********************************************
+            result.X = CameraManager.ActiveCamera.Position.X + (float)Math.Sin((((CameraManager.ActiveCamera.Yaw)))) * projectionLine;
+
+            result.Z = CameraManager.ActiveCamera.Position.Z + (float)Math.Cos((((CameraManager.ActiveCamera.Yaw)))) * projectionLine;
+            //**************************************************************************
+
+            return result;
+        }
      
         /* TODO  спр€тать это куда-нить а лучше и сжечь вовсе ....
 ’очу теб€ обн€ть,

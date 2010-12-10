@@ -3,42 +3,46 @@ using Microsoft.Xna.Framework;
 
 namespace AntiTankGame2.GameLogic
 {
-    public class RocketHelper
+    public static class RocketHelper
     {
-        public static Vector3 RocketPos(GameTime gameTime, Vector3 launcherPos,
-              Vector3 endPoitPosition, 
-            float  horisontAngle, float verticalAngle)
+        public static Vector3 RocketPos(GameTime gameTime, Vector3 rocketPos,
+             Vector3 targetPos, Vector3 lastTargetPos)
         {
+            const float rocketSpeed = 0.09f;
 
-            //single movment part
-            //when target position stable
-            
-            //if( RocketHelper.InRange(endop))
+            var distanceTarget =  InRange(rocketPos, targetPos, lastTargetPos);
 
-
-            //Vector3.CatmullRom()
-
-            return new Vector3();
+            return Vector3.SmoothStep(rocketPos, distanceTarget, rocketSpeed);
         }
 
         /// <summary>
-        /// Step beetwen to points on radiys
+        /// if roket can turn in this direction in simple step
         /// </summary>
-       public static Vector3  LinerStep(Vector3 startPoint, Vector3 targetPoint, float speed)
+        /// <param name="rocketPos"></param>
+        /// <param name="targetPos"></param>
+        /// <param name="lastTargetPos"></param>
+        /// <returns></returns>
+        private static Vector3 InRange(Vector3 rocketPos, Vector3 targetPos, Vector3 lastTargetPos)
         {
-            return  Vector3.SmoothStep(startPoint, targetPoint, speed);
-        }
+            //радиус сектора макс поворота
+            const float rad = 10f;
 
-        private static bool InRange(Vector3 rocketPos, Vector3 targetPos, Vector3 lastTargetPos)
-        {
-            const float rad = 100f;
-            
-            if (Vector3.Distance(targetPos,lastTargetPos) < rad)
+            var rocketToTargetDistanse = Vector3.Distance(rocketPos, targetPos);
+
+            var oldsectrCentr = Vector3.SmoothStep(rocketPos, lastTargetPos, rocketToTargetDistanse);
+
+
+            //максимальный радиус
+
+            var okruznost = Vector3.SmoothStep(oldsectrCentr, targetPos, rad);
+
+
+            if (Vector3.Distance(targetPos,oldsectrCentr) < rad)
             {
-                return true;
+                return targetPos;
             }
 
-            return false;
+            return okruznost;
         }
 
     }

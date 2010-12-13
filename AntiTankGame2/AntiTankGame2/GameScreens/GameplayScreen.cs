@@ -309,9 +309,18 @@ namespace AntiTankGame2.GameScreens
             {
                 roket.Position = RocketHelper.RocketPos(gameTime, roket.Position, endPoint.Position, lastendPointPos);
             }
+            else
+            {
+                if (!wasSound)
+                {
+                    BaseEngine.AudioManager.Play3DSound("Content/Sounds/Start", false, roket);
+                    wasSound = true;
+                }
+            }
 
         }
 
+        private bool wasSound = false;
 
         private bool Collsison(EndPoint rocket, EndPoint target)
         {

@@ -49,15 +49,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Font.spritefont">
-      <Name>Font</Name>
+    <Compile Include="Fonts\DebugFont.spritefont">
+      <Name>DebugFont</Name>
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Fonts\DebugFont.spritefont">
-      <Name>DebugFont</Name>
+    <Compile Include="Fonts\Font.spritefont">
+      <Name>Font</Name>
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
     </Compile>

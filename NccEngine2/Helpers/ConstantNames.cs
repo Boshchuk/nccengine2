@@ -20,5 +20,9 @@ namespace NccEngine2.Helpers
         public static string SkyboxTextureNameTop = "top";
         public static string SkyboxTextureNameLeft = "left";
         public static string SkyboxTextureNameRight = "right";
+        /// <summary>
+        /// Path to simple font
+        /// </summary>
+        public static string FontPath = "Content/Fonts/Font";
     }
 }

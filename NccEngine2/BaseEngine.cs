@@ -18,6 +18,7 @@ using NccEngine2.GameComponents.NccInput;
 using NccEngine2.GameComponents.Physics;
 using NccEngine2.GameComponents.Scene;
 using NccEngine2.GameDebugTools;
+using NccEngine2.Helpers;
 
 #endregion
 
@@ -110,7 +111,7 @@ namespace NccEngine2
 
         // Our debug system. We can keep this reference or use the DebugSystem.Instance
         // property once we've called DebugSystem.Initialize.
-        DebugSystem debugSystem;
+        public static DebugSystem debugSystem;
 
         // Position for debug command test.
         Vector2 debugPos = new Vector2(100, 100);
@@ -373,7 +374,7 @@ namespace NccEngine2
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            font = ContentManager.Load<SpriteFont>("Content/Font");
+            font = ContentManager.Load<SpriteFont>(ConstantNames.FontPath);
             
 
             // create our blank texture
@@ -398,26 +399,18 @@ namespace NccEngine2
         {
             // tell the TimeRuler that we're starting a new frame. you always want
             // to call this at the start of Update
-          //  debugSystem.TimeRuler.StartFrame();
+            debugSystem.TimeRuler.StartFrame();
 
             // Start measuring time for "Update".
-           // debugSystem.TimeRuler.BeginMark("Update", Color.Blue);
-
-            //HandleInput();
-            //HandleTouchInput();
-
-            // Simulate game update by doing a busy loop for 1ms
-           // stopwatch.Reset();
-           // stopwatch.Start();
-           // while (stopwatch.ElapsedMilliseconds < 1) ;
+            debugSystem.TimeRuler.BeginMark("Update", Color.Blue);
 
             // Update other components.
-            UpdateZoomyText(gameTime);
+            //UpdateZoomyText(gameTime);
 
             base.Update(gameTime);
 
             // Stop measuring time for "Update".
-          //  debugSystem.TimeRuler.EndMark("Update");
+            debugSystem.TimeRuler.EndMark("Update");
         }
 
        
@@ -428,7 +421,7 @@ namespace NccEngine2
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-          //  debugSystem.TimeRuler.BeginMark("Draw", Color.Yellow);
+            debugSystem.TimeRuler.BeginMark("Draw", Color.Yellow);
 
             Device.Clear(BackgroundColor);
 
@@ -438,57 +431,13 @@ namespace NccEngine2
 
             base.Draw(gameTime);
 
-
             DrawZoomyText();
 
+            debugSystem.TimeRuler.EndMark("Draw");
             // Apply device changes
             if (!applyDeviceChanges) return;
             GraphicsDeviceManager.ApplyChanges();
             applyDeviceChanges = false;
-
-            
-             // Start measuring time for "Draw".
-            
-
-            
-
-            //spriteBatch.Begin();
-
-            // Show usage.
-            //string message =
-            //    "A Button, A key: Show/Hide FPS Counter\n" +
-             //   "B Button, B key: Show/Hide Time Ruler\n" +
-              //  "X Button, X key: Show/Hide Time Ruler Log\n" +
-             //   "Tab key, flick down: Open debug command UI\n" +
-             //   "Tab key, flick up: Close debug command UI\n" +
- //               "Tap: Show keyboard input panel";
-
-   //         Vector2 size = font.MeasureString(message);
-    //        Layout layout = new Layout(GraphicsDevice.Viewport);
-
-      //      float margin = font.LineSpacing;
-       //     Rectangle rc = new Rectangle(0, 0,
-         //                           (int)(size.X + margin),
-           //                         (int)(size.Y + margin));
-
-            // Compute boarder size, position.
-          //  rc = layout.Place(rc, 0.01f, 0.01f, Alignment.TopRight);
-          //  spriteBatch.Draw(blank, rc, Color.Black * .5f);
-
-            // Draw usage message text.
-            //layout.ClientArea = rc;
-            //Vector2 pos = layout.Place(size, 0, 0, Alignment.Center);
-//            spriteBatch.DrawString(font, message, pos, Color.White);
-
-            // Draw debug command test sprite.
-
-  //          spriteBatch.End();
-
-            // Draw other components.
-            base.Draw(gameTime);
-
-            // Stop measuring time for "Draw".
-    //        debugSystem.TimeRuler.EndMark("Draw");
             
         }
 

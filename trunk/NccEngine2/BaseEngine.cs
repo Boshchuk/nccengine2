@@ -8,6 +8,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using NccEngine2.GameComponents.Audio;
 using NccEngine2.GameComponents.CameraManagment;
 using NccEngine2.GameComponents.Graphics.FX.Bloom;
 using NccEngine2.GameComponents.Graphics.Screens;
@@ -93,6 +94,8 @@ namespace NccEngine2
         /// Bloom Component to manage settings
         /// </summary>
         public static BloomComponent Bloom;
+
+        public static AudioManager AudioManager;
         
 
         /// <summary>
@@ -199,6 +202,9 @@ namespace NccEngine2
 
             Bloom = new BloomComponent(this);
             Components.Add(Bloom);
+
+            AudioManager = new AudioManager(this);
+            Components.Add(AudioManager);
 
             //TODO include other inits here!
         }

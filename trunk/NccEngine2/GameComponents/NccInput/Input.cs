@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using NccPcGamePad.DualShock;
-#if !XBOX
 
+#if !XBOX
+using NccPcGamePad.DualShock;
 #endif
 
 namespace NccEngine2.GameComponents.NccInput

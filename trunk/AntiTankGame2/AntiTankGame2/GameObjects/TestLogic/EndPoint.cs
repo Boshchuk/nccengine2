@@ -1,6 +1,8 @@
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NccEngine2;
+using NccEngine2.GameComponents.Audio;
 using NccEngine2.GameComponents.CameraManagment;
 using NccEngine2.GameComponents.Models;
 using NccEngine2.GameComponents.Scene.Graph;
@@ -9,7 +11,7 @@ using NccEngine2.GameComponents.Scene.SceneObject;
 
 namespace AntiTankGame2.GameObjects.TestLogic
 {
-    public class EndPoint : NccSceneObject, INccLoadable, INccUpdateable, INccOcclusion
+    public class EndPoint : NccSceneObject, INccLoadable, INccUpdateable, INccOcclusion, IAudioEmitter
     {
         #region fields
 
@@ -159,5 +161,11 @@ namespace AntiTankGame2.GameObjects.TestLogic
         }
 
         #endregion
+
+        public Vector3 Forward { get; set; }
+
+        public Vector3 Up{ get; set; }
+
+        public Vector3 Velocity{ get; set; }
     }
 }

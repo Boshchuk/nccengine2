@@ -1,7 +1,7 @@
-//#define DRAWPARTICLE
+#define DRAWPARTICLE
 //#define USEHOFFMAN
 //#defene LENSFLARE
-//#define USEBLOOM
+#define USEBLOOM
 
 #region Using Statement
 
@@ -25,6 +25,7 @@ using NccEngine2.GameComponents.Graphics.Textures;
 using NccEngine2.GameComponents.Models.Terrain;
 using NccEngine2.GameComponents.NccInput;
 using NccEngine2.GameComponents.Scene;
+using NccEngine2.GameDebugTools;
 
 #endregion
 
@@ -120,7 +121,7 @@ namespace AntiTankGame2.GameScreens
         /// </summary>
         void UpdateProjectiles(GameTime gameTime)
         {
-            int i = 0;
+            var i = 0;
 
             while (i < projectiles.Count)
             {
@@ -337,28 +338,32 @@ namespace AntiTankGame2.GameScreens
 
         public override void HandleInput(GameTime gameTime, Input input)
         {
-            
-            //delta = gameTime.ElapsedGameTime.TotalSeconds;
-            if (input.ExitGame)
-            {
-                ScreenManager.AddScreen(new PauseMenuScreen());
-                SceneGraphManager.Paused = true;
-            }
-            else
-            {
-                #region BloomHandle
-                //************************************
-                //***   for bloom ********************
-             
-                input.LastKeyboardState = input.CurrentKeyboardState;
-                input.LastGamePadState = input.CurrentGamePadState;
 
-                input.CurrentKeyboardState = Keyboard.GetState();
-                input.CurrentGamePadState = GamePad.GetState(PlayerIndex.One);
+            if (BaseEngine.debugSystem.DebugCommandUI.UIState != DebugCommandUI.State.Opened)
+            {
+
+                //delta = gameTime.ElapsedGameTime.TotalSeconds;
+                if (input.ExitGame)
+                {
+                    ScreenManager.AddScreen(new PauseMenuScreen());
+                    SceneGraphManager.Paused = true;
+                }
+                else
+                {
+                    #region BloomHandle
+
+                    //************************************
+                    //***   for bloom ********************
+
+                    input.LastKeyboardState = input.CurrentKeyboardState;
+                    input.LastGamePadState = input.CurrentGamePadState;
+
+                    input.CurrentKeyboardState = Keyboard.GetState();
+                    input.CurrentGamePadState = GamePad.GetState(PlayerIndex.One);
 #if USEBLOOM
 
 
-                // Switch to the next bloom settings preset?
+    // Switch to the next bloom settings preset?
                 if (input.CurrentKeyboardState.IsKeyDown(Keys.F5))
                 {
 
@@ -387,15 +392,15 @@ namespace AntiTankGame2.GameScreens
                         BaseEngine.Bloom.ShowBuffer = 0;
                     }
                 }
-               
+
 #endif
-                //* end for bloom          **********************************
+                    //* end for bloom          **********************************
 
-                #endregion
+                    #endregion
 
-           
+
 #if DRAWPARTICLE
-                #region Partilces Handle
+                    #region Partilces Handle
 
                 // Check for changing the active particle effect.
                 if (input.CurrentKeyboardState.IsKeyDown(Keys.Space))
@@ -407,50 +412,51 @@ namespace AntiTankGame2.GameScreens
                         currentState = 0;
                     }
                 }
-                #endregion
+                    #endregion
 #endif
-                
-                #region Blend
 
-                if (input.CurrentKeyboardState.IsKeyDown(Keys.Y))
-                {
-                    BaseEngine.SetCurrentAlphaMode(BaseEngine.AlphaMode.DisableAlpha);
-                }
+                    #region Blend
 
-                if (input.CurrentKeyboardState.IsKeyDown(Keys.U))
-                {
-                    BaseEngine.SetCurrentAlphaMode(BaseEngine.AlphaMode.Default);
-                }
+                    if (input.CurrentKeyboardState.IsKeyDown(Keys.Y))
+                    {
+                        BaseEngine.SetCurrentAlphaMode(BaseEngine.AlphaMode.DisableAlpha);
+                    }
 
-                if (input.CurrentKeyboardState.IsKeyDown(Keys.I))
-                {
-                    BaseEngine.SetCurrentAlphaMode(BaseEngine.AlphaMode.SourceAlphaOne);
-                }
+                    if (input.CurrentKeyboardState.IsKeyDown(Keys.U))
+                    {
+                        BaseEngine.SetCurrentAlphaMode(BaseEngine.AlphaMode.Default);
+                    }
 
-                if (input.CurrentKeyboardState.IsKeyDown(Keys.O))
-                {
-                    BaseEngine.SetCurrentAlphaMode(BaseEngine.AlphaMode.OneOne);
-                }
+                    if (input.CurrentKeyboardState.IsKeyDown(Keys.I))
+                    {
+                        BaseEngine.SetCurrentAlphaMode(BaseEngine.AlphaMode.SourceAlphaOne);
+                    }
 
-                if (input.CurrentKeyboardState.IsKeyDown(Keys.R))
-                {
-                    BaseEngine.RestorSamplerState();
-                }
+                    if (input.CurrentKeyboardState.IsKeyDown(Keys.O))
+                    {
+                        BaseEngine.SetCurrentAlphaMode(BaseEngine.AlphaMode.OneOne);
+                    }
 
-             
-                #endregion
-                #region camera handle
+                    if (input.CurrentKeyboardState.IsKeyDown(Keys.R))
+                    {
+                        BaseEngine.RestorSamplerState();
+                    }
 
-                const float streifSpeed = 1000;
 
-                if (input.PauseGame)
-                {
-                    SceneGraphManager.Paused = true;
-                }
-                else
-                {
-                    SceneGraphManager.HandleInput(gameTime, input);
-                }
+                    #endregion
+
+                    #region camera handle
+
+                    const float streifSpeed = 1000;
+
+                    if (input.PauseGame)
+                    {
+                        SceneGraphManager.Paused = true;
+                    }
+                    else
+                    {
+                        SceneGraphManager.HandleInput(gameTime, input);
+                    }
 
 #if (USEHOFFMAN)
                 if (input.CurrentKeyboardState.IsKeyDown(Keys.Up))
@@ -462,111 +468,119 @@ namespace AntiTankGame2.GameScreens
                     atmosphere.SunDirection -= 5f * (float)delta;
                 }
 #endif
-                const float cubeMovment = 10;
+                    const float cubeMovment = 10;
 
-                if (input.CurrentKeyboardState.IsKeyDown(Keys.Left))
-                {
-                    endPoint.Position =  new Vector3(endPoint.Position.X - cubeMovment,endPoint.Position.Y,endPoint.Position.Z);
-                }
+                    if (input.CurrentKeyboardState.IsKeyDown(Keys.Left))
+                    {
+                        endPoint.Position = new Vector3(endPoint.Position.X - cubeMovment, endPoint.Position.Y,
+                                                        endPoint.Position.Z);
+                    }
 
-                if (input.CurrentKeyboardState.IsKeyDown(Keys.Right))
-                {
-                    endPoint.Position = new Vector3(endPoint.Position.X + cubeMovment, endPoint.Position.Y, endPoint.Position.Z);
-                }
+                    if (input.CurrentKeyboardState.IsKeyDown(Keys.Right))
+                    {
+                        endPoint.Position = new Vector3(endPoint.Position.X + cubeMovment, endPoint.Position.Y,
+                                                        endPoint.Position.Z);
+                    }
 
-                if (input.CurrentKeyboardState.IsKeyDown(Keys.Down))
-                {
-                    endPoint.Position = new Vector3(endPoint.Position.X, endPoint.Position.Y-cubeMovment, endPoint.Position.Z);
-                }
+                    if (input.CurrentKeyboardState.IsKeyDown(Keys.Down))
+                    {
+                        endPoint.Position = new Vector3(endPoint.Position.X, endPoint.Position.Y - cubeMovment,
+                                                        endPoint.Position.Z);
+                    }
 
-                if (input.CurrentKeyboardState.IsKeyDown(Keys.Up))
-                {
-                    endPoint.Position = new Vector3(endPoint.Position.X, endPoint.Position.Y+cubeMovment, endPoint.Position.Z);
-                }
+                    if (input.CurrentKeyboardState.IsKeyDown(Keys.Up))
+                    {
+                        endPoint.Position = new Vector3(endPoint.Position.X, endPoint.Position.Y + cubeMovment,
+                                                        endPoint.Position.Z);
+                    }
 
 
-                if (input.CurrentKeyboardState.IsKeyDown(Keys.F1))
-                {
-                    CameraManager.SetActiveCamera(CameraManager.CameraNumber.Default);
-                }
-                if (input.CurrentKeyboardState.IsKeyDown(Keys.F2))
-                {
-                    CameraManager.SetActiveCamera(CameraManager.CameraNumber.ThreeNumber);
-                }
-                if (input.CurrentKeyboardState.IsKeyDown(Keys.Q))
-                {
-                    CameraManager.ActiveCamera.Translate(new Vector3(0, streifSpeed * (float)delta, 0.0f));
-                }
-                if (input.CurrentKeyboardState.IsKeyDown(Keys.Z))
-                {
-                    CameraManager.ActiveCamera.Translate(new Vector3(0, -streifSpeed * (float)delta, 0.0f));
-                }
-                if (input.CurrentKeyboardState.IsKeyDown(Keys.W))
-                {
-                    CameraManager.ActiveCamera.Translate(new Vector3(0, 0, streifSpeed * (float)delta));
-                }
-                if (input.CurrentKeyboardState.IsKeyDown(Keys.S))
-                {
-                    CameraManager.ActiveCamera.Translate(new Vector3(0, 0, -streifSpeed * (float)delta));
-                }
-                if (input.CurrentKeyboardState.IsKeyDown(Keys.D))
-                {
-                    CameraManager.ActiveCamera.Translate(new Vector3(-streifSpeed * (float)delta, 0, 0));
-                }
-                if (input.CurrentKeyboardState.IsKeyDown(Keys.A))
-                {
-                    CameraManager.ActiveCamera.Translate(new Vector3(streifSpeed * (float)delta, 0, 0));
-                }
+                    if (input.CurrentKeyboardState.IsKeyDown(Keys.F1))
+                    {
+                        CameraManager.SetActiveCamera(CameraManager.CameraNumber.Default);
+                    }
+                    if (input.CurrentKeyboardState.IsKeyDown(Keys.F2))
+                    {
+                        CameraManager.SetActiveCamera(CameraManager.CameraNumber.ThreeNumber);
+                    }
+                    if (input.CurrentKeyboardState.IsKeyDown(Keys.Q))
+                    {
+                        CameraManager.ActiveCamera.Translate(new Vector3(0, streifSpeed*(float) delta, 0.0f));
+                    }
+                    if (input.CurrentKeyboardState.IsKeyDown(Keys.Z))
+                    {
+                        CameraManager.ActiveCamera.Translate(new Vector3(0, -streifSpeed*(float) delta, 0.0f));
+                    }
+                    if (input.CurrentKeyboardState.IsKeyDown(Keys.W))
+                    {
+                        CameraManager.ActiveCamera.Translate(new Vector3(0, 0, streifSpeed*(float) delta));
+                    }
+                    if (input.CurrentKeyboardState.IsKeyDown(Keys.S))
+                    {
+                        CameraManager.ActiveCamera.Translate(new Vector3(0, 0, -streifSpeed*(float) delta));
+                    }
+                    if (input.CurrentKeyboardState.IsKeyDown(Keys.D))
+                    {
+                        CameraManager.ActiveCamera.Translate(new Vector3(-streifSpeed*(float) delta, 0, 0));
+                    }
+                    if (input.CurrentKeyboardState.IsKeyDown(Keys.A))
+                    {
+                        CameraManager.ActiveCamera.Translate(new Vector3(streifSpeed*(float) delta, 0, 0));
+                    }
 
-                if (input.CurrentKeyboardState.IsKeyDown(Keys.F2))
-                {
-                    drawCross = !drawCross;
-                }
+                    if (input.CurrentKeyboardState.IsKeyDown(Keys.F2))
+                    {
+                        drawCross = !drawCross;
+                    }
 
-                if (input.CurrentKeyboardState.IsKeyDown(Keys.F3))
-                {
-                    clearSunCross = !clearSunCross;
-                }
+                    if (input.CurrentKeyboardState.IsKeyDown(Keys.F3))
+                    {
+                        clearSunCross = !clearSunCross;
+                    }
 
-                if (input.CurrentMouseState.RightButton == ButtonState.Pressed)
-                {
-                    CameraManager.ActiveCamera.RotateX(input.MouseMoved.Y);
-                    CameraManager.ActiveCamera.RotateY(input.MouseMoved.X);
-                }
+                    if (input.CurrentMouseState.RightButton == ButtonState.Pressed)
+                    {
+                        CameraManager.ActiveCamera.RotateX(input.MouseMoved.Y);
+                        CameraManager.ActiveCamera.RotateY(input.MouseMoved.X);
+                    }
 
-                #endregion
-                #region Joy stick suck
+                    #endregion
+
+                    #region Joy stick suck
+
 #if !XBOX
-                const bool dualshock = true;
-                // ReSharper disable ConditionIsAlwaysTrueOrFalse
-                if (dualshock)
-                // ReSharper restore ConditionIsAlwaysTrueOrFalse
-                {
-                    CameraManager.ActiveCamera.RotateX(input.CurrentSimpleGamePadState.ThumbSticks.Right.Y);
+                    const bool dualshock = true;
+                    // ReSharper disable ConditionIsAlwaysTrueOrFalse
+                    if (dualshock)
+                        // ReSharper restore ConditionIsAlwaysTrueOrFalse
+                    {
+                        CameraManager.ActiveCamera.RotateX(input.CurrentSimpleGamePadState.ThumbSticks.Right.Y);
 
-                    CameraManager.ActiveCamera.RotateY(-input.CurrentSimpleGamePadState.ThumbSticks.Right.X);
-                }
-
-
-                const float pistonCompensatorProcY = 0.05f;
-                const float pistonCompensatorProcX = 0.05f;
+                        CameraManager.ActiveCamera.RotateY(-input.CurrentSimpleGamePadState.ThumbSticks.Right.X);
+                    }
 
 
+                    const float pistonCompensatorProcY = 0.05f;
+                    const float pistonCompensatorProcX = 0.05f;
 
-                var paramY = input.CurrentSimpleGamePadState.ThumbSticks.Left.Y;
-                var paramX = input.CurrentSimpleGamePadState.ThumbSticks.Left.X;
 
-                if ((paramY > pistonCompensatorProcY) || (paramY < -pistonCompensatorProcY))
-                {
-                    CameraManager.ActiveCamera.RotateX(input.CurrentSimpleGamePadState.ThumbSticks.Left.Y);
-                }
-                if ((paramX > pistonCompensatorProcX) || (paramX < -pistonCompensatorProcX))
-                {
-                    CameraManager.ActiveCamera.RotateY(-input.CurrentSimpleGamePadState.ThumbSticks.Left.X);
-                }
+
+                    var paramY = input.CurrentSimpleGamePadState.ThumbSticks.Left.Y;
+                    var paramX = input.CurrentSimpleGamePadState.ThumbSticks.Left.X;
+
+                    if ((paramY > pistonCompensatorProcY) || (paramY < -pistonCompensatorProcY))
+                    {
+                        CameraManager.ActiveCamera.RotateX(input.CurrentSimpleGamePadState.ThumbSticks.Left.Y);
+                    }
+                    if ((paramX > pistonCompensatorProcX) || (paramX < -pistonCompensatorProcX))
+                    {
+                        CameraManager.ActiveCamera.RotateY(-input.CurrentSimpleGamePadState.ThumbSticks.Left.X);
+                    }
 
 #endif
-                #endregion
+
+                    #endregion
+                }
             }
         }
 
@@ -693,15 +707,7 @@ namespace AntiTankGame2.GameScreens
 
         #region target lock logic
 
-        /*
-        /// <summary>
-        /// должен выпустиь ракету перед камерой
-        /// </summary>
-        private void Stabilaze()
-        {
 
-        }
-*/
 
         private void HandleCube()
         {

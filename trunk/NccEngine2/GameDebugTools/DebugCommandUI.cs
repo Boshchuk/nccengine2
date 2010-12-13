@@ -77,7 +77,7 @@ namespace NccEngine2.GameDebugTools
         #region Fields
 
         // Command window states.
-        enum State
+        public enum State
         {
             Closed,
             Opening,
@@ -113,6 +113,11 @@ namespace NccEngine2.GameDebugTools
 
         // Current state
         private State state = State.Closed;
+
+        public State UIState
+        {
+            get { return state; }
+        }
 
         // timer for state transition.
         private float stateTransition;
@@ -184,8 +189,9 @@ namespace NccEngine2.GameDebugTools
             {
                 int maxLen = 0;
                 foreach (CommandInfo cmd in commandTable.Values)
+                {
                     maxLen = Math.Max(maxLen, cmd.command.Length);
-
+                }
                 string fmt = String.Format("{{0,-{0}}}    {{1}}", maxLen);
 
                 foreach (CommandInfo cmd in commandTable.Values)
@@ -322,7 +328,9 @@ namespace NccEngine2.GameDebugTools
 
             // Call registered listeners.
             foreach (IDebugEchoListner listner in listenrs)
+            {
                 listner.Echo(messageType, text);
+            }
         }
 
         public void Echo(string text)

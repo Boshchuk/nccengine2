@@ -576,18 +576,20 @@ namespace NccEngine2
 
         public static void RestorSamplerState()
         {
+            var lastSamplerState0 = Device.SamplerStates[0];
+
             var samplerState = new SamplerState();
            // samplerState.AddressU = TextureAddressMode.Wrap;
            // samplerState.AddressV = TextureAddressMode.Wrap;
            // samplerState.AddressW = TextureAddressMode.Wrap;
           //  samplerState.MipMapLevelOfDetailBias = 0;
           //  samplerState.Filter = TextureFilter.Linear;
-            
-
-            
+            lastSamplerState0.Filter = TextureFilter.Linear;
 
 
-            Device.SamplerStates[0] = samplerState;
+
+
+            Device.SamplerStates[0] = lastSamplerState0;//samplerState;
 
           //  var rasterState = new RasterizerState();
           //  rasterState.CullMode = CullMode.CullClockwiseFace;

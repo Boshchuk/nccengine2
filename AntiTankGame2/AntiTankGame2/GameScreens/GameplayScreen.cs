@@ -17,6 +17,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using NccEngine2;
+using NccEngine2.GameComponents.Audio;
 using NccEngine2.GameComponents.CameraManagment;
 using NccEngine2.GameComponents.Graphics.FX.Bloom;
 using NccEngine2.GameComponents.Graphics.FX.Particles;
@@ -203,6 +204,7 @@ namespace AntiTankGame2.GameScreens
 
             #endregion
 
+            AudioManager.StopMusic();
             //SceneGraphManager.DrawDebugger = true;
 
 #if (DRAWPARTICLE)
@@ -274,6 +276,10 @@ namespace AntiTankGame2.GameScreens
 
             roket = new EndPoint { Position = new Vector3(-1600, 337, 1929), Scale = new Vector3(20f, 20f, 20f) };
             SceneGraphManager.AddObject(roket);
+
+
+           
+
 
             SceneGraphManager.LoadContent();
 

@@ -3,6 +3,7 @@ using AntiTankGame2.Localization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NccEngine2;
+using NccEngine2.GameComponents.Audio;
 using NccEngine2.GameComponents.Graphics.Screens;
 using NccEngine2.GameComponents.Graphics.Textures;
 
@@ -28,6 +29,10 @@ namespace AntiTankGame2.GameScreens
             base.LoadContent();
 
             TextureManager.AddTexture(new NccTexture(ContentConstants.BackgroundTexurePath), BackGroundTextureName);
+
+            BaseEngine.AudioManager.LoadSong("MenuTheme", "MenuTheme");
+
+            AudioManager.PlayMusic("MenuTheme");
         }
        
         /// <summary>

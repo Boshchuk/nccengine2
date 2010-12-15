@@ -1,3 +1,4 @@
+using AntiTankGame2.Localization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -29,8 +30,6 @@ namespace AntiTankGame2.GameObjects.Tanks
         #endregion
 
         #region Properties
-
-
 
         /// <summary>
         /// The direction that the tank is facing, in radians. This value will be used
@@ -64,21 +63,22 @@ namespace AntiTankGame2.GameObjects.Tanks
         public TankHeight(HeightMapInfo heightMapInfoParam, Vector3 newPosition)
         {
             Position = newPosition;
-            Scale = new Vector3(1.0f, 1.0f, 1.0f);
+            Scale = new Vector3(0.01f, 0.01f, 0.1f);
             heightMapInfo = heightMapInfoParam;
 
+            const string tempModelName = "tempHeightModel";
 
             var tempModel = new NccModel
                                 {
-                                    BaseModel = EngineManager.ContentManager.Load<Model>("Content/terrain")
+                                    BaseModel = EngineManager.ContentManager.Load<Model>(ContentConstants.Terrain)
                                 };
-            ModelManager.AddModel(tempModel, "tempHeightModel");
+            ModelManager.AddModel(tempModel,tempModelName );
          
-            heightMapInfo = ModelManager.GetModel("tempHeightModel").BaseModel.Tag as HeightMapInfo;
+            heightMapInfo = ModelManager.GetModel(tempModelName).BaseModel.Tag as HeightMapInfo;
             
         }
         #endregion
-        // ReSharper restore AccessToStaticMemberViaDerivedType
+      
 
         /// <summary>
         /// This function is called when the game is Updating in response to user input.
@@ -94,12 +94,12 @@ namespace AntiTankGame2.GameObjects.Tanks
             var turnAmount = -currentGamePadState.ThumbSticks.Left.X;
             if (currentKeyboardState.IsKeyDown(Keys.NumPad4) || currentGamePadState.DPad.Left == ButtonState.Pressed)
             {
-                turnAmount += 10;
+                turnAmount += 2;
             }
 
             if (currentKeyboardState.IsKeyDown(Keys.NumPad6) || currentGamePadState.DPad.Right == ButtonState.Pressed)
             {
-                turnAmount -= 10;
+                turnAmount -= 2;
             }
 
             // clamp the turn amount between -1 and 1, and then use the finished
@@ -116,11 +116,11 @@ namespace AntiTankGame2.GameObjects.Tanks
 
             if (currentKeyboardState.IsKeyDown(Keys.NumPad8) || currentGamePadState.DPad.Up == ButtonState.Pressed)
             {
-                movement.Z = -10;
+                movement.Z = -9;
             }
             if (currentKeyboardState.IsKeyDown(Keys.NumPad5) || currentGamePadState.DPad.Down == ButtonState.Pressed)
             {
-                movement.Z = 10;
+                movement.Z = 9;
             }
 
             // next, we'll create a rotation matrix from the direction the tank is 
@@ -168,6 +168,40 @@ namespace AntiTankGame2.GameObjects.Tanks
 
             turn = turnAmount;
         }
-       
+
+        public override void Draw(GameTime gameTime)
+        {
+            //base.Draw(gameTime);
+            if (ReadyToRender)
+            {
+                BaseEngine.Device.DepthStencilState = new DepthStencilState {DepthBufferEnable = true};
+                
+                Matrix worldMatrix = orientation * Matrix.CreateTranslation(Position);
+                
+
+                var model = ModelManager.GetModel(ModelName);
+                if (model != null && model.ReadyToRender)
+                {
+                    var bonesTransforms = new Matrix[model.BaseModel.Bones.Count];
+                    model.BaseModel.CopyAbsoluteBoneTransformsTo(bonesTransforms);
+
+                    foreach (var mesh in model.BaseModel.Meshes)
+                    {
+                        foreach (BasicEffect effect in mesh.Effects)
+                        {
+
+                            effect.World = bonesTransforms[mesh.ParentBone.Index]*worldMatrix;
+                            effect.View = CameraManager.ActiveCamera.View;
+                            effect.Projection = CameraManager.ActiveCamera.Projection;
+
+                            effect.EnableDefaultLighting();
+
+                            //effect.SpecularColor = Vector3.One;
+                        }
+                        mesh.Draw();
+                    }
+                }
+            }
+        }
     }
 }

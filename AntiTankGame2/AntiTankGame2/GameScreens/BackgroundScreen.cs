@@ -1,3 +1,5 @@
+#define MENUMUSIC
+
 using System;
 using AntiTankGame2.Localization;
 using Microsoft.Xna.Framework;
@@ -29,10 +31,11 @@ namespace AntiTankGame2.GameScreens
             base.LoadContent();
 
             TextureManager.AddTexture(new NccTexture(ContentConstants.BackgroundTexurePath), BackGroundTextureName);
-
+#if MENUMUSIC
             BaseEngine.AudioManager.LoadSong("MenuTheme", "MenuTheme");
-
             AudioManager.PlayMusic("MenuTheme");
+#endif
+
         }
        
         /// <summary>

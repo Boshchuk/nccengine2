@@ -1,4 +1,4 @@
-namespace AntiTankGame2.Localization
+п»їnamespace AntiTankGame2.Localization
 {
     public static class ContentConstants
     {
@@ -37,9 +37,15 @@ namespace AntiTankGame2.Localization
 
         public const string TankHeightModel = "Content/Models/Tanks/new"; //m1a1
         public const string TankModelName = "tankH";
-
+        /// <summary>
+        /// Tank model
+        /// </summary>
         public const string BloomTankModel = "Content/Models/Tanks/Bloomed/tank";
         public const string BloomTankName = "bloomTnak";
+        /// <summary>
+        /// РџСѓС‚СЊ Рє С„Р°Р№Р»Сѓ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ, РЅР° РѕСЃРЅРѕРІРµ РєРѕС‚РѕСЂРѕРіРѕ РіРµРЅРµСЂРёСЂСѓРµС‚СЃСЏ Р»Р°РЅС€Р°С„С‚ СЃ РєР°СЂС‚РѕР№ РІС‹СЃРѕС‚
+        /// </summary>
+        public const string Terrain = "Content/terrain";
 
 
 
@@ -47,14 +53,14 @@ namespace AntiTankGame2.Localization
 }
 
 
-//NOTE полувоенный
-// с одного бока сырость 
-/* печь с другой стороны
- * мне сегодня не спится,
- * мне нужна только ты
+//NOTE ГЇГ®Г«ГіГўГ®ГҐГ­Г­Г»Г©
+// Г± Г®Г¤Г­Г®ГЈГ® ГЎГ®ГЄГ  Г±Г»Г°Г®Г±ГІГј 
+/* ГЇГҐГ·Гј Г± Г¤Г°ГіГЈГ®Г© Г±ГІГ®Г°Г®Г­Г»
+ * Г¬Г­ГҐ Г±ГҐГЈГ®Г¤Г­Гї Г­ГҐ Г±ГЇГЁГІГ±Гї,
+ * Г¬Г­ГҐ Г­ГіГ¦Г­Г  ГІГ®Г«ГјГЄГ® ГІГ»
  * 
- * в голове моей, в мыслях,
- * лишь одна только ты,
- * без тебя свет погаснет,
- * без тебя нет мечты
+ * Гў ГЈГ®Г«Г®ГўГҐ Г¬Г®ГҐГ©, Гў Г¬Г»Г±Г«ГїГµ,
+ * Г«ГЁГёГј Г®Г¤Г­Г  ГІГ®Г«ГјГЄГ® ГІГ»,
+ * ГЎГҐГ§ ГІГҐГЎГї Г±ГўГҐГІ ГЇГ®ГЈГ Г±Г­ГҐГІ,
+ * ГЎГҐГ§ ГІГҐГЎГї Г­ГҐГІ Г¬ГҐГ·ГІГ»
 */

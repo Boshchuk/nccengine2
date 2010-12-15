@@ -1,7 +1,7 @@
-#define DRAWPARTICLE
+//#define DRAWPARTICLE
 //#define USEHOFFMAN
 //#defene LENSFLARE
-#define USEBLOOM
+//#define USEBLOOM
 
 #region Using Statement
 
@@ -263,7 +263,9 @@ namespace AntiTankGame2.GameScreens
          // SceneGraphManager.AddObject(simpleTank);
 
 
+
             targetTank = new TankHeight(heightMapInfo, new Vector3(100, 730, 95));
+            //targetTank.Scale = new Vector3(0.1f,0.1f,0.1f);
             SceneGraphManager.AddObject(targetTank);
 
 

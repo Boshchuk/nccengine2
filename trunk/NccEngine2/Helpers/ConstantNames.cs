@@ -10,19 +10,19 @@ namespace NccEngine2.Helpers
             "Height Map Terrain: Model Name-{0}; OcclusionModelName-{1}";
 
 
-        public static string SkyboxContentPath = "Skybox/";
-        public static string SkyboxEffectName = "skybox";
+        public const string SkyboxContentPath = "Skybox/";
+        public const string SkyboxEffectName = "skybox";
 
 
-        public static string SkyboxTextureNameBack = "back";
-        public static string SkyboxTextureNameFront = "front";
-        public static string SkyboxTextureNameBottom = "bottom";
-        public static string SkyboxTextureNameTop = "top";
-        public static string SkyboxTextureNameLeft = "left";
-        public static string SkyboxTextureNameRight = "right";
+        public const string SkyboxTextureNameBack = "back";
+        public const string SkyboxTextureNameFront = "front";
+        public const string SkyboxTextureNameBottom = "bottom";
+        public const string SkyboxTextureNameTop = "top";
+        public const string SkyboxTextureNameLeft = "left";
+        public const string SkyboxTextureNameRight = "right";
         /// <summary>
         /// Path to simple font
         /// </summary>
-        public static string FontPath = "Content/Fonts/Font";
+        public const string FontPath = "Content/Fonts/Font";
     }
 }

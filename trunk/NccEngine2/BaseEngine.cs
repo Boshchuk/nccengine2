@@ -207,6 +207,8 @@ namespace NccEngine2
             AudioManager = new AudioManager(this);
             Components.Add(AudioManager);
 
+
+
             //TODO include other inits here!
         }
 
@@ -347,6 +349,8 @@ namespace NccEngine2
                 );
 
             //SetAlphaBlendingEnabled(true);
+
+            AudioManager.Initialize(this);
 
             base.Initialize();
         }

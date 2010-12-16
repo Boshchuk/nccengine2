@@ -36,6 +36,7 @@ namespace AntiTankGame2.GameScreens
             MenuEntries.Add(resumeGameMenuEntry);
             MenuEntries.Add(backToMainMenuEntry);
             MenuEntries.Add(quitGameMenuEntry);
+
         }
         #endregion
 
@@ -85,6 +86,8 @@ namespace AntiTankGame2.GameScreens
         /// <param name="gameTime"></param>
         public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
+
+            BaseEngine.Bloom.Enabled = false;
             ScreenManager.FadeBackBufferToBlack(TransitionAlpha * 2 / 3);
             base.Draw(gameTime);
         }

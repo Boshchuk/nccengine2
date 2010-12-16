@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 #if !XBOX
+using NccEngine2.GameDebugTools;
 using NccPcGamePad.DualShock;
 #endif
 
@@ -52,11 +53,16 @@ namespace NccEngine2.GameComponents.NccInput
         /// </summary>
         public void Update()
         {
-            LastKeyboardState = CurrentKeyboardState;
-            LastGamePadState = CurrentGamePadState;
+            if (BaseEngine.debugSystem.DebugCommandUI.UIState != DebugCommandUI.State.Opened)
+            {
 
-            CurrentKeyboardState = Keyboard.GetState();
-            CurrentGamePadState = GamePad.GetState(PlayerIndex.One);
+                #region handle
+
+                LastKeyboardState = CurrentKeyboardState;
+                LastGamePadState = CurrentGamePadState;
+
+                CurrentKeyboardState = Keyboard.GetState();
+                CurrentGamePadState = GamePad.GetState(PlayerIndex.One);
 
 #if !XBOX
                 LastMouseState = CurrentMouseState;
@@ -70,17 +76,17 @@ namespace NccEngine2.GameComponents.NccInput
                 {
                     try
                     {
-       // #if !DEGUG
-                            //TODO check the type of geme pad...
-                            CurrentSimpleGamePadState = PcDualShock.GetState(PlayerIndex.One);
+                        // #if !DEGUG
+                        //TODO check the type of geme pad...
+                        CurrentSimpleGamePadState = PcDualShock.GetState(PlayerIndex.One);
 
-      //  #endif
+                        //  #endif
                     }
                     catch (Exception) //If Any exception
                     {
-        #if !XBOX
-                            wasError = true;
-        #endif
+#if !XBOX
+                        wasError = true;
+#endif
                     }
                 }
 
@@ -88,6 +94,9 @@ namespace NccEngine2.GameComponents.NccInput
                 MouseMoved = new Vector2(LastMouseState.X - CurrentMouseState.X, LastMouseState.Y - CurrentMouseState.Y);
                 lastMouseLocation = new Point(CurrentMouseState.X, CurrentMouseState.Y);
 #endif
+
+                #endregion
+            }
         }
 
         /// <summary>

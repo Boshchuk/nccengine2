@@ -14,13 +14,13 @@ namespace NccEngine2.GameComponents.Graphics.FX.Particles
     {
         #region Constants
 
-        const float trailParticlesPerSecond = 200;
-        const int numExplosionParticles = 30;
-        const int numExplosionSmokeParticles = 50;
-        const float projectileLifespan = 1.5f;
-        const float sidewaysVelocityRange = 60;
-        const float verticalVelocityRange = 40;
-        const float gravity = 15;
+        const float TrailParticlesPerSecond = 200;
+        const int NumExplosionParticles = 30;
+        const int NumExplosionSmokeParticles = 50;
+        const float ProjectileLifespan = 1.5f;
+        const float SidewaysVelocityRange = 60;
+        const float VerticalVelocityRange = 40;
+        const float Gravity = 15;
 
         #endregion
 
@@ -52,13 +52,13 @@ namespace NccEngine2.GameComponents.Graphics.FX.Particles
             // Start at the origin, firing in a random (but roughly upward) direction.
             position = Vector3.Zero;
 
-            velocity.X = (float)(random.NextDouble() - 0.5) * sidewaysVelocityRange;
-            velocity.Y = (float)(random.NextDouble() + 0.5) * verticalVelocityRange;
-            velocity.Z = (float)(random.NextDouble() - 0.5) * sidewaysVelocityRange;
+            velocity.X = (float)(random.NextDouble() - 0.5) * SidewaysVelocityRange;
+            velocity.Y = (float)(random.NextDouble() + 0.5) * VerticalVelocityRange;
+            velocity.Z = (float)(random.NextDouble() - 0.5) * SidewaysVelocityRange;
 
             // Use the particle emitter helper to output our trail particles.
             trailEmitter = new ParticleEmitter(projectileTrailParticles,
-                                               trailParticlesPerSecond, position);
+                                               TrailParticlesPerSecond, position);
         }
 
 
@@ -71,7 +71,7 @@ namespace NccEngine2.GameComponents.Graphics.FX.Particles
 
             // Simple projectile physics.
             position += velocity * elapsedTime;
-            velocity.Y -= elapsedTime * gravity;
+            velocity.Y -= elapsedTime * Gravity;
             age += elapsedTime;
 
             // Update the particle emitter, which will create our particle trail.
@@ -80,12 +80,12 @@ namespace NccEngine2.GameComponents.Graphics.FX.Particles
             // If enough time has passed, explode! Note how we pass our velocity
             // in to the AddParticle method: this lets the explosion be influenced
             // by the speed and direction of the projectile which created it.
-            if (age > projectileLifespan)
+            if (age > ProjectileLifespan)
             {
-                for (int i = 0; i < numExplosionParticles; i++)
+                for (int i = 0; i < NumExplosionParticles; i++)
                     explosionParticles.AddParticle(position, velocity);
 
-                for (int i = 0; i < numExplosionSmokeParticles; i++)
+                for (int i = 0; i < NumExplosionSmokeParticles; i++)
                     explosionSmokeParticles.AddParticle(position, velocity);
 
                 return false;

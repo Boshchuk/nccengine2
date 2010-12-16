@@ -58,7 +58,7 @@ namespace NccEngine2.GameComponents.Models.Terrain
         public override void DrawCulling(GameTime gameTime)
         {
             Occluded = false;
-            var lastFillModeState = EngineManager.Device.RasterizerState.FillMode; /*   RenderState.FillMode;*/
+           // var lastFillModeState = EngineManager.Device.RasterizerState.FillMode; /*   RenderState.FillMode;*/
             //  if (ReadyToRender && !Culled)
             {
                 //query.Begin();

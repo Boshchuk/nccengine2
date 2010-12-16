@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NccEngine2.GameComponents.Graphics.Textures;
+using NccEngine2.GameDebugTools;
 
 namespace NccEngine2.GameComponents.Graphics.Screens
 {
@@ -136,9 +137,11 @@ namespace NccEngine2.GameComponents.Graphics.Screens
                     // give it a chance to handle input.
                     if (!otherScreenHasFocus)
                     {
-                        screen.HandleInput(gameTime, BaseEngine.Input);
-
-                        otherScreenHasFocus = true;
+                       // if (BaseEngine.debugSystem.DebugCommandUI.UIState != DebugCommandUI.State.Opened)
+                       // {
+                            screen.HandleInput(gameTime, BaseEngine.Input);
+                            otherScreenHasFocus = true;
+                       // }
                     }
 
                     

@@ -1,9 +1,4 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using NccEngine2;
-using NccEngine2.GameComponents.CameraManagment;
 using NccEngine2.GameComponents.Models;
-using NccEngine2.GameComponents.Scene.Graph;
 using NccEngine2.GameComponents.Scene.Graph.Interfaces;
 using NccEngine2.GameComponents.Scene.SceneObject;
 
@@ -12,7 +7,7 @@ namespace AntiTankGame2.GameObjects.Terrain
     /// <summary>
     /// The simle plane from fbx file
     /// </summary>
-    public class SimplePlane : BaseNccSceneObject, INccLoadable //NccSceneObject, INccLoadable, INccUpdateable, INccOcclusion
+    public class SimplePlane : BaseNccSceneObject, INccLoadable 
     {
         public void LoadContent()
         {
@@ -26,8 +21,5 @@ namespace AntiTankGame2.GameObjects.Terrain
         {
             System.GC.Collect();
         }
-
-       
     }
-
 }

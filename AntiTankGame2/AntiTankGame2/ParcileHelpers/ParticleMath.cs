@@ -11,6 +11,7 @@ namespace AntiTankGame2.ParcileHelpers
         // Random number generator for the fire effect.
         static readonly Random Random = new Random();
 
+/*
         /// <summary>
         /// Helper used by the UpdateFire method. Chooses a random location
         /// around a circle, at which a fire particle will be created.
@@ -27,6 +28,7 @@ namespace AntiTankGame2.ParcileHelpers
 
             return new Vector2(x * radius, y * radius + height);
         }
+*/
 
         /// <summary>
         /// Helper used by the UpdateFire method. Chooses a random location

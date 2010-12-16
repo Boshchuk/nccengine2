@@ -136,11 +136,9 @@ namespace NccEngine2
         {
             GraphicsDeviceManager = new GraphicsDeviceManager(this);
             //TODO: Make correct choosing
-            // GraphicsDeviceManager.PreferMultiSampling = true;
-//Note Restore multisampling
-            //GraphicsDeviceManager.  MinimumPixelShaderProfile = ShaderProfile.PS_2_0;
-            //GraphicsDeviceManager.MinimumVertexShaderProfile = ShaderProfile.VS_2_0;
-
+             GraphicsDeviceManager.PreferMultiSampling = true;
+   
+           // GraphicsDeviceManager.PreferMultiSampling = true;
             
 
             GraphicsDeviceManager.PreparingDeviceSettings += GraphicsDeviceManagersPreparingDeviceSettings;
@@ -238,24 +236,25 @@ namespace NccEngine2
         /// <param name="e">event args</param>
         static void GraphicsDeviceManagersPreparingDeviceSettings(object sender, PreparingDeviceSettingsEventArgs e)
         {
-            if (Environment.OSVersion.Platform != PlatformID.Win32NT)
+            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
             {
                 var presentParams = e.GraphicsDeviceInformation.PresentationParameters;
-                if (GraphicsDeviceManager.PreferredBackBufferHeight == 720)
+              //  if (GraphicsDeviceManager.PreferredBackBufferHeight == 00)
                 {
 
 //NOTE chek multisampleType
                     //presentParams.MultiSampleType =   ltiSampleType.FourSamples;
-#if !DEBUG
-                    presentParams.PresentationInterval = PresentInterval.One;
-#endif
+                //    GraphicsDeviceManager.PreferMultiSampling = true;
+//#if !DEBUG
+                  //  presentParams.PresentationInterval = PresentInterval.One;
+//#endif
                 }
-                else
+                //else
                 {
                     presentParams.MultiSampleCount = 2;
-#if !DEBUG
+//#if !DEBUG
                     presentParams.PresentationInterval = PresentInterval.Two;
-#endif
+//#endif
                 }
 
                 // Add support for NVidia PerfHUD.
@@ -579,72 +578,17 @@ namespace NccEngine2
             var lastSamplerState0 = Device.SamplerStates[0];
 
             var samplerState = new SamplerState();
-           // samplerState.AddressU = TextureAddressMode.Wrap;
-           // samplerState.AddressV = TextureAddressMode.Wrap;
-           // samplerState.AddressW = TextureAddressMode.Wrap;
-          //  samplerState.MipMapLevelOfDetailBias = 0;
-          //  samplerState.Filter = TextureFilter.Linear;
-            lastSamplerState0.Filter = TextureFilter.Linear;
-
-
-
-
-            Device.SamplerStates[0] = lastSamplerState0;//samplerState;
-
-          //  var rasterState = new RasterizerState();
-          //  rasterState.CullMode = CullMode.CullClockwiseFace;
-
-
-            //var dephState = new DepthStencilState();
-            //dephState.DepthBufferEnable = false;
-            //Device.DepthStencilState = dephState;
-
-         //   Device.RasterizerState = rasterState;
+            samplerState.Filter = TextureFilter.Anisotropic;
+            samplerState.AddressU = TextureAddressMode.Wrap;
+            samplerState.AddressV = TextureAddressMode.Wrap;
+            samplerState.AddressW = TextureAddressMode.Wrap;
+          //  sazzmplerState.MipMapLevelOfDetailBias = 0;
         
-
-
-            /*
-             
-               GraphicsDevice.RenderState.CullMode = CullMode.CullCounterClockwiseFace;
-    GraphicsDevice.RenderState.DepthBufferEnable = false;
-
-    GraphicsDevice.RenderState.AlphaBlendEnable = true;
-    GraphicsDevice.RenderState.AlphaBlendOperation = BlendFunction.Add;
-    GraphicsDevice.RenderState.SourceBlend = Blend.SourceAlpha;
-    GraphicsDevice.RenderState.DestinationBlend = Blend.InverseSourceAlpha;
-    GraphicsDevice.RenderState.SeparateAlphaBlendEnabled = false;
-
-    GraphicsDevice.RenderState.AlphaTestEnable = true;
-    GraphicsDevice.RenderState.AlphaFunction = CompareFunction.Greater;
-    GraphicsDevice.RenderState.ReferenceAlpha = 0;
-
-    GraphicsDevice.SamplerStates[0].AddressU = TextureAddressMode.Clamp;
-    GraphicsDevice.SamplerStates[0].AddressV = TextureAddressMode.Clamp;
-
-    GraphicsDevice.SamplerStates[0].MagFilter = TextureFilter.Linear;
-    GraphicsDevice.SamplerStates[0].MinFilter = TextureFilter.Linear;
-    GraphicsDevice.SamplerStates[0].MipFilter = TextureFilter.Linear;
-
-    GraphicsDevice.SamplerStates[0].MipMapLevelOfDetailBias = 0.0f;
-    GraphicsDevice.SamplerStates[0].MaxMipLevel = 0;
-
-SpriteBatch also modifies the Vertices, Indices, VertexDeclaration, VertexShader, and PixelShader properties on the GraphicsDevice.
-
-Many of these settings are fine for both 2D and 3D rendering, but before you draw anything in 3D you will probably want to reset these states:
-    GraphicsDevice.RenderState.DepthBufferEnable = true;
-    GraphicsDevice.RenderState.AlphaBlendEnable = false;
-    GraphicsDevice.RenderState.AlphaTestEnable = false;
-
-Depending on your 3D content, you may also want to set:
-    GraphicsDevice.SamplerStates[0].AddressU = TextureAddressMode.Wrap;
-    GraphicsDevice.SamplerStates[0].AddressV = TextureAddressMode.Wrap; 
-             */
-        }
+            Device.SamplerStates[0] =samplerState;
+            }
 
         #endregion
-
-
-
+        
 
         #region Debug command test code.
 

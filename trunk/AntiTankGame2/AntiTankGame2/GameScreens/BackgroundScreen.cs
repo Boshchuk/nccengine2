@@ -1,4 +1,4 @@
-#define MENUMUSIC
+//#define MENUMUSIC
 
 using System;
 using AntiTankGame2.Localization;

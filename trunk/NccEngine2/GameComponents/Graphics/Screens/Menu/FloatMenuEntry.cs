@@ -42,7 +42,7 @@ namespace NccEngine2.GameComponents.Graphics.Screens.Menu
             Vector2 pos = Position + size;
 
             pos.X += 8;
-            pos.Y += (Height - font.LineSpacing) / 2;
+            pos.Y += (float) (Height - font.LineSpacing) / 2;
 
             float w = 480 - Border - pos.X;
 

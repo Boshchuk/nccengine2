@@ -1,5 +1,4 @@
 //#define DRAWPARTICLE
-//#define USEHOFFMAN
 //#defene LENSFLARE
 //#define USEBLOOM
 
@@ -27,6 +26,7 @@ using NccEngine2.GameComponents.Models.Terrain;
 using NccEngine2.GameComponents.NccInput;
 using NccEngine2.GameComponents.Scene;
 using NccEngine2.GameDebugTools;
+using XnaInput;
 
 #endregion
 
@@ -49,7 +49,7 @@ namespace AntiTankGame2.GameScreens
 
         private bool collisionstate;
 
-    
+        private bool wasSound;
 
         private const int CrossBarTextureHeight = 586;
 
@@ -77,7 +77,9 @@ namespace AntiTankGame2.GameScreens
         #endregion
 #if DRAWPARTICLE
         #region Particles
-        
+
+        private Vector3 tempSmokePos = Vector3.Zero;
+
         ParticleSystem explosionParticles;
         ParticleSystem explosionSmokeParticles;
         ParticleSystem projectileTrailParticles;
@@ -88,7 +90,7 @@ namespace AntiTankGame2.GameScreens
 
         // The explosions effect works by firing projectiles up into the
         // air, so we need to keep track of all the active projectiles.
-        readonly List<Projectile> projectiles = new List<Projectile>();
+        List<Projectile> projectiles = new List<Projectile>();
 
         TimeSpan timeToNextProjectile = TimeSpan.Zero;
 
@@ -160,7 +162,7 @@ namespace AntiTankGame2.GameScreens
         void UpdateSmokePlume()
         {
             // This is trivial: we just create one new smoke particle per frame.
-            smokePlumeParticles.AddParticle(Vector3.Zero, Vector3.Zero);
+            smokePlumeParticles.AddParticle(/*Vector3.Zero*/ tempSmokePos, Vector3.Zero);
         }
 
         /// <summary>
@@ -186,13 +188,7 @@ namespace AntiTankGame2.GameScreens
         {
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
-        }
 
-        /// <summary>
-        /// Load graphics content for the game.
-        /// </summary>
-        public override void LoadContent()
-        {
             #region camera setup
 
             CameraManager.SetActiveCamera(CameraManager.CameraNumber.Default);
@@ -205,7 +201,6 @@ namespace AntiTankGame2.GameScreens
             #endregion
 
             AudioManager.StopMusic();
-            //SceneGraphManager.DrawDebugger = true;
 
 #if (DRAWPARTICLE)
             #region init particles
@@ -232,46 +227,26 @@ namespace AntiTankGame2.GameScreens
             EngineManager.Game.Components.Add(fireParticles);
             #endregion
 #endif
+        }
+
+        /// <summary>
+        /// Load graphics content for the game.
+        /// </summary>
+        public override void LoadContent()
+        {
+           //SceneGraphManager.DrawDebugger = true;
+            
             TextureManager.AddTexture(new NccTexture(ContentConstants.CrossbarTexturePath), ContentConstants.CrossbarName); // crossbar init
             TextureManager.AddTexture(new NccTexture(ContentConstants.BlackRactangleTexturePath), ContentConstants.BlackRactangeleName); // black rectangle int
-
-#if (USEHOFFMAN)
-            SceneGraphManager.AddObject(atmosphere);
-#endif
-
-            //var dome = new Skydome(3800, 3800, 32, 32);
-            //dome.Position = new Vector3(0, -1000, 0);
-            //dome.Material.Shader = "hoffman";
-            //dome.Material.Technique = (int)hoffmanshaderEffect.Techniques.Sky;
-            //SceneGraphManager.AddObject(dome);
-
 
 
             var heightMapTerrain = new HeightMapTerrain();
             SceneGraphManager.AddObject(heightMapTerrain);
 
 
-            //var simlePlane = new SimplePlane(); 
-            //SceneGraphManager.AddObject(simlePlane);
-            //simlePlane.Scale = new Vector3(1,1,1);
-
-            var simpleSkyBox = new SimpleSkybox {Position = new Vector3(0, 0, 0), Scale = new Vector3(750, 750, 750)};
-            SceneGraphManager.AddObject(simpleSkyBox);
-
-
-         // var simpleTank = new Tank{ Position = new Vector3(200, -571, 95) };
-         // SceneGraphManager.AddObject(simpleTank);
-
-
-
             targetTank = new TankHeight(heightMapInfo, new Vector3(100, 730, 95));
             //targetTank.Scale = new Vector3(0.1f,0.1f,0.1f);
             SceneGraphManager.AddObject(targetTank);
-
-
-         //   var bloomTank = new BloomTank{Position = new Vector3(80,-571,95), Scale = new Vector3(0.001f,0.001f,0.001f)};
-         //   SceneGraphManager.AddObject(bloomTank);
-
 
             endPoint = new EndPoint { Position = new Vector3(100.0f, 0.0f, 0.0f), Scale = new Vector3(20f, 20f, 20f) };
             SceneGraphManager.AddObject(endPoint);
@@ -279,9 +254,8 @@ namespace AntiTankGame2.GameScreens
             roket = new EndPoint { Position = new Vector3(-1600, 337, 1929), Scale = new Vector3(20f, 20f, 20f) };
             SceneGraphManager.AddObject(roket);
 
-
-           
-
+            var sk = new NccSkySphere {Position = Vector3.Zero};
+            SceneGraphManager.AddObject(sk);
 
             SceneGraphManager.LoadContent();
 
@@ -310,7 +284,7 @@ namespace AntiTankGame2.GameScreens
             base.Update(gameTime, otherScreenHasFocusParameter, coveredByOtherScreen);
             delta = gameTime.ElapsedGameTime.TotalSeconds;
 
-            //LinerMoveToTarget(gameTime);
+         
             HandleCube();
 
             collisionstate = Collsison(roket, endPoint);
@@ -328,25 +302,19 @@ namespace AntiTankGame2.GameScreens
             }
 
         }
+        
 
-        private bool wasSound = false;
-
-        private bool Collsison(EndPoint rocket, EndPoint target)
+        private static bool Collsison(EndPoint rocket, EndPoint target)
         {
             var rock = new BoundingSphere(rocket.Position,10);
             var targ = new BoundingSphere(target.Position,10);
 
-            //return roket.BoundingBox.Intersects(target.BoundingBox);
-
             return rock.Intersects(targ);
-
         }
 
-        // bool changeState;
 
         public override void HandleInput(GameTime gameTime, Input input)
         {
-
             if (BaseEngine.debugSystem.DebugCommandUI.UIState != DebugCommandUI.State.Opened)
             {
 
@@ -360,9 +328,6 @@ namespace AntiTankGame2.GameScreens
                 {
                     #region BloomHandle
 
-                    //************************************
-                    //***   for bloom ********************
-
                     input.LastKeyboardState = input.CurrentKeyboardState;
                     input.LastGamePadState = input.CurrentGamePadState;
 
@@ -371,56 +336,88 @@ namespace AntiTankGame2.GameScreens
 #if USEBLOOM
 
 
-    // Switch to the next bloom settings preset?
-                if (input.CurrentKeyboardState.IsKeyDown(Keys.F5))
-                {
-
-                    bloomSettingsIndex = (bloomSettingsIndex + 1) % BloomSettings.PresetSettings.Length;
-
-                    BaseEngine.Bloom.Settings = BloomSettings.PresetSettings[bloomSettingsIndex];
-
-                    BaseEngine.Bloom.Visible = true;
-
-                }
-
-                // Toggle bloom on or off?
-                if (input.CurrentKeyboardState.IsKeyDown(Keys.F6))
-                {
-                   BaseEngine.Bloom.Visible = !BaseEngine.Bloom.Visible;
-                }
-
-                // Cycle through the intermediate buffer debug display modes?
-                if (input.CurrentKeyboardState.IsKeyDown(Keys.F7))
-                {
-                    BaseEngine.Bloom.Visible = true;
-                    BaseEngine.Bloom.ShowBuffer++;
-
-                    if (BaseEngine.Bloom.ShowBuffer > BloomComponent.IntermediateBuffer.FinalResult)
+                    // Switch to the next bloom settings preset?
+                    if (input.CurrentKeyboardState.IsKeyDown(Keys.F5))
                     {
-                        BaseEngine.Bloom.ShowBuffer = 0;
+
+                        bloomSettingsIndex = (bloomSettingsIndex + 1)%BloomSettings.PresetSettings.Length;
+                        BaseEngine.Bloom.Settings = BloomSettings.PresetSettings[bloomSettingsIndex];
+                        BaseEngine.Bloom.Visible = true;
+
                     }
-                }
+
+                    // Toggle bloom on or off?
+                    if (input.CurrentKeyboardState.IsKeyDown(Keys.F6))
+                    {
+                        BaseEngine.Bloom.Visible = !BaseEngine.Bloom.Visible;
+                    }
+
+                    // Cycle through the intermediate buffer debug display modes?
+                    if (input.CurrentKeyboardState.IsKeyDown(Keys.F7))
+                    {
+                        BaseEngine.Bloom.Visible = true;
+                        BaseEngine.Bloom.ShowBuffer++;
+
+                        if (BaseEngine.Bloom.ShowBuffer > BloomComponent.IntermediateBuffer.FinalResult)
+                        {
+                            BaseEngine.Bloom.ShowBuffer = 0;
+                        }
+                    }
 
 #endif
-                    //* end for bloom          **********************************
 
                     #endregion
 
 
 #if DRAWPARTICLE
+
                     #region Partilces Handle
 
-                // Check for changing the active particle effect.
-                if (input.CurrentKeyboardState.IsKeyDown(Keys.Space))
-                {
-                    currentState++;
-
-                    if (currentState > ParticleState.RingOfFire)
+                    // Check for changing the active particle effect.
+                    if (input.CurrentKeyboardState.IsKeyDown(Keys.Space))
                     {
-                        currentState = 0;
+                        currentState++;
+
+                        if (currentState > ParticleState.RingOfFire)
+                        {
+                            currentState = 0;
+                        }
                     }
-                }
+
                     #endregion
+
+                    const int move = 15;
+
+                    if (input.CurrentKeyboardState.IsKeyDown(Keys.Up))
+                    {
+                        tempSmokePos = new Vector3(tempSmokePos.X+move,tempSmokePos.Y,tempSmokePos.Z);
+                    }
+
+                    if (input.CurrentKeyboardState.IsKeyDown(Keys.Down))
+                    {
+                        tempSmokePos = new Vector3(tempSmokePos.X - move, tempSmokePos.Y, tempSmokePos.Z);
+                    }
+                    //------------------------------------------------------
+                    if (input.CurrentKeyboardState.IsKeyDown(Keys.Left))
+                    {
+                        tempSmokePos = new Vector3(tempSmokePos.X, tempSmokePos.Y, tempSmokePos.Z - move);
+                    }
+
+                    if (input.CurrentKeyboardState.IsKeyDown(Keys.Right))
+                    {
+                        tempSmokePos = new Vector3(tempSmokePos.X , tempSmokePos.Y, tempSmokePos.Z + move);
+                    }
+                    //---------------------------------------
+                    if (input.CurrentKeyboardState.IsKeyDown(Keys.OemPlus))
+                    {
+                        tempSmokePos = new Vector3(tempSmokePos.X, tempSmokePos.Y+move, tempSmokePos.Z );
+                    }
+
+                    if (input.CurrentKeyboardState.IsKeyDown(Keys.OemMinus))
+                    {
+                        tempSmokePos = new Vector3(tempSmokePos.X, tempSmokePos.Y-move, tempSmokePos.Z);
+                    }
+
 #endif
 
                     #region Blend
@@ -466,16 +463,6 @@ namespace AntiTankGame2.GameScreens
                         SceneGraphManager.HandleInput(gameTime, input);
                     }
 
-#if (USEHOFFMAN)
-                if (input.CurrentKeyboardState.IsKeyDown(Keys.Up))
-                {
-                    atmosphere.SunDirection += 5f * (float)delta;
-                }
-                if (input.CurrentKeyboardState.IsKeyDown(Keys.Down))
-                {
-                    atmosphere.SunDirection -= 5f * (float)delta;
-                }
-#endif
                     const float cubeMovment = 10;
 
                     if (input.CurrentKeyboardState.IsKeyDown(Keys.Left))
@@ -596,6 +583,8 @@ namespace AntiTankGame2.GameScreens
         {
             //base.Draw(gameTime);
 
+            BaseEngine.RestorSamplerState();
+
             BaseEngine.Bloom.BeginDraw();
 
             BaseEngine.Device.Clear(BaseEngine.BackgroundColor);
@@ -607,9 +596,7 @@ namespace AntiTankGame2.GameScreens
             BaseEngine.Device.Clear(BaseEngine.BackgroundColor);
 
             SceneGraphManager.Draw(gameTime);
-
             
-
             base.Draw(gameTime);
 
 #if (LENSFLARE)
@@ -675,8 +662,8 @@ namespace AntiTankGame2.GameScreens
             //var cameraAngle = string.Format("Angle hor {0} vert {1}", MathHelper.ToDegrees(CameraManager.ActiveCamera.Yaw), MathHelper.ToDegrees(CameraManager.ActiveCamera.Pitch));
             //var bloomInfo = string.Format("F5 = settings ({0}{1}F6 = toggle bloom ({2}){1}F7 = show buffer ({3})", EngineManager.Bloom.Settings.Name, Environment.NewLine, (EngineManager.Bloom.Visible ? "on" : "off"), EngineManager.Bloom.ShowBuffer);
             //var particleMessage = string.Format("Current effect: {0}!!!{1}Hit space bar to switch.",currentState,Environment.NewLine);
-            
 
+            //var particleMessage = string.Format("Particle pos : {0}",smokePlumeParticles.);
 
             // Center the text in the viewport.
             var textPosition = new Vector2(10, 20);
@@ -686,11 +673,11 @@ namespace AntiTankGame2.GameScreens
             #region SpriteBatch Drawing
             ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend/*AlphaBlend*//*,SaveStateMode.SaveState*/);
             ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, cameraMessage, new Vector2(textPosition.X, textPosition.Y + 30), color);
-           ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, rocketPos, new Vector2(textPosition.X, textPosition.Y + 60), color);
-           ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, col, new Vector2(textPosition.X, textPosition.Y + 120), color);
-           // //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, particleMessage, new Vector2(textPosition.X, textPosition.Y + 120), color);
-           // //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, cameraAngle, new Vector2(textPosition.X, textPosition.Y + 90), color);
-           // //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, bloomInfo, new Vector2(textPosition.X+550, textPosition.Y ), color);
+            //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, rocketPos, new Vector2(textPosition.X, textPosition.Y + 60), color);
+            //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, col, new Vector2(textPosition.X, textPosition.Y + 120), color);
+            // //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, particleMessage, new Vector2(textPosition.X, textPosition.Y + 120), color);
+            // //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, cameraAngle, new Vector2(textPosition.X, textPosition.Y + 90), color);
+            // //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, bloomInfo, new Vector2(textPosition.X+550, textPosition.Y ), color);
             ScreenManager.SpriteBatch.End();
             #endregion
 
@@ -736,7 +723,6 @@ namespace AntiTankGame2.GameScreens
             // Vector3.
             const int radius = 4000;
 
-
             var heihgt = -(float)Math.Sin(CameraManager.ActiveCamera.Pitch) * radius;
 
             //****** VERTICAL PLANE ***********************************
@@ -774,7 +760,6 @@ ps. жду встречи
          
          */
         #endregion
-
-      
+        
     }
 }

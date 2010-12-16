@@ -109,7 +109,6 @@
     <Compile Include="GameComponents\Graphics\Screens\Menu\MenuScreen.cs" />
     <Compile Include="GameComponents\Graphics\Textures\NccTexture.cs" />
     <Compile Include="GameComponents\Scene\SceneObject\BaseNccSceneObject.cs" />
-    <Compile Include="GameComponents\Scene\SimpleObjects\Skybox.cs" />
     <Compile Include="GameDebugTools\Layout.cs" />
     <Compile Include="GameDebugTools\RemoteDebugCommand.cs" />
     <Compile Include="GameDebugTools\StringBuilderExtension.cs" />
@@ -174,7 +173,9 @@
       <XnaReferenceType>Content</XnaReferenceType>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="GameComponents\Scene\SimpleObjects\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
   <!--

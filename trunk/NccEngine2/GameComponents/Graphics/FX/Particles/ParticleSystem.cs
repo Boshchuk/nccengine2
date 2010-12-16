@@ -182,7 +182,7 @@ namespace NccEngine2.GameComponents.Graphics.FX.Particles
                                                    settings.MaxParticles * 4, BufferUsage.WriteOnly);
 
             // Create and populate the index buffer.
-            ushort[] indices = new ushort[settings.MaxParticles * 6];
+            var indices = new ushort[settings.MaxParticles * 6];
 
             for (int i = 0; i < settings.MaxParticles; i++)
             {
@@ -242,7 +242,7 @@ namespace NccEngine2.GameComponents.Graphics.FX.Particles
                 new Vector2(settings.MinEndSize, settings.MaxEndSize));
 
             // Load the particle texture, and set it onto the effect.
-            Texture2D texture = content.Load<Texture2D>(settings.TextureName);
+            var texture = content.Load<Texture2D>(settings.TextureName);
 
             parameters["Texture"].SetValue(texture);
         }
@@ -287,7 +287,7 @@ namespace NccEngine2.GameComponents.Graphics.FX.Particles
         /// </summary>
         void RetireActiveParticles()
         {
-            float particleDuration = (float)settings.Duration.TotalSeconds;
+            var particleDuration = (float)settings.Duration.TotalSeconds;
 
             while (firstActiveParticle != firstNewParticle)
             {
@@ -306,7 +306,9 @@ namespace NccEngine2.GameComponents.Graphics.FX.Particles
                 firstActiveParticle++;
 
                 if (firstActiveParticle >= settings.MaxParticles)
+                {
                     firstActiveParticle = 0;
+                }
             }
         }
 
@@ -324,7 +326,7 @@ namespace NccEngine2.GameComponents.Graphics.FX.Particles
                 // the GPU is sure to be finished with it?
                 // We multiply the retired particle index by four, because each
                 // particle consists of a quad that is made up of four vertices.
-                int age = drawCounter - (int)particles[firstRetiredParticle * 4].Time;
+                var age = drawCounter - (int)particles[firstRetiredParticle * 4].Time;
 
                 // The GPU is never supposed to get more than 2 frames behind the CPU.
                 // We add 1 to that, just to be safe in case of buggy drivers that
@@ -346,7 +348,7 @@ namespace NccEngine2.GameComponents.Graphics.FX.Particles
         /// </summary>
         public override void Draw(GameTime gameTime)
         {
-            GraphicsDevice device = GraphicsDevice;
+            GraphicsDevice device = BaseEngine.Device;// GraphicsDevice;
 
             // Restore the vertex buffer contents if the graphics device was lost.
             if (vertexBuffer.IsContentLost)
@@ -517,7 +519,7 @@ namespace NccEngine2.GameComponents.Graphics.FX.Particles
                                            (byte)random.Next(255));
 
             // Fill in the particle vertex structure.
-            for (int i = 0; i < 4; i++)
+            for (var i = 0; i < 4; i++)
             {
                 particles[firstFreeParticle * 4 + i].Position = position;
                 particles[firstFreeParticle * 4 + i].Velocity = velocity;

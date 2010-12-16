@@ -123,13 +123,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GameLogic\RocketHelper.cs" />
-    <Compile Include="GameObjects\SimpleSkybox.cs" />
+    <Compile Include="GameObjects\NccSkySphere.cs" />
     <Compile Include="GameObjects\Tanks\AlphaTank.cs" />
-    <Compile Include="GameObjects\Tanks\BloomTank.cs" />
     <Compile Include="GameObjects\Tanks\TankHeight.cs" />
     <Compile Include="GameObjects\Terrain\SimplePlane.cs" />
     <Compile Include="GameObjects\Tanks\BaseTank.cs" />
-    <Compile Include="GameObjects\Tanks\Tank.cs" />
     <Compile Include="GameObjects\TestLogic\EndPoint.cs" />
     <Compile Include="GameScreens\BackgroundScreen.cs" />
     <Compile Include="GameScreens\GameplayScreen.cs" />
@@ -166,6 +164,10 @@
     <ProjectReference Include="..\..\NccPcGamePad\NccPcGamePad.csproj">
       <Project>{E67B3ED4-9B52-4054-985B-123EA63053A0}</Project>
       <Name>NccPcGamePad</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\XnaInput1.5.1\XnaInput\XnaInput.csproj">
+      <Project>{99019D00-D9CF-4EB0-AF3C-A7E5D9A73FA5}</Project>
+      <Name>XnaInput</Name>
     </ProjectReference>
     <ProjectReference Include="..\AntiTankGame2Content\AntiTankGame2Content.contentproj">
       <Name>AntiTankGame2Content</Name>

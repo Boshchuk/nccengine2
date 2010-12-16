@@ -72,7 +72,8 @@ namespace NccHeightMapPipeline
         /// Controls the texture that will be applied to the terrain. If no value is
         /// supplied, a texture will not be applied.
         /// </summary>
-        [DefaultValue("rocks.bmp")]
+        //[DefaultValue("rocks.bmp")]
+        [DefaultValue("Textures/sand.jpg")]
         [Description("Controls the texture that will be applied to the terrain. If " +
                      "no value is supplied, a texture will not be applied.")]
         [DisplayName("Terrain Texture")]
@@ -81,7 +82,7 @@ namespace NccHeightMapPipeline
             get { return terrainTexture; }
             set { terrainTexture = value; }
         }
-        private string terrainTexture = "rocks.bmp";
+        private string terrainTexture = "Textures/ground.png";
 
         #endregion
 

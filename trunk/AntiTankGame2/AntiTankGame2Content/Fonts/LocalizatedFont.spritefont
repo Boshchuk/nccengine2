@@ -5,8 +5,8 @@
     <!--
     Define which font we want to build.
     -->
-    <FontName>Arial</FontName>
-    <Size>14</Size>
+    <FontName>Stencil</FontName>
+    <Size>20</Size>
     <Spacing>0</Spacing>
     <UseKerning>true</UseKerning>
     <Style>Regular</Style>

@@ -86,9 +86,8 @@ namespace AntiTankGame2.GameScreens
         /// <param name="gameTime"></param>
         public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
-
             BaseEngine.Bloom.Enabled = false;
-            ScreenManager.FadeBackBufferToBlack(TransitionAlpha * 2 / 3);
+            ScreenManager.FadeBackBufferToBlack(TransitionAlpha * 5 / 5);
             base.Draw(gameTime);
         }
         #endregion

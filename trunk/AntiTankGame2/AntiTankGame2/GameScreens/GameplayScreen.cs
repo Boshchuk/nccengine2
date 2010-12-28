@@ -1,6 +1,6 @@
-//#define DRAWPARTICLE
-//#defene LENSFLARE
-//#define USEBLOOM
+#define DRAWPARTICLE
+//#define LENSFLARE
+#define USEBLOOM
 
 #region Using Statement
 
@@ -25,8 +25,8 @@ using NccEngine2.GameComponents.Graphics.Textures;
 using NccEngine2.GameComponents.Models.Terrain;
 using NccEngine2.GameComponents.NccInput;
 using NccEngine2.GameComponents.Scene;
+using NccEngine2.GameComponents.Scene.SceneObject;
 using NccEngine2.GameDebugTools;
-using XnaInput;
 
 #endregion
 
@@ -38,9 +38,9 @@ namespace AntiTankGame2.GameScreens
 
         private static double delta;
 
-        //readonly HoffmanAtmosphere atmosphere = new HoffmanAtmosphere();
-
+#pragma warning disable 649
         private HeightMapInfo heightMapInfo;
+#pragma warning restore 649
 
         private TankHeight targetTank;
         private EndPoint endPoint;
@@ -52,11 +52,8 @@ namespace AntiTankGame2.GameScreens
         private bool wasSound;
 
         private const int CrossBarTextureHeight = 586;
-
         private const int CrossBarTextureWidth = 586;
-
         private const int CrossBarTextureHeightHalf = 293;
-
         private const int CrossBarTextureWidthHalf = 293;
 
         //precalculatet optimization
@@ -66,13 +63,16 @@ namespace AntiTankGame2.GameScreens
         static readonly Rectangle Dest3 = new Rectangle(BaseEngine.Height / 2 - CrossBarTextureWidthHalf, BaseEngine.Height / 2 - CrossBarTextureHeightHalf + CrossBarTextureHeight, BaseEngine.Width, BaseEngine.Height);
         static readonly Rectangle Dest4 = new Rectangle(BaseEngine.Width / 2 - CrossBarTextureWidthHalf + CrossBarTextureWidth, BaseEngine.Height / 2 - CrossBarTextureHeightHalf, BaseEngine.Width, BaseEngine.Height);
 
+        Vector2 textStartPosition = new Vector2(10, 20);
+        private Color fontColor;
 
         private bool drawCross = true;
         private bool clearSunCross;
 
         private int bloomSettingsIndex;
 
-
+        private Texture2D crossBarTexture;
+        private Texture2D blackTexture;
 
         #endregion
 #if DRAWPARTICLE
@@ -189,17 +189,8 @@ namespace AntiTankGame2.GameScreens
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
 
-            #region camera setup
-
-            CameraManager.SetActiveCamera(CameraManager.CameraNumber.Default);
-            CameraManager.ActiveCamera.Position = new Vector3(-1500.0f, -630.0f, 1787.0f);
-
-            CameraManager.SetCamerasFrustum(0.1f, 41000.0f, BaseEngine.AspectRatio);
-
-            CameraManager.ActiveCamera.RotateY((145));
-
-            #endregion
-
+            fontColor = new Color(255, 255, 255, TransitionAlpha);
+           // SetupCamera();
             AudioManager.StopMusic();
 
 #if (DRAWPARTICLE)
@@ -229,23 +220,37 @@ namespace AntiTankGame2.GameScreens
 #endif
         }
 
+        private static void SetupCamera()
+        {
+            #region camera setup
+
+            CameraManager.SetActiveCamera(CameraManager.CameraNumber.Default);
+            CameraManager.ActiveCamera.Position = new Vector3(-1500.0f, -630.0f, 1787.0f);
+
+            CameraManager.SetCamerasFrustum(0.1f, 41000.0f, BaseEngine.AspectRatio);
+            CameraManager.ActiveCamera.RotateY((145));
+
+            #endregion
+        }
+
         /// <summary>
         /// Load graphics content for the game.
         /// </summary>
         public override void LoadContent()
         {
            //SceneGraphManager.DrawDebugger = true;
-            
+            SetupCamera();
+
             TextureManager.AddTexture(new NccTexture(ContentConstants.CrossbarTexturePath), ContentConstants.CrossbarName); // crossbar init
             TextureManager.AddTexture(new NccTexture(ContentConstants.BlackRactangleTexturePath), ContentConstants.BlackRactangeleName); // black rectangle int
 
+            crossBarTexture = TextureManager.GetTexture(ContentConstants.CrossbarName).BaseTexture as Texture2D;
+            blackTexture = TextureManager.GetTexture(ContentConstants.BlackRactangeleName).BaseTexture as Texture2D;
 
             var heightMapTerrain = new HeightMapTerrain();
             SceneGraphManager.AddObject(heightMapTerrain);
 
-
             targetTank = new TankHeight(heightMapInfo, new Vector3(100, 730, 95));
-            //targetTank.Scale = new Vector3(0.1f,0.1f,0.1f);
             SceneGraphManager.AddObject(targetTank);
 
             endPoint = new EndPoint { Position = new Vector3(100.0f, 0.0f, 0.0f), Scale = new Vector3(20f, 20f, 20f) };
@@ -262,7 +267,8 @@ namespace AntiTankGame2.GameScreens
             // once the load has finished, we use ResetElapsedTime to tell the game's
             // timing mechanism that we have just finished a very long frame, and that
             // it should not try to catch up.
-
+            BaseEngine.AudioManager.LoadSound("Start", "Start");
+            
             BaseEngine.Bloom.Visible = false;
             EngineManager.Game.ResetElapsedTime();
         }
@@ -279,32 +285,33 @@ namespace AntiTankGame2.GameScreens
         public override void Update(GameTime gameTime, bool otherScreenHasFocusParameter, bool coveredByOtherScreen)
         {
 #if(DRAWPARTICLE)
-            UpdateRarticles(gameTime);
+            if (SceneGraphManager.Paused != true)
+            {
+                UpdateRarticles(gameTime);
+            }
 #endif
             base.Update(gameTime, otherScreenHasFocusParameter, coveredByOtherScreen);
             delta = gameTime.ElapsedGameTime.TotalSeconds;
-
          
             HandleCube();
 
             collisionstate = Collsison(roket, endPoint);
             if (!collisionstate)
             {
-                roket.Position = RocketHelper.RocketPos(gameTime, roket.Position, endPoint.Position, lastendPointPos);
+                roket.Position = RocketHelper.RocketPos(roket.Position, endPoint.Position, lastendPointPos);
             }
             else
             {
                 if (!wasSound)
                 {
-                    BaseEngine.AudioManager.Play3DSound("Content/Sounds/Start", false, roket);
+                    //BaseEngine.AudioManager.Play3DSound("Content/Sounds/Start", false, roket);
+                    AudioManager.PlaySound("Start");
                     wasSound = true;
                 }
             }
-
         }
-        
 
-        private static bool Collsison(EndPoint rocket, EndPoint target)
+        private static bool Collsison(INccSceneObject rocket, INccSceneObject target)
         {
             var rock = new BoundingSphere(rocket.Position,10);
             var targ = new BoundingSphere(target.Position,10);
@@ -312,10 +319,9 @@ namespace AntiTankGame2.GameScreens
             return rock.Intersects(targ);
         }
 
-
         public override void HandleInput(GameTime gameTime, Input input)
         {
-            if (BaseEngine.debugSystem.DebugCommandUI.UIState != DebugCommandUI.State.Opened)
+            if (BaseEngine.DebugSystem.DebugCommandUI.UIState != DebugCommandUI.State.Opened)
             {
 
                 //delta = gameTime.ElapsedGameTime.TotalSeconds;
@@ -581,20 +587,34 @@ namespace AntiTankGame2.GameScreens
 
         public override void Draw(GameTime gameTime)
         {
-            //base.Draw(gameTime);
-
             BaseEngine.RestorSamplerState();
-
             BaseEngine.Bloom.BeginDraw();
 
-            BaseEngine.Device.Clear(BaseEngine.BackgroundColor);
-
-
-          //  SceneGraphManager.DrawCulling(gameTime);
-
+            // TODO make optimization
+           // BaseEngine.Device.Clear(BaseEngine.BackgroundColor);
+           // SceneGraphManager.DrawCulling(gameTime);
          
-            BaseEngine.Device.Clear(BaseEngine.BackgroundColor);
+            BaseEngine.Device.Clear(Color.Black);
+#if (DRAWPARTICLE)
+            {
+                #region draw particle
+                
+                    //var view = CameraManager.ActiveCamera.View;
+                    //var projection = CameraManager.ActiveCamera.Projection;
 
+                    // Pass camera matrices through to the particle system components.
+                    explosionParticles.SetCamera(CameraManager.ActiveCamera.View, CameraManager.ActiveCamera.Projection);
+                    explosionSmokeParticles.SetCamera(CameraManager.ActiveCamera.View,
+                                                      CameraManager.ActiveCamera.Projection);
+                    projectileTrailParticles.SetCamera(CameraManager.ActiveCamera.View,
+                                                       CameraManager.ActiveCamera.Projection);
+                    smokePlumeParticles.SetCamera(CameraManager.ActiveCamera.View, CameraManager.ActiveCamera.Projection);
+                    fireParticles.SetCamera(CameraManager.ActiveCamera.View, CameraManager.ActiveCamera.Projection);
+                
+
+                #endregion
+            }
+#endif
             SceneGraphManager.Draw(gameTime);
             
             base.Draw(gameTime);
@@ -603,42 +623,22 @@ namespace AntiTankGame2.GameScreens
             #region  setting LensFlare
             if (SceneGraphManager.Paused != true)
             {
-                LensFlareComponent.Projection = CameraManager.ActiveCamera.Projection;
-                LensFlareComponent.View = CameraManager.ActiveCamera.View;
+                BaseEngine.LensFlareComponent.Projection = CameraManager.ActiveCamera.Projection;
+                BaseEngine.LensFlareComponent.View = CameraManager.ActiveCamera.View;
             }
             else
             {
-                LensFlareComponent.Projection = Matrix.Identity;
-                LensFlareComponent.View = Matrix.Identity;
+                BaseEngine.LensFlareComponent.Projection = Matrix.Identity;
+                BaseEngine.LensFlareComponent.View = Matrix.Identity;
             }
 
             if (clearSunCross)
             {
-                LensFlareComponent.Projection = Matrix.Identity;
-                LensFlareComponent.View = Matrix.Identity;
+                BaseEngine.LensFlareComponent.Projection = Matrix.Identity;
+                BaseEngine.LensFlareComponent.View = Matrix.Identity;
             }
             #endregion
 #endif
-
-
-#if (DRAWPARTICLE)
-            {
-            #region draw particle
-
-                var view = CameraManager.ActiveCamera.View;
-                var projection = CameraManager.ActiveCamera.Projection;
-
-                // Pass camera matrices through to the particle system components.
-                explosionParticles.SetCamera(view, projection);
-                explosionSmokeParticles.SetCamera(view, projection);
-                projectileTrailParticles.SetCamera(view, projection);
-                smokePlumeParticles.SetCamera(view, projection);
-                fireParticles.SetCamera(view, projection);
-
-                #endregion
-            }
-#endif
-          
 
 
         }
@@ -655,40 +655,33 @@ namespace AntiTankGame2.GameScreens
                 }
             }
 
-            var cameraMessage = string.Format("cam pos x{0} y{1} z{2}", CameraManager.ActiveCamera.Position.X, CameraManager.ActiveCamera.Position.Y, CameraManager.ActiveCamera.Position.Z);
-            var rocketPos = string.Format("rocket pos x{0} y{1} z{2} radius{3}", roket.Position.X, roket.Position.Y, roket.Position.Z,roket.ModelRadius);
+            //var cameraMessage = string.Format("cam pos x{0} y{1} z{2}", CameraManager.ActiveCamera.Position.X, CameraManager.ActiveCamera.Position.Y, CameraManager.ActiveCamera.Position.Z);
+            //var rocketPos = string.Format("rocket pos x{0} y{1} z{2} radius{3}", roket.Position.X, roket.Position.Y, roket.Position.Z,roket.ModelRadius);
 
-            var col = string.Format("collision was: {0}", collisionstate);
+            //var col = string.Format("collision was: {0}", collisionstate);
             //var cameraAngle = string.Format("Angle hor {0} vert {1}", MathHelper.ToDegrees(CameraManager.ActiveCamera.Yaw), MathHelper.ToDegrees(CameraManager.ActiveCamera.Pitch));
             //var bloomInfo = string.Format("F5 = settings ({0}{1}F6 = toggle bloom ({2}){1}F7 = show buffer ({3})", EngineManager.Bloom.Settings.Name, Environment.NewLine, (EngineManager.Bloom.Visible ? "on" : "off"), EngineManager.Bloom.ShowBuffer);
             //var particleMessage = string.Format("Current effect: {0}!!!{1}Hit space bar to switch.",currentState,Environment.NewLine);
 
             //var particleMessage = string.Format("Particle pos : {0}",smokePlumeParticles.);
 
-            // Center the text in the viewport.
-            var textPosition = new Vector2(10, 20);
-
-            var color = new Color(255, 255, 255, TransitionAlpha);
+            //var mess = string.Format("Culled: {0}, Occuled {1}", SceneGraphManager.Culled, SceneGraphManager.Occluded);
 
             #region SpriteBatch Drawing
-            ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend/*AlphaBlend*//*,SaveStateMode.SaveState*/);
-            ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, cameraMessage, new Vector2(textPosition.X, textPosition.Y + 30), color);
-            //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, rocketPos, new Vector2(textPosition.X, textPosition.Y + 60), color);
-            //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, col, new Vector2(textPosition.X, textPosition.Y + 120), color);
-            // //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, particleMessage, new Vector2(textPosition.X, textPosition.Y + 120), color);
-            // //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, cameraAngle, new Vector2(textPosition.X, textPosition.Y + 90), color);
-            // //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, bloomInfo, new Vector2(textPosition.X+550, textPosition.Y ), color);
-            ScreenManager.SpriteBatch.End();
+            //ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend/*AlphaBlend*//*,SaveStateMode.SaveState*/);
+            //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, cameraMessage, new Vector2(textStartPosition.X, textStartPosition.Y + 30), fontColor);
+            //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, mess, new Vector2(textStartPosition.X, textStartPosition.Y + 60), fontColor);
+            //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, col, new Vector2(textStartPosition.X, textStartPosition.Y + 120), fontColor);
+            //// //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, particleMessage, new Vector2(textPosition.X, textPosition.Y + 120), color);
+            //// //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, cameraAngle, new Vector2(textPosition.X, textPosition.Y + 90), color);
+            //// //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, bloomInfo, new Vector2(textPosition.X+550, textPosition.Y ), color);
+            //ScreenManager.SpriteBatch.End();
             #endregion
 
         }
 
-        private static void DrawHUDCrossBar()
+        private void DrawHUDCrossBar()
         {
-            var crossBarTexture = TextureManager.GetTexture(ContentConstants.CrossbarName).BaseTexture as Texture2D;
-            var blackTexture = TextureManager.GetTexture(ContentConstants.BlackRactangeleName).BaseTexture as Texture2D;
-
-            //BUG Here
             ScreenManager.SpriteBatch.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend, null, null, null);
 
             ScreenManager.SpriteBatch.Draw(blackTexture, Dest1, Color.White);
@@ -701,7 +694,6 @@ namespace AntiTankGame2.GameScreens
         }
 
         #region target lock logic
-
 
 
         private void HandleCube()

@@ -1,4 +1,3 @@
-using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NccEngine2;
@@ -24,7 +23,7 @@ namespace AntiTankGame2.GameObjects.TestLogic
 
         public bool Occluded { get; set; }
 
-        private OcclusionQuery query;// = new OcclusionQuery(EngineManager.Device);
+        private OcclusionQuery query= new OcclusionQuery(BaseEngine.Device);
         public OcclusionQuery Query
         {
             get { return query; }
@@ -51,7 +50,6 @@ namespace AntiTankGame2.GameObjects.TestLogic
         #region Load and Unload
         public void LoadContent()
         {
-            //var tankModel = new NccModel("Content/Models/new");
             var tankModel = new NccModel("Content/Models/box");
             ModelManager.AddModel(tankModel, "rocket");
             ModelName = "rocket";
@@ -72,7 +70,7 @@ namespace AntiTankGame2.GameObjects.TestLogic
             Occluded = false;
             if (ReadyToRender && !Culled)
             {
-                //query.Begin();
+                query.Begin();
                 var model = ModelManager.GetModel(OcclusionModelName);
                 if (model != null && model.ReadyToRender)
                 {
@@ -92,17 +90,17 @@ namespace AntiTankGame2.GameObjects.TestLogic
                         mesh.Draw();
                     }
                 }
-                //query.End();
+                query.End();
 
-                //while (!query.IsComplete)
-                //{
+                while (!query.IsComplete)
+                {
 
-                //}
+                }
 
-                //if (query.IsComplete && query.PixelCount == 0)
-                //{
-                //    Occluded = true;
-                //}
+                if (query.IsComplete && query.PixelCount == 0)
+                {
+                    Occluded = true;
+                }
             }
         }
 
@@ -162,10 +160,10 @@ namespace AntiTankGame2.GameObjects.TestLogic
 
         #endregion
 
-        public Vector3 Forward { get; set; }
+        public Vector3 Forward { get; private set; }
 
-        public Vector3 Up{ get; set; }
+        public Vector3 Up{ get; private set; }
 
-        public Vector3 Velocity{ get; set; }
+        public Vector3 Velocity{ get; private set; }
     }
 }

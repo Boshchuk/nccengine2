@@ -1,34 +1,14 @@
-using System;
-using AntiTankGame2.Localization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NccEngine2;
 using NccEngine2.GameComponents.CameraManagment;
 using NccEngine2.GameComponents.Models;
-using NccEngine2.GameComponents.Scene.Graph.Interfaces;
 using NccEngine2.GameComponents.Scene.SceneObject;
 
 namespace AntiTankGame2.GameObjects.Tanks
 {
-    public class BaseTank : BaseNccSceneObject, INccLoadable
+    public class BaseTank : BaseNccSceneObject
     {
-        
-        #region Load and Unload
-        public void LoadContent()
-        {
-            var model = new NccModel(ContentConstants.TankHeightModel);
-            ModelManager.AddModel(model, ContentConstants.TankModelName);
-            ModelName = ContentConstants.TankModelName;
-            OcclusionModelName = ContentConstants.TankModelName;
-        }
-
-        public void UnloadContent()
-        {
-            GC.Collect();
-        }
-        #endregion
-
-       
 
         public override void Update(GameTime gameTime)
         {
@@ -37,8 +17,6 @@ namespace AntiTankGame2.GameObjects.Tanks
             var model = ModelManager.GetModel(ModelName);
             if (model != null && model.ReadyToRender && !ReadyToRender)
             {
-
-                //TODO ROTARATE TANK
 
                 var transforms = new Matrix[model.BaseModel.Bones.Count];
                 model.BaseModel.CopyAbsoluteBoneTransformsTo(transforms);

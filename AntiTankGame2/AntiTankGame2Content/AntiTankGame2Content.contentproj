@@ -46,6 +46,7 @@
       <Name>LocalizatedFont</Name>
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
+      <SubType>Designer</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -241,11 +242,13 @@
       <Name>ExplosionSettings</Name>
       <Importer>XmlImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
+      <SubType>Designer</SubType>
     </Compile>
     <Compile Include="ParticleSettings\ExplosionSmokeSettings.xml">
       <Name>ExplosionSmokeSettings</Name>
       <Importer>XmlImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
+      <SubType>Designer</SubType>
     </Compile>
     <Compile Include="ParticleSettings\FireSettings.xml">
       <Name>FireSettings</Name>
@@ -282,7 +285,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Textures\Loadings\" />
     <Folder Include="Videos\" />
   </ItemGroup>
   <ItemGroup>
@@ -307,10 +309,39 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Textures\ground.png">
+    <None Include="Textures\ground.png">
       <Name>ground</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\LensFlare\flare1.png">
+      <Name>flare1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\LensFlare\flare2.png">
+      <Name>flare2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\LensFlare\flare3.png">
+      <Name>flare3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\LensFlare\glow.png">
+      <Name>glow</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ParticleSettings\flash.xml">
+      <Name>flash</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

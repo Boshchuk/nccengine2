@@ -12,7 +12,7 @@ namespace AntiTankGame2.GameObjects.Tanks
     /// <summary>
     /// This tank can be placed on Height Map
     /// </summary>
-    sealed class TankHeight : BaseTank, IAcceptNccInput
+    sealed class TankHeight : LittleTank, IAcceptNccInput
     {
         #region Constants
 
@@ -35,7 +35,7 @@ namespace AntiTankGame2.GameObjects.Tanks
         /// The direction that the tank is facing, in radians. This value will be used
         /// to position and and aim the camera.
         /// </summary>
-        public float FacingDirection { get; private set; }
+        private float FacingDirection { get; set; }
 
         #endregion
 
@@ -54,9 +54,6 @@ namespace AntiTankGame2.GameObjects.Tanks
 
         
        #endregion
-        
-        private float turn;
-        
       
         #region construtcors
         // ReSharper disable AccessToStaticMemberViaDerivedType
@@ -165,13 +162,11 @@ namespace AntiTankGame2.GameObjects.Tanks
                 // new position that we calculated.
                 Position = newPosition;
             }
-
-            turn = turnAmount;
+            
         }
 
         public override void Draw(GameTime gameTime)
         {
-            //base.Draw(gameTime);
             if (ReadyToRender)
             {
                 BaseEngine.Device.DepthStencilState = new DepthStencilState {DepthBufferEnable = true};
@@ -195,11 +190,46 @@ namespace AntiTankGame2.GameObjects.Tanks
                             effect.Projection = CameraManager.ActiveCamera.Projection;
 
                             effect.EnableDefaultLighting();
-
-                            //effect.SpecularColor = Vector3.One;
                         }
                         mesh.Draw();
                     }
+                }
+            }
+        }
+
+        public override void DrawCulling(GameTime gameTime)
+        {
+            Occluded = false;
+            if (ReadyToRender && !Culled)
+            {
+                Query.Begin();
+                var model = ModelManager.GetModel(ModelName);
+                if (model != null && model.ReadyToRender)
+                {
+                    var transforms = new Matrix[model.BaseModel.Bones.Count];
+                    model.BaseModel.CopyAbsoluteBoneTransformsTo(transforms);
+
+                    foreach (var mesh in model.BaseModel.Meshes)
+                    {
+                        foreach (BasicEffect effect in mesh.Effects)
+                        {
+                            effect.World = World;
+                            effect.View = CameraManager.ActiveCamera.View;
+                            effect.Projection = CameraManager.ActiveCamera.Projection;
+                        }
+                        mesh.Draw();
+                    }
+                }
+                Query.End();
+
+                while (!Query.IsComplete)
+                {
+
+                }
+
+                if (Query.IsComplete && Query.PixelCount == 0)
+                {
+                    Occluded = true;
                 }
             }
         }

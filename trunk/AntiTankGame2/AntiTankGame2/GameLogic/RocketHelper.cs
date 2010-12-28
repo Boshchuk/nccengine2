@@ -1,11 +1,10 @@
-using System;
 using Microsoft.Xna.Framework;
 
 namespace AntiTankGame2.GameLogic
 {
     public static class RocketHelper
     {
-        public static Vector3 RocketPos(GameTime gameTime, Vector3 rocketPos,
+        public static Vector3 RocketPos(Vector3 rocketPos,
              Vector3 targetPos, Vector3 lastTargetPos)
         {
             const float rocketSpeed = 0.09f;
@@ -37,12 +36,7 @@ namespace AntiTankGame2.GameLogic
             var okruznost = Vector3.SmoothStep(oldsectrCentr, targetPos, rad);
 
 
-            if (Vector3.Distance(targetPos,oldsectrCentr) < rad)
-            {
-                return targetPos;
-            }
-
-            return okruznost;
+            return Vector3.Distance(targetPos,oldsectrCentr) < rad ? targetPos : okruznost;
         }
 
     }

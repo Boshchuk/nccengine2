@@ -1,4 +1,5 @@
-using System;
+#define RICH
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NccEngine2.GameComponents.CameraManagment;
@@ -10,14 +11,12 @@ namespace NccEngine2.GameComponents.Scene.SceneObject
 {
     public class BaseNccSceneObject : NccSceneObject, INccUpdateable, INccOcclusion
     {
-
         public override void DrawCulling(GameTime gameTime)
         {
-            //Occluded = false;
-            //var lastState = EngineManager.Device.RasterizerState.FillMode;
+            Occluded = false;
             if (ReadyToRender && !Culled)
             {
-                //  query.Begin();
+                query.Begin();
                 var model = ModelManager.GetModel(ModelName);
                 if (model != null && model.ReadyToRender)
                 {
@@ -28,62 +27,51 @@ namespace NccEngine2.GameComponents.Scene.SceneObject
                     {
                         foreach (BasicEffect effect in mesh.Effects)
                         {
-                            //effect.EnableDefaultLighting();
-                            //effect.PreferPerPixelLighting = true;
                             effect.World =World;
                             effect.View = CameraManager.ActiveCamera.View;
                             effect.Projection = CameraManager.ActiveCamera.Projection;
-
-                           // BaseEngine.Device.RasterizerState = new RasterizerState {FillMode = FillMode.WireFrame};
-
                         }
                         mesh.Draw();
                     }
                 }
-                //  query.End();
+                query.End();
 
-                //  while (!query.IsComplete)
-                //{
+                while (!query.IsComplete)
+                {
 
-                // }
+                }
 
-                //  if (query.IsComplete && query.PixelCount == 0)
-                //{
-                    //Occluded = true;
-                //}
+                if (query.IsComplete && query.PixelCount == 0)
+                {
+                    Occluded = true;
+                }
             }
-            // EngineManager.Device.RasterizerState = new RasterizerState { FillMode = lastState };
-
         }
 
         public virtual void Update(GameTime gameTime)
         {
-            // var elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
-
             var model = ModelManager.GetModel(ModelName);
-            if (model != null && model.ReadyToRender && !ReadyToRender)
+            if (model == null || !model.ReadyToRender || ReadyToRender) return;
+            var transforms = new Matrix[model.BaseModel.Bones.Count];
+            model.BaseModel.CopyAbsoluteBoneTransformsTo(transforms);
+
+            BoundingBox = new BoundingBox();
+
+            foreach (var mesh in model.BaseModel.Meshes)
             {
-                var transforms = new Matrix[model.BaseModel.Bones.Count];
-                model.BaseModel.CopyAbsoluteBoneTransformsTo(transforms);
-
-                BoundingBox = new BoundingBox();
-
-                foreach (var mesh in model.BaseModel.Meshes)
+                if (!BoundingBoxCreated)
                 {
-                    if (!BoundingBoxCreated)
-                    {
-                        BoundingBox = BoundingBox.CreateMerged(BoundingBox, BoundingBox.CreateFromSphere(mesh.BoundingSphere));
-                    }
+                    BoundingBox = BoundingBox.CreateMerged(BoundingBox, BoundingBox.CreateFromSphere(mesh.BoundingSphere));
                 }
-                BoundingBoxCreated = true;
-
-                var min = BoundingBox.Min;
-                var max = BoundingBox.Max;
-
-                BoundingBox = new BoundingBox(min, max);
-
-                ReadyToRender = true;
             }
+            BoundingBoxCreated = true;
+
+            var min = BoundingBox.Min;
+            var max = BoundingBox.Max;
+
+            BoundingBox = new BoundingBox(min, max);
+
+            ReadyToRender = true;
         }
 
         public bool Culled { get; set; }
@@ -102,23 +90,35 @@ namespace NccEngine2.GameComponents.Scene.SceneObject
 
         public string OcclusionModelName { get; set; }
 
-        private OcclusionQuery query;//= new OcclusionQuery(EngineManager.Device);
+#if RICH
+        private OcclusionQuery query;// = new OcclusionQuery(BaseEngine.Device);
+#endif
+
+#if HIDEF
+        private OcclusionQuery query = new OcclusionQuery(BaseEngine.Device);
+#endif
         public OcclusionQuery Query
         {
             get
             {
+#if RICH
                 if (GraphicsAdapter.DefaultAdapter.IsProfileSupported(GraphicsProfile.Reach))
                 {
                     if (query == null)
                     {
-                        query = new OcclusionQuery(EngineManager.Device);
+                        query = new OcclusionQuery(BaseEngine.Device);
                     }
                     else
                     {
                         return query;
                     }
                 }
+
                 return null;
+#endif
+#if HIDEF
+                return query;
+#endif
             }
         }
 

@@ -35,7 +35,7 @@ namespace NccEngine2.GameDebugTools
         /// <summary>
         /// Gets/Sets FPS sample duration.
         /// </summary>
-        public TimeSpan SampleSpan { get; set; }
+        private TimeSpan SampleSpan { get; set; }
 
         #endregion
 
@@ -94,8 +94,7 @@ namespace NccEngine2.GameDebugTools
         /// <summary>
         /// FPS command implementation.
         /// </summary>
-        private void CommandExecute(IDebugCommandHost host,
-                                    string command, IList<string> arguments)
+        private void CommandExecute(IDebugCommandHost host,string command, IList<string> arguments)
         {
             if (arguments.Count == 0)
                 Visible = !Visible;
@@ -143,10 +142,9 @@ namespace NccEngine2.GameDebugTools
 
             // Compute size of border area.
             Vector2 size = font.MeasureString("X");
-            Rectangle rc =
-                new Rectangle(0, 0, (int)(size.X * 14f), (int)(size.Y * 1.3f));
+            var rc =new Rectangle(0, 0, (int)(size.X * 14f), (int)(size.Y * 1.3f));
 
-            Layout layout = new Layout(spriteBatch.GraphicsDevice.Viewport);
+            var layout = new Layout(spriteBatch.GraphicsDevice.Viewport);
             rc = layout.Place(rc, 0.01f, 0.01f, Alignment.TopLeft);
 
             // Place FPS string in border area.

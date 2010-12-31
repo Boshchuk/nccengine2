@@ -27,7 +27,7 @@ namespace NccEngine2.GameComponents.CameraManagment
         /// <summary>
         /// Is the CameraManagers Initialized, used for test cases and setup of Effects.
         /// </summary>
-        public static bool Initialized { get; private set; }
+        private static bool Initialized { get; set; }
 
         /// <summary>
         /// The camera where all the action takes place.

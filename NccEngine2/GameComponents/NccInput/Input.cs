@@ -53,50 +53,48 @@ namespace NccEngine2.GameComponents.NccInput
         /// </summary>
         public void Update()
         {
-            if (BaseEngine.debugSystem.DebugCommandUI.UIState != DebugCommandUI.State.Opened)
+            if (BaseEngine.DebugSystem.DebugCommandUI.UIState == DebugCommandUI.State.Opened) return;
+
+            #region handle
+
+            LastKeyboardState = CurrentKeyboardState;
+            LastGamePadState = CurrentGamePadState;
+
+            CurrentKeyboardState = Keyboard.GetState();
+            CurrentGamePadState = GamePad.GetState(PlayerIndex.One);
+
+#if !XBOX
+            LastMouseState = CurrentMouseState;
+
+            CurrentMouseState = Mouse.GetState();
+
+            LastSimpleGamePadState = CurrentSimpleGamePadState;
+
+            //#warning может плодить ошибки если джойстик не подключен... //TODO придумать решение проблемыс октлюченным контролером
+            if (!wasError)
             {
-
-                #region handle
-
-                LastKeyboardState = CurrentKeyboardState;
-                LastGamePadState = CurrentGamePadState;
-
-                CurrentKeyboardState = Keyboard.GetState();
-                CurrentGamePadState = GamePad.GetState(PlayerIndex.One);
-
-#if !XBOX
-                LastMouseState = CurrentMouseState;
-
-                CurrentMouseState = Mouse.GetState();
-
-                LastSimpleGamePadState = CurrentSimpleGamePadState;
-
-                //#warning может плодить ошибки если джойстик не подключен... //TODO придумать решение проблемыс октлюченным контролером
-                if (!wasError)
+                try
                 {
-                    try
-                    {
-                        // #if !DEGUG
-                        //TODO check the type of geme pad...
-                        CurrentSimpleGamePadState = PcDualShock.GetState(PlayerIndex.One);
+                    // #if !DEGUG
+                    //TODO check the type of geme pad...
+                    CurrentSimpleGamePadState = PcDualShock.GetState(PlayerIndex.One);
 
-                        //  #endif
-                    }
-                    catch (Exception) //If Any exception
-                    {
-#if !XBOX
-                        wasError = true;
-#endif
-                    }
+                    //  #endif
                 }
+                catch (Exception) //If Any exception
+                {
+#if !XBOX
+                    wasError = true;
+#endif
+                }
+            }
 
 
-                MouseMoved = new Vector2(LastMouseState.X - CurrentMouseState.X, LastMouseState.Y - CurrentMouseState.Y);
-                lastMouseLocation = new Point(CurrentMouseState.X, CurrentMouseState.Y);
+            MouseMoved = new Vector2(LastMouseState.X - CurrentMouseState.X, LastMouseState.Y - CurrentMouseState.Y);
+            lastMouseLocation = new Point(CurrentMouseState.X, CurrentMouseState.Y);
 #endif
 
-                #endregion
-            }
+            #endregion
         }
 
         /// <summary>

@@ -24,5 +24,10 @@ namespace NccEngine2.Helpers
         /// Path to simple font
         /// </summary>
         public const string FontPath = "Content/Fonts/Font";
+
+        public const string LensFlare1 = "Content/Textures/LensFlare/flare1";
+        public const string LensFlare2 = "Content/Textures/LensFlare/flare2";
+        public const string LensFlare3 = "Content/Textures/LensFlare/flare3";
+        public const string LensFlareGlow = "Content/Textures/LensFlare/glow";
     }
 }

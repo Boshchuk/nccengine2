@@ -17,7 +17,7 @@ namespace NccEngine2.GameComponents.Physics
         /// <summary>
         /// Is the PhysicsManagers Initialized, used for test cases and setup of Effects.
         /// </summary>
-        public static bool Initialized { get; private set; }
+        private static bool Initialized { get; set; }
 
         /// <summary>
         /// Create the Physics Managers.
@@ -61,8 +61,9 @@ namespace NccEngine2.GameComponents.Physics
 
         public static void UnloadContent()
         {
-            for (var i = 0; i < physicsSystem.Controllers.Count; i++)
+            for (int index = 0; index < physicsSystem.Controllers.Count; index++)
             {
+                var t = physicsSystem.Controllers[index];
                 physicsSystem.Controllers[0].DisableController();
                 physicsSystem.RemoveConstraint(physicsSystem.Constraints[0]);
             }

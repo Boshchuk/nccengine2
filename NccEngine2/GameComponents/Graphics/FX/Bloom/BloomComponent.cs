@@ -197,8 +197,6 @@ namespace NccEngine2.GameComponents.Graphics.FX.Bloom
                                bloomCombineEffect,
                                IntermediateBuffer.FinalResult);
 
-//TODO Check if this needed? RestoreRenderStates();
-        //    RestoreRenderStates();
         }
 
 
@@ -328,22 +326,7 @@ namespace NccEngine2.GameComponents.Graphics.FX.Bloom
         void RestoreRenderStates()
         {
             // TODO MAKE this correct
-            // TODO MAKE this correct
-            //RenderState renderState = GraphicsDevice.RenderState;
-
-            //renderState.DepthBufferEnable = true;
-            //renderState.AlphaTestEnable = false;
-            //renderState.AlphaBlendEnable = false;
-
-            //SamplerState samplerState = GraphicsDevice.SamplerStates[0];
-
-            //samplerState.AddressU = TextureAddressMode.Wrap;
-            //samplerState.AddressV = TextureAddressMode.Wrap;
-
-            // TODO MAKE this correct
             
-            
-            //RenderState renderState = GraphicsDevice.RenderState;
 
              var ds = new  DepthStencilState {DepthBufferEnable = true};
 
@@ -354,15 +337,7 @@ namespace NccEngine2.GameComponents.Graphics.FX.Bloom
                               AlphaDestinationBlend = Blend.Zero,
                               ColorDestinationBlend = Blend.Zero
                           };
-             //bs = BlendState.Opaque;
-
-
-             //var at = new AlphaTestEffect();
-            
-
-            //renderState.DepthBufferEnable = true;
-            //renderState.AlphaTestEnable = false;
-            //renderState.AlphaBlendEnable = false;
+         
 
             var samplerState = new SamplerState
                                    {

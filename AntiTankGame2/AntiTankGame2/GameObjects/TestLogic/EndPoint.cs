@@ -1,6 +1,5 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using NccEngine2;
 using NccEngine2.GameComponents.Audio;
 using NccEngine2.GameComponents.CameraManagment;
 using NccEngine2.GameComponents.Models;
@@ -10,7 +9,7 @@ using NccEngine2.GameComponents.Scene.SceneObject;
 
 namespace AntiTankGame2.GameObjects.TestLogic
 {
-    public class EndPoint : NccSceneObject, INccLoadable, INccUpdateable, INccOcclusion, IAudioEmitter
+    public sealed class EndPoint : NccSceneObject, INccLoadable, INccUpdateable, INccOcclusion, IAudioEmitter
     {
         #region fields
 
@@ -22,8 +21,12 @@ namespace AntiTankGame2.GameObjects.TestLogic
 
 
         public bool Occluded { get; set; }
-
+#if HIDEF
         private OcclusionQuery query= new OcclusionQuery(BaseEngine.Device);
+#endif
+#pragma warning disable 649
+        private OcclusionQuery query;// = new OcclusionQuery(BaseEngine.Device);
+#pragma warning restore 649
         public OcclusionQuery Query
         {
             get { return query; }
@@ -68,39 +71,37 @@ namespace AntiTankGame2.GameObjects.TestLogic
         public override void DrawCulling(GameTime gameTime)
         {
             Occluded = false;
-            if (ReadyToRender && !Culled)
+            if (!ReadyToRender || Culled) return;
+            query.Begin();
+            var model = ModelManager.GetModel(OcclusionModelName);
+            if (model != null && model.ReadyToRender)
             {
-                query.Begin();
-                var model = ModelManager.GetModel(OcclusionModelName);
-                if (model != null && model.ReadyToRender)
-                {
-                    var transforms = new Matrix[model.BaseModel.Bones.Count];
-                    model.BaseModel.CopyAbsoluteBoneTransformsTo(transforms);
+                var transforms = new Matrix[model.BaseModel.Bones.Count];
+                model.BaseModel.CopyAbsoluteBoneTransformsTo(transforms);
 
-                    foreach (var mesh in model.BaseModel.Meshes)
+                foreach (var mesh in model.BaseModel.Meshes)
+                {
+                    foreach (BasicEffect effect in mesh.Effects)
                     {
-                        foreach (BasicEffect effect in mesh.Effects)
-                        {
-                            effect.EnableDefaultLighting();
-                            effect.PreferPerPixelLighting = true;
-                            effect.World = World;
-                            effect.View = CameraManager.ActiveCamera.View;
-                            effect.Projection = CameraManager.ActiveCamera.Projection;
-                        }
-                        mesh.Draw();
+                        effect.EnableDefaultLighting();
+                        effect.PreferPerPixelLighting = true;
+                        effect.World = World;
+                        effect.View = CameraManager.ActiveCamera.View;
+                        effect.Projection = CameraManager.ActiveCamera.Projection;
                     }
+                    mesh.Draw();
                 }
-                query.End();
+            }
+            query.End();
 
-                while (!query.IsComplete)
-                {
+            while (!query.IsComplete)
+            {
 
-                }
+            }
 
-                if (query.IsComplete && query.PixelCount == 0)
-                {
-                    Occluded = true;
-                }
+            if (query.IsComplete && query.PixelCount == 0)
+            {
+                Occluded = true;
             }
         }
 
@@ -160,10 +161,13 @@ namespace AntiTankGame2.GameObjects.TestLogic
 
         #endregion
 
+// ReSharper disable UnusedAutoPropertyAccessor.Local
         public Vector3 Forward { get; private set; }
+
 
         public Vector3 Up{ get; private set; }
 
         public Vector3 Velocity{ get; private set; }
+ // ReSharper restore UnusedAutoPropertyAccessor.Local
     }
 }

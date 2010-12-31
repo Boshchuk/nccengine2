@@ -21,6 +21,8 @@ namespace AntiTankGame2.GameScreens
 
         private Texture2D skyRocketTexture;
         private Vector2 skyRoketPos = new Vector2(0,0);
+        
+        Matrix matrix;
 
 
         /// <summary>
@@ -75,7 +77,7 @@ namespace AntiTankGame2.GameScreens
             base.Update(gameTime, otherScreenHasFocusParameter, false);
         }
 
-
+        
         public override void Draw(GameTime gameTime)
         {
             //var viewport = BaseEngine.Device.Viewport;
@@ -83,7 +85,7 @@ namespace AntiTankGame2.GameScreens
             //var fade = TransitionAlpha;
             CameraManager.SetAllCamerasProjectionMatrix(BaseEngine.AspectRatio);
             
-            var matrix = CameraManager.ActiveCamera.View;
+           
             Matrix.CreateRotationY(MathHelper.ToRadians(270) , out matrix);
 
             CameraManager.ActiveCamera.View = matrix;

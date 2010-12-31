@@ -28,33 +28,31 @@ namespace AntiTankGame2.GameObjects.Terrain
 
         public override void Draw(GameTime gameTime)
         {
-            if (ReadyToRender)
+            if (!ReadyToRender) return;
+            BaseEngine.Device.DepthStencilState = new DepthStencilState { DepthBufferEnable = true };
+
+            var model = ModelManager.GetModel(ModelName);
+            if (model != null && model.ReadyToRender)
             {
-                BaseEngine.Device.DepthStencilState = new DepthStencilState { DepthBufferEnable = true };
+                var transforms = new Matrix[model.BaseModel.Bones.Count];
+                model.BaseModel.CopyAbsoluteBoneTransformsTo(transforms);
 
-                var model = ModelManager.GetModel(ModelName);
-                if (model != null && model.ReadyToRender)
+                foreach (var mesh in model.BaseModel.Meshes)
                 {
-                    var transforms = new Matrix[model.BaseModel.Bones.Count];
-                    model.BaseModel.CopyAbsoluteBoneTransformsTo(transforms);
-
-                    foreach (var mesh in model.BaseModel.Meshes)
+                    foreach (BasicEffect effect in mesh.Effects)
                     {
-                        foreach (BasicEffect effect in mesh.Effects)
-                        {
-                            effect.World = transforms[mesh.ParentBone.Index] * World;
-                            effect.View = CameraManager.ActiveCamera.View;
-                            effect.Projection = CameraManager.ActiveCamera.Projection;
+                        effect.World = transforms[mesh.ParentBone.Index] * World;
+                        effect.View = CameraManager.ActiveCamera.View;
+                        effect.Projection = CameraManager.ActiveCamera.Projection;
 
-                            // effect.EnableDefaultLighting();
-                            effect.FogColor = new Vector3(255,255,255);
-                            effect.FogStart = 10;
-                            effect.FogEnd = 100;
-                            //effect.TextureEnabled = false;
+                        // effect.EnableDefaultLighting();
+                        effect.FogColor = new Vector3(255,255,255);
+                        effect.FogStart = 10;
+                        effect.FogEnd = 100;
+                        //effect.TextureEnabled = false;
 
-                        }
-                        mesh.Draw();
                     }
+                    mesh.Draw();
                 }
             }
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using AntiTankGame2.Localization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -38,20 +39,15 @@ namespace AntiTankGame2.GameScreens
         {
             base.Update(gameTime, otherScreenHasFocusParameter, coveredByOtherScreen);
 
-            if (otherScreensAreGone)
+            if (!otherScreensAreGone) return;
+            ScreenManager.RemoveScreen(this);
+
+            foreach (GameScreen screen in screensToLoad.Where(screen => screen != null))
             {
-                ScreenManager.RemoveScreen(this);
-
-                foreach (GameScreen screen in screensToLoad)
-                {
-                    if (screen != null)
-                    {
-                        ScreenManager.AddScreen(screen);
-                    }
-                }
-
-                EngineManager.Game.ResetElapsedTime();
+                ScreenManager.AddScreen(screen);
             }
+
+            EngineManager.Game.ResetElapsedTime();
         }
 
         public override void Draw(GameTime gameTime)
@@ -61,25 +57,23 @@ namespace AntiTankGame2.GameScreens
                 otherScreensAreGone = true;
             }
             //Отображаете окно загрузки в случает если загрузка медленная
-            if (loadingIsSlow)
-            {
-                var message = Strings.Loading;
+            if (!loadingIsSlow) return;
+            var message = Strings.Loading;
 
-                // Center the text in the viewport.
+            // Center the text in the viewport.
                 
-                var viewport = BaseEngine.Device.Viewport;
+            var viewport = BaseEngine.Device.Viewport;
           
-                var viewportSize = new Vector2(viewport.Width, viewport.Height);
-                Vector2 textSize = ScreenManager.Font.MeasureString(message);
-                Vector2 textPosition = (viewportSize - textSize)/2;
+            var viewportSize = new Vector2(viewport.Width, viewport.Height);
+            Vector2 textSize = ScreenManager.Font.MeasureString(message);
+            Vector2 textPosition = (viewportSize - textSize)/2;
 
-                var color = new Color(255, 255, 255, TransitionAlpha);
+            var color = new Color(255, 255, 255, TransitionAlpha);
 
-                //TODO Draw cool loading screean
-                ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend,null,null,null);
-                ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, message, textPosition, color);
-                ScreenManager.SpriteBatch.End();
-            }
+            //TODO Draw cool loading screean
+            ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend,null,null,null);
+            ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, message, textPosition, color);
+            ScreenManager.SpriteBatch.End();
         }
     }
 

@@ -88,7 +88,7 @@ namespace AntiTankGame2.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Not enough video memory. (0) (0) Featured minimum graphics setting. Please restart the application (0) (0) If the message continues appearing, your system does not meet the minimum requirements.
+        ///   Looks up a localized string similar to Not enough video memory. {0} {0} Featured minimum graphics setting. Please restart the application {0} {0} If the message continues appearing, your system does not meet the minimum requirements.
         /// </summary>
         internal static string ErrorOutOfVideoMemory {
             get {

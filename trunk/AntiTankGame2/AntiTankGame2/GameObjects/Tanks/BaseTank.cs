@@ -15,30 +15,27 @@ namespace AntiTankGame2.GameObjects.Tanks
             //var elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             var model = ModelManager.GetModel(ModelName);
-            if (model != null && model.ReadyToRender && !ReadyToRender)
+            if (model == null || !model.ReadyToRender || ReadyToRender) return;
+            var transforms = new Matrix[model.BaseModel.Bones.Count];
+            model.BaseModel.CopyAbsoluteBoneTransformsTo(transforms);
+
+            BoundingBox = new BoundingBox();
+
+            foreach (var mesh in model.BaseModel.Meshes)
             {
-
-                var transforms = new Matrix[model.BaseModel.Bones.Count];
-                model.BaseModel.CopyAbsoluteBoneTransformsTo(transforms);
-
-                BoundingBox = new BoundingBox();
-
-                foreach (var mesh in model.BaseModel.Meshes)
+                if (!BoundingBoxCreated)
                 {
-                    if (!BoundingBoxCreated)
-                    {
-                        BoundingBox = BoundingBox.CreateMerged(BoundingBox, BoundingBox.CreateFromSphere(mesh.BoundingSphere));
-                    }
+                    BoundingBox = BoundingBox.CreateMerged(BoundingBox, BoundingBox.CreateFromSphere(mesh.BoundingSphere));
                 }
-                BoundingBoxCreated = true;
-
-                var min = BoundingBox.Min;
-                var max = BoundingBox.Max;
-
-                BoundingBox = new BoundingBox(min, max);
-
-                ReadyToRender = true;
             }
+            BoundingBoxCreated = true;
+
+            var min = BoundingBox.Min;
+            var max = BoundingBox.Max;
+
+            BoundingBox = new BoundingBox(min, max);
+
+            ReadyToRender = true;
         }
 
 

@@ -45,7 +45,7 @@ namespace AntiTankGame2.GameObjects
             skySphereEffect.Parameters["ViewMatrix"].SetValue(CameraManager.ActiveCamera.View);
             skySphereEffect.Parameters["ProjectionMatrix"].SetValue(CameraManager.ActiveCamera.Projection);
             // Draw the sphere model that the effect projects onto
-            foreach (ModelMesh mesh in skySphere.Meshes)
+            foreach (var mesh in skySphere.Meshes)
             {
                 mesh.Draw();
             }

@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using NccEngine2;
 
 namespace AntiTankGame2.GameLogic
 {
@@ -7,11 +8,13 @@ namespace AntiTankGame2.GameLogic
         public static Vector3 RocketPos(Vector3 rocketPos,
              Vector3 targetPos, Vector3 lastTargetPos)
         {
-            const float rocketSpeed = 0.09f;
+            const float rocketSpeed = 0.45f;
+
+            var speed = rocketSpeed*25/BaseEngine.DebugSystem.FpsCounter.Fps;
 
             var distanceTarget =  InRange(rocketPos, targetPos, lastTargetPos);
 
-            return Vector3.SmoothStep(rocketPos, distanceTarget, rocketSpeed);
+            return Vector3.SmoothStep(rocketPos, distanceTarget, speed);
         }
 
         /// <summary>

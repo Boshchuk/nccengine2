@@ -35,7 +35,7 @@ namespace AntiTankGame2.GameObjects.Tanks
         /// The direction that the tank is facing, in radians. This value will be used
         /// to position and and aim the camera.
         /// </summary>
-        private float FacingDirection { get; set; }
+        public float FacingDirection { get; set; }
 
         #endregion
 
@@ -86,17 +86,23 @@ namespace AntiTankGame2.GameObjects.Tanks
         {
             var currentGamePadState = input.CurrentGamePadState;
             var currentKeyboardState = input.CurrentKeyboardState;
+
+            var part = 25 / BaseEngine.DebugSystem.FpsCounter.Fps;
+
+            var turnSpeed = 4*part;
+            var moveSpeed = 40*part;
+
             // First, we want to check to see if the tank should turn. turnAmount will 
             // be an accumulation of all the different possible inputs.
             var turnAmount = -currentGamePadState.ThumbSticks.Left.X;
             if (currentKeyboardState.IsKeyDown(Keys.NumPad4) || currentGamePadState.DPad.Left == ButtonState.Pressed)
             {
-                turnAmount += 2;
+                turnAmount += turnSpeed;
             }
 
             if (currentKeyboardState.IsKeyDown(Keys.NumPad6) || currentGamePadState.DPad.Right == ButtonState.Pressed)
             {
-                turnAmount -= 2;
+                turnAmount -= turnSpeed;
             }
 
             // clamp the turn amount between -1 and 1, and then use the finished
@@ -113,11 +119,11 @@ namespace AntiTankGame2.GameObjects.Tanks
 
             if (currentKeyboardState.IsKeyDown(Keys.NumPad8) || currentGamePadState.DPad.Up == ButtonState.Pressed)
             {
-                movement.Z = -9;
+                movement.Z = -moveSpeed;
             }
             if (currentKeyboardState.IsKeyDown(Keys.NumPad5) || currentGamePadState.DPad.Down == ButtonState.Pressed)
             {
-                movement.Z = 9;
+                movement.Z = moveSpeed;
             }
 
             // next, we'll create a rotation matrix from the direction the tank is 
@@ -167,32 +173,30 @@ namespace AntiTankGame2.GameObjects.Tanks
 
         public override void Draw(GameTime gameTime)
         {
-            if (ReadyToRender)
+            if (!ReadyToRender) return;
+            BaseEngine.Device.DepthStencilState = new DepthStencilState {DepthBufferEnable = true};
+                
+            Matrix worldMatrix = orientation * Matrix.CreateTranslation(Position);
+                
+
+            var model = ModelManager.GetModel(ModelName);
+            if (model != null && model.ReadyToRender)
             {
-                BaseEngine.Device.DepthStencilState = new DepthStencilState {DepthBufferEnable = true};
-                
-                Matrix worldMatrix = orientation * Matrix.CreateTranslation(Position);
-                
+                var bonesTransforms = new Matrix[model.BaseModel.Bones.Count];
+                model.BaseModel.CopyAbsoluteBoneTransformsTo(bonesTransforms);
 
-                var model = ModelManager.GetModel(ModelName);
-                if (model != null && model.ReadyToRender)
+                foreach (var mesh in model.BaseModel.Meshes)
                 {
-                    var bonesTransforms = new Matrix[model.BaseModel.Bones.Count];
-                    model.BaseModel.CopyAbsoluteBoneTransformsTo(bonesTransforms);
-
-                    foreach (var mesh in model.BaseModel.Meshes)
+                    foreach (BasicEffect effect in mesh.Effects)
                     {
-                        foreach (BasicEffect effect in mesh.Effects)
-                        {
 
-                            effect.World = bonesTransforms[mesh.ParentBone.Index]*worldMatrix;
-                            effect.View = CameraManager.ActiveCamera.View;
-                            effect.Projection = CameraManager.ActiveCamera.Projection;
+                        effect.World = bonesTransforms[mesh.ParentBone.Index]*worldMatrix;
+                        effect.View = CameraManager.ActiveCamera.View;
+                        effect.Projection = CameraManager.ActiveCamera.Projection;
 
-                            effect.EnableDefaultLighting();
-                        }
-                        mesh.Draw();
+                        effect.EnableDefaultLighting();
                     }
+                    mesh.Draw();
                 }
             }
         }
@@ -200,37 +204,35 @@ namespace AntiTankGame2.GameObjects.Tanks
         public override void DrawCulling(GameTime gameTime)
         {
             Occluded = false;
-            if (ReadyToRender && !Culled)
+            if (!ReadyToRender || Culled) return;
+            Query.Begin();
+            var model = ModelManager.GetModel(ModelName);
+            if (model != null && model.ReadyToRender)
             {
-                Query.Begin();
-                var model = ModelManager.GetModel(ModelName);
-                if (model != null && model.ReadyToRender)
-                {
-                    var transforms = new Matrix[model.BaseModel.Bones.Count];
-                    model.BaseModel.CopyAbsoluteBoneTransformsTo(transforms);
+                var transforms = new Matrix[model.BaseModel.Bones.Count];
+                model.BaseModel.CopyAbsoluteBoneTransformsTo(transforms);
 
-                    foreach (var mesh in model.BaseModel.Meshes)
+                foreach (var mesh in model.BaseModel.Meshes)
+                {
+                    foreach (BasicEffect effect in mesh.Effects)
                     {
-                        foreach (BasicEffect effect in mesh.Effects)
-                        {
-                            effect.World = World;
-                            effect.View = CameraManager.ActiveCamera.View;
-                            effect.Projection = CameraManager.ActiveCamera.Projection;
-                        }
-                        mesh.Draw();
+                        effect.World = World;
+                        effect.View = CameraManager.ActiveCamera.View;
+                        effect.Projection = CameraManager.ActiveCamera.Projection;
                     }
+                    mesh.Draw();
                 }
-                Query.End();
+            }
+            Query.End();
 
-                while (!Query.IsComplete)
-                {
+            while (!Query.IsComplete)
+            {
 
-                }
+            }
 
-                if (Query.IsComplete && Query.PixelCount == 0)
-                {
-                    Occluded = true;
-                }
+            if (Query.IsComplete && Query.PixelCount == 0)
+            {
+                Occluded = true;
             }
         }
     }

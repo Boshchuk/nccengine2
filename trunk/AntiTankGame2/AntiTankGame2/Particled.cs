@@ -14,7 +14,9 @@ namespace AntiTankGame2
 
         #region Particles
 
+// ReSharper disable FieldCanBeMadeReadOnly.Local
         private Vector3 tempSmokePos = Vector3.Zero;
+// ReSharper restore FieldCanBeMadeReadOnly.Local
 
         ParticleSystem explosionParticles;
         ParticleSystem explosionSmokeParticles;

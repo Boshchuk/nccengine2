@@ -154,7 +154,7 @@ namespace AntiTankGame2.GameObjects.Tanks
         /// <param name="gameTime"></param>
         public void Animate(GameTime gameTime)
         {
-            float time = (float)gameTime.TotalGameTime.TotalSeconds;
+            var time = (float)gameTime.TotalGameTime.TotalSeconds;
 
             SteerRotation = (float)Math.Sin(time * 0.75f) * 0.5f;
             TurretRotation = (float)Math.Sin(time * 0.333f) * 1.25f;

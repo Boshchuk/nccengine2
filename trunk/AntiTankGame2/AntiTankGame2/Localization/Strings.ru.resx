@@ -118,48 +118,48 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AbortThisGame" xml:space="preserve">
-    <value>Abort this game</value>
+    <value>Закончить текущую симуляцю</value>
   </data>
   <data name="AreYouWantToAbort" xml:space="preserve">
-    <value>Are you want to abort this simulation?</value>
+    <value>Вы уверены, что хотите завершить текущую симуляцию?</value>
   </data>
   <data name="AreYouWantToExit" xml:space="preserve">
-    <value>Are you want to exit?</value>
-  </data>
-  <data name="ErrorOutOfVideoMemory" xml:space="preserve">
-    <value>Not enough video memory. {0} {0} Featured minimum graphics setting. Please restart the application {0} {0} If the message continues appearing, your system does not meet the minimum requirements</value>
+    <value>Вы уверены, что хотите покинуть приложение?</value>
   </data>
   <data name="ExitMenu" xml:space="preserve">
-    <value>Exit</value>
-  </data>
-  <data name="GameName" xml:space="preserve">
-    <value>AntiTankGame</value>
+    <value>Выйти</value>
   </data>
   <data name="Loading" xml:space="preserve">
-    <value>Loading</value>
+    <value>Загрузка</value>
   </data>
   <data name="MainMenu" xml:space="preserve">
-    <value>Main Menu</value>
+    <value>Главное Меню</value>
   </data>
   <data name="OptionsMenu" xml:space="preserve">
-    <value>Options</value>
-  </data>
-  <data name="PauseMenu" xml:space="preserve">
-    <value>Paused Menu</value>
+    <value>Настройки</value>
   </data>
   <data name="PlayGame" xml:space="preserve">
-    <value>Start Training</value>
+    <value>Начать тренировку</value>
   </data>
   <data name="QuitGame" xml:space="preserve">
-    <value>QuitGame</value>
+    <value>Покинуть приложение</value>
   </data>
   <data name="ResumeGame" xml:space="preserve">
-    <value>Resume Game</value>
-  </data>
-  <data name="SystemRequirements" xml:space="preserve">
-    <value>This adapter does not support Shader Model 2.0.</value>
+    <value>Возобновить симуляцию</value>
   </data>
   <data name="UsageText" xml:space="preserve">
-    <value>{0}A button, Space, Enter = ok{0}B button, Esc = cancel</value>
+    <value>{0}Space, Enter = Да{0}Esc = Отмена</value>
+  </data>
+	<data name="ErrorOutOfVideoMemory" xml:space="preserve">
+    <value>Недостаточно видео памяти. {0}{0} Установите минимальные настройки графики , перезапустите приложение {0}{0} Если сообщение продолжает появляться, ваша ситема не сответствует минимальным требованиям</value>
+  </data>
+	<data name="GameName" xml:space="preserve">
+    <value>AntiTankGame</value>
+  </data>
+	<data name="PauseMenu" xml:space="preserve">
+    <value>Меню Паузы</value>
+  </data>
+	<data name="SystemRequirements" xml:space="preserve">
+    <value>This adapter does not support Shader Model 2.0.</value>
   </data>
 </root>

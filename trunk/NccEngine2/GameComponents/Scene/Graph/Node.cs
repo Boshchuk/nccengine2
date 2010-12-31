@@ -101,7 +101,5 @@ namespace NccEngine2.GameComponents.Scene.Graph
         {
             Nodes.ForEach(node => node.DrawCulling(gameTime));
         }
-
     }
-
 }

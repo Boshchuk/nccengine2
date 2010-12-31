@@ -4,7 +4,6 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NccEngine2.GameComponents.Graphics.Textures;
-using NccEngine2.GameDebugTools;
 
 namespace NccEngine2.GameComponents.Graphics.Screens
 {

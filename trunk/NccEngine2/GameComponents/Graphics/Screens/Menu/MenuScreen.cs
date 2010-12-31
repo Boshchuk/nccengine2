@@ -95,8 +95,7 @@ namespace NccEngine2.GameComponents.Graphics.Screens.Menu
         /// <summary>
         /// Updates the menu.
         /// </summary>
-        public override void Update(GameTime gameTime, bool otherScreenHasFocusParameter,
-                                                       bool coveredByOtherScreen)
+        public override void Update(GameTime gameTime, bool otherScreenHasFocusParameter,bool coveredByOtherScreen)
         {
             base.Update(gameTime, otherScreenHasFocusParameter, coveredByOtherScreen);
 
@@ -154,7 +153,10 @@ namespace NccEngine2.GameComponents.Graphics.Screens.Menu
 
             
 
-            ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, menuTitle, titlePosition, titleColor, 0,titleOrigin, titleScale, SpriteEffects.None, 0);
+            ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, /*menuTitle*/"AntiTank", titlePosition, /*titleColor*/Color.Red, 0,titleOrigin, titleScale*2, SpriteEffects.None, 0);
+            //ToDO DRAW red LIne here
+
+
 
             ScreenManager.SpriteBatch.End();
         }

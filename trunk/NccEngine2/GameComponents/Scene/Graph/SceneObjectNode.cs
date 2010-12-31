@@ -8,8 +8,6 @@ namespace NccEngine2.GameComponents.Scene.Graph
 {
     class SceneObjectNode : Node
     {
-        // public NccSceneObject SceneObject { get; set; }
-
         public INccSceneObject SceneObject { get; set; }
 
         public SceneObjectNode(INccSceneObject newObject)

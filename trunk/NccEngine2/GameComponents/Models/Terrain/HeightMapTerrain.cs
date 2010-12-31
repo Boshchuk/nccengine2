@@ -30,38 +30,36 @@ namespace NccEngine2.GameComponents.Models.Terrain
             // var elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             var model = ModelManager.GetModel(ModelName);
-            if (model != null && model.ReadyToRender && !ReadyToRender)
+            if (model == null || !model.ReadyToRender || ReadyToRender) return;
+            var transforms = new Matrix[model.BaseModel.Bones.Count];
+            model.BaseModel.CopyAbsoluteBoneTransformsTo(transforms);
+
+            BoundingBox = new BoundingBox();
+
+            foreach (var mesh in model.BaseModel.Meshes)
             {
-                var transforms = new Matrix[model.BaseModel.Bones.Count];
-                model.BaseModel.CopyAbsoluteBoneTransformsTo(transforms);
-
-                BoundingBox = new BoundingBox();
-
-                foreach (var mesh in model.BaseModel.Meshes)
+                if (!BoundingBoxCreated)
                 {
-                    if (!BoundingBoxCreated)
-                    {
-                        BoundingBox = BoundingBox.CreateMerged(BoundingBox, BoundingBox.CreateFromSphere(mesh.BoundingSphere));
-                    }
+                    BoundingBox = BoundingBox.CreateMerged(BoundingBox, BoundingBox.CreateFromSphere(mesh.BoundingSphere));
                 }
-                BoundingBoxCreated = true;
-
-                var min = BoundingBox.Min;
-                var max = BoundingBox.Max;
-
-                BoundingBox = new BoundingBox(min, max);
-
-                ReadyToRender = true;
             }
+            BoundingBoxCreated = true;
+
+            var min = BoundingBox.Min;
+            var max = BoundingBox.Max;
+
+            BoundingBox = new BoundingBox(min, max);
+
+            ReadyToRender = true;
         }
 
         public override void DrawCulling(GameTime gameTime)
         {
             Occluded = false;
-           // var lastFillModeState = EngineManager.Device.RasterizerState.FillMode; /*   RenderState.FillMode;*/
-            //  if (ReadyToRender && !Culled)
+           
+            if (ReadyToRender && !Culled)
             {
-                //query.Begin();
+                query.Begin();
                 var model = ModelManager.GetModel(ModelName);
                 // if (model != null && model.ReadyToRender)
                 {
@@ -99,27 +97,23 @@ namespace NccEngine2.GameComponents.Models.Terrain
                         mesh.Draw();
                     }
                 }
-                //query.End();
+                query.End();
 
-                /* while (!query.IsComplete)
+                 while (!query.IsComplete)
                  {
 
-                 }*/
+                 }
 
-                //  if (query.IsComplete && query.PixelCount == 0)
-               // {
-                    // Occluded = true;
-               // }
+               if (query.IsComplete && query.PixelCount == 0)
+                {
+                    Occluded = true;
+                }
             }
-            //var rState = new RasterizerState { FillMode = lastFillModeState };
-           // BaseEngine.Device.RasterizerState = rState;
+
         }
 
         public override void Draw(GameTime gameTime)
         {
-
-           // BaseEngine.RestorSamplerState();
-
             if (ReadyToRender)
             {
                 BaseEngine.Device.DepthStencilState = new DepthStencilState { DepthBufferEnable = true };
@@ -134,9 +128,6 @@ namespace NccEngine2.GameComponents.Models.Terrain
                     {
                         foreach (BasicEffect effect in mesh.Effects)
                         {
-
-                            // BaseEngine.Device.RasterizerState = new RasterizerState {CullMode = CullMode.None};
-                            // BaseEngine.Device.RasterizerState = new RasterizerState {FillMode = FillMode.WireFrame};
 
                             effect.World = transforms[mesh.ParentBone.Index] ;
                             effect.View = CameraManager.ActiveCamera.View;
@@ -202,9 +193,16 @@ namespace NccEngine2.GameComponents.Models.Terrain
 
         public string OcclusionModelName { get; set; }
 
-        private OcclusionQuery query;//= new OcclusionQuery(EngineManager.Device);
+#if Hidef        
+        private OcclusionQuery query= new OcclusionQuery(BaseEngine.Device);
+#endif
+        private OcclusionQuery query;
         public OcclusionQuery Query
         {
+#if HIDEF
+            get { return query; }
+#endif
+
             get
             {
                 if (GraphicsAdapter.DefaultAdapter.IsProfileSupported(GraphicsProfile.Reach))

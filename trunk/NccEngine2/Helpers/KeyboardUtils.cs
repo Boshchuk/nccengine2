@@ -37,7 +37,7 @@ namespace NccEngine2.Helpers
             }
 
             public char NormalChar;
-            public Nullable<char> ShiftChar;
+            public char? ShiftChar;
         }
 
         // key:Keys, value:CharPair
@@ -146,7 +146,7 @@ namespace NccEngine2.Helpers
         /// <param name="charPair">
         /// Character, If it is two characters, first character is for not holding the shift key,
         /// and the second character for holding the shift key.</param>
-        /// </summary>
+       
         static void AddKeyMap(Keys key, string charPair)
         {
             char char1 = charPair[0];

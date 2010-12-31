@@ -10,23 +10,18 @@ namespace NccEngine2.GameComponents.Audio
     /// their settings as the camera and entities move around the world, and
     /// automatically disposing sound effect instances after they finish playing.
     /// </summary>
-    public class AudioManager : Microsoft.Xna.Framework.GameComponent
+    public class AudioManager : GameComponent
     {
         #region Fields
 
 
         // List of all the sound effects that will be loaded into this manager.
+/*
         static string[] soundNames =
         {
-            //"CatSound0",
-            //"CatSound1",
-            //"CatSound2",
-            //"DogSound",
-           // "Explosion",
             "Content/Sounds/Start",
-           // "Fly",
-           // "Menu",  
         };
+*/
 
 
         // The listener describes the ear which is hearing 3D sounds.
@@ -44,7 +39,7 @@ namespace NccEngine2.GameComponents.Audio
 
 
         // Store all the sound effects that are available to be played.
-        static Dictionary<string, SoundEffect> soundEffects = new Dictionary<string, SoundEffect>();
+        Dictionary<string, SoundEffect> soundEffects = new Dictionary<string, SoundEffect>();
 
 
         // Keep track of all the 3D sounds that are currently playing.
@@ -87,10 +82,10 @@ namespace NccEngine2.GameComponents.Audio
             SoundEffect.DopplerScale = 0.1f;
 
             // Load all the sound effects.
-            foreach (string soundName in soundNames)
-            {
-                soundEffects.Add(soundName, game.Content.Load<SoundEffect>(soundName));
-            }
+            //foreach (string soundName in soundNames)
+            //{
+            //    soundEffects.Add(soundName, game.Content.Load<SoundEffect>(soundName));
+            //}
             
             audioManager = new AudioManager(game);
             audioManager.soundBank = new Dictionary<string, SoundEffectInstance>();
@@ -117,6 +112,15 @@ namespace NccEngine2.GameComponents.Audio
             }
         }
 
+        public void LoadSound(string contentName, string alias)
+        {
+            var song = audioManager.Game.Content.Load<SoundEffect>(soundAssetLocation + contentName);
+
+            if (!audioManager.soundEffects.ContainsKey(alias))
+            {
+                audioManager.soundEffects.Add(alias, song);
+            }
+        }
         #region Sound Methods
 
 
@@ -125,17 +129,7 @@ namespace NccEngine2.GameComponents.Audio
         /// </summary>
         public SoundEffectInstance this[string soundName]
         {
-            get
-            {
-                if (audioManager.soundBank.ContainsKey(soundName))
-                {
-                    return audioManager.soundBank[soundName];
-                }
-                else
-                {
-                    return null;
-                }
-            }
+            get { return audioManager.soundBank.ContainsKey(soundName) ? audioManager.soundBank[soundName] : null; }
         }
 
         /// <summary>
@@ -145,52 +139,57 @@ namespace NccEngine2.GameComponents.Audio
         public static void PlaySound(string soundName)
         {
             // If the sound exists, start it
-            if (audioManager.soundBank.ContainsKey(soundName))
+            /*if (audioManager.soundBank.ContainsKey(soundName))
             {
                 audioManager.soundBank[soundName].Play();
+            }*/
+
+            if (audioManager.soundEffects.ContainsKey(soundName))
+            {
+                audioManager.soundEffects[soundName].Play();
             }
         }
 
-        /// <summary>
-        /// Plays a sound by name.
-        /// </summary>
-        /// <param name="soundName">The name of the sound to play.</param>
-        /// <param name="isLooped">Indicates if the sound should loop.</param>
-        public static void PlaySound(string soundName, bool isLooped)
-        {
-            // If the sound exists, start it
-            if (audioManager.soundBank.ContainsKey(soundName))
-            {
-                if (audioManager.soundBank[soundName].IsLooped != isLooped)
-                {
-                    audioManager.soundBank[soundName].IsLooped = isLooped;
-                }
+        ///// <summary>
+        ///// Plays a sound by name.
+        ///// </summary>
+        ///// <param name="soundName">The name of the sound to play.</param>
+        ///// <param name="isLooped">Indicates if the sound should loop.</param>
+        //public static void PlaySound(string soundName, bool isLooped)
+        //{
+        //    // If the sound exists, start it
+        //    if (audioManager.soundBank.ContainsKey(soundName))
+        //    {
+        //        if (audioManager.soundBank[soundName].IsLooped != isLooped)
+        //        {
+        //            audioManager.soundBank[soundName].IsLooped = isLooped;
+        //        }
 
-                audioManager.soundBank[soundName].Play();
-            }
-        }
+        //        audioManager.soundBank[soundName].Play();
+        //    }
+        //}
 
 
-        /// <summary>
-        /// Plays a sound by name.
-        /// </summary>
-        /// <param name="soundName">The name of the sound to play.</param>
-        /// <param name="isLooped">Indicates if the sound should loop.</param>
-        /// <param name="volume">Indicates if the volume</param>
-        public static void PlaySound(string soundName, bool isLooped, float volume)
-        {
-            // If the sound exists, start it
-            if (audioManager.soundBank.ContainsKey(soundName))
-            {
-                if (audioManager.soundBank[soundName].IsLooped != isLooped)
-                {
-                    audioManager.soundBank[soundName].IsLooped = isLooped;
-                }
+        ///// <summary>
+        ///// Plays a sound by name.
+        ///// </summary>
+        ///// <param name="soundName">The name of the sound to play.</param>
+        ///// <param name="isLooped">Indicates if the sound should loop.</param>
+        ///// <param name="volume">Indicates if the volume</param>
+        //public static void PlaySound(string soundName, bool isLooped, float volume)
+        //{
+        //    // If the sound exists, start it
+        //    if (audioManager.soundBank.ContainsKey(soundName))
+        //    {
+        //        if (audioManager.soundBank[soundName].IsLooped != isLooped)
+        //        {
+        //            audioManager.soundBank[soundName].IsLooped = isLooped;
+        //        }
 
-                audioManager.soundBank[soundName].Volume = volume;
-                audioManager.soundBank[soundName].Play();
-            }
-        }
+        //        audioManager.soundBank[soundName].Volume = volume;
+        //        audioManager.soundBank[soundName].Play();
+        //    }
+        //}
 
         /// <summary>
         /// Stops a sound mid-play. If the sound is not playing, this

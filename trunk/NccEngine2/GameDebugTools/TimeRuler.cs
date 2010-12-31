@@ -694,7 +694,7 @@ namespace NccEngine2.GameDebugTools
             // For example, if the entire process of frame doesn't finish in less than 16.6ms
             // thin it will adjust display frame duration as 33.3ms.
             const float frameSpan = 1.0f / 60.0f * 1000f;
-            float sampleSpan = (float)sampleFrames * frameSpan;
+            float sampleSpan = sampleFrames * frameSpan;
 
             if (maxTime > sampleSpan)
                 frameAdjust = Math.Max(0, frameAdjust) + 1;
@@ -711,7 +711,7 @@ namespace NccEngine2.GameDebugTools
             }
 
             // Compute factor that converts from ms to pixel.
-            float msToPs = (float)width / sampleSpan;
+            var msToPs = width / sampleSpan;
 
             // Draw start position.
             int startY = (int)position.Y - (height - BarHeight);
@@ -750,7 +750,7 @@ namespace NccEngine2.GameDebugTools
 
             // Draw grid lines.
             // Each grid represents ms.
-            rc = new Rectangle((int)position.X, (int)startY, 1, height);
+            rc = new Rectangle((int)position.X, startY, 1, height);
             for (float t = 1.0f; t < sampleSpan; t += 1.0f)
             {
                 rc.X = (int)(position.X + t * msToPs);
@@ -760,7 +760,7 @@ namespace NccEngine2.GameDebugTools
             // Draw frame grid.
             for (int i = 0; i <= sampleFrames; ++i)
             {
-                rc.X = (int)(position.X + frameSpan * (float)i * msToPs);
+                rc.X = (int)(position.X + frameSpan * i * msToPs);
                 spriteBatch.Draw(texture, rc, Color.White);
             }
 
@@ -795,7 +795,7 @@ namespace NccEngine2.GameDebugTools
 
                 // Compute background size and draw it.
                 Vector2 size = font.MeasureString(logString);
-                rc = new Rectangle((int)position.X, (int)y, (int)size.X + 12, (int)size.Y);
+                rc = new Rectangle((int)position.X, y, (int)size.X + 12, (int)size.Y);
                 spriteBatch.Draw(texture, rc, new Color(0, 0, 0, 128));
 
                 // Draw log string.

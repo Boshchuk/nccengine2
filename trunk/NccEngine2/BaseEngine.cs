@@ -1,8 +1,10 @@
+#define MULTI
+//#define HIDEF
+
 #region Using stastment
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -11,6 +13,7 @@ using Microsoft.Xna.Framework.Graphics;
 using NccEngine2.GameComponents.Audio;
 using NccEngine2.GameComponents.CameraManagment;
 using NccEngine2.GameComponents.Graphics.FX.Bloom;
+using NccEngine2.GameComponents.Graphics.FX.LensFlare;
 using NccEngine2.GameComponents.Graphics.Screens;
 using NccEngine2.GameComponents.Graphics.Textures;
 using NccEngine2.GameComponents.Models;
@@ -18,7 +21,6 @@ using NccEngine2.GameComponents.NccInput;
 using NccEngine2.GameComponents.Physics;
 using NccEngine2.GameComponents.Scene;
 using NccEngine2.GameDebugTools;
-using NccEngine2.Helpers;
 
 #endregion
 
@@ -54,7 +56,7 @@ namespace NccEngine2
         /// <summary>
         /// Window title for test cases.
         /// </summary>
-        public static string WindowTitle { get; private set; }
+        private static string WindowTitle { get; set; }
 
         /// <summary>
         /// Is the application active.
@@ -89,8 +91,9 @@ namespace NccEngine2
 
         private static PhysicsManager physicsManager;
 
-        //private static LensFlareComponent LensFlareComponent;
-
+#if HIDEF
+        public static LensFlareComponent LensFlareComponent;
+#endif
         /// <summary>
         /// Bloom Component to manage settings
         /// </summary>
@@ -111,19 +114,16 @@ namespace NccEngine2
 
         // Our debug system. We can keep this reference or use the DebugSystem.Instance
         // property once we've called DebugSystem.Initialize.
-        public static DebugSystem debugSystem;
+        public static DebugSystem DebugSystem;
 
         // Position for debug command test.
         Vector2 debugPos = new Vector2(100, 100);
-
-        SpriteBatch spriteBatch;
-        SpriteFont font;
 
         // a blank 1x1 texture
         Texture2D blank;
 
         // Stopwatch for TimeRuler test.
-        Stopwatch stopwatch = new Stopwatch();
+        //Stopwatch stopwatch = new Stopwatch();
 
         #endregion
 
@@ -195,17 +195,15 @@ namespace NccEngine2
             // Init Physics Managers
             physicsManager = new PhysicsManager(this);
             Components.Add(physicsManager);
-
-            //LensFlareComponent = new LensFlareComponent(this);
-            //Components.Add(LensFlareComponent);
-
+#if HIDEF
+            LensFlareComponent = new LensFlareComponent(this);
+            Components.Add(LensFlareComponent);
+#endif
             Bloom = new BloomComponent(this);
             Components.Add(Bloom);
 
             AudioManager = new AudioManager(this);
             Components.Add(AudioManager);
-
-
 
             //TODO include other inits here!
         }
@@ -217,15 +215,10 @@ namespace NccEngine2
             IsAppActive = false;
             WindowTitle = "";
             BackgroundColor = Color.LightBlue;
-            AspectRatio = 1.0f;
+            //AspectRatio = 1.0f;
 
             //SetAlphaBlendingEnabled(true);
         }
-
-        /// <summary>
-        /// Create NccEngine
-        /// </summary>
-        protected BaseEngine() : this("Game") { }
 
         #endregion
 
@@ -243,30 +236,21 @@ namespace NccEngine2
                 {
 
 //NOTE chek multisampleType
+#if MULTI
                     //presentParams.MultiSampleType =   ltiSampleType.FourSamples;
-                //    GraphicsDeviceManager.PreferMultiSampling = true;
+//                    GraphicsDeviceManager.PreferMultiSampling = true;
 //#if !DEBUG
                   //  presentParams.PresentationInterval = PresentInterval.One;
 //#endif
                 }
                 //else
                 {
-                    presentParams.MultiSampleCount = 2;
+  //                  presentParams.MultiSampleCount = 2;
 //#if !DEBUG
-                    presentParams.PresentationInterval = PresentInterval.Two;
+ //                  presentParams.PresentationInterval = PresentInterval.Two;
 //#endif
                 }
-
-                // Add support for NVidia PerfHUD.
-                foreach (var currentAdapter in GraphicsAdapter.Adapters)
-                {
-                    if (!currentAdapter.Description.Contains("Perf")) continue;
-                    e.GraphicsDeviceInformation.Adapter = currentAdapter;
-
-                    // e.GraphicsDeviceInformation.Adapter.DeviceName.  DeviceType = DeviceType.Reference;
-
-                    break;
-                }
+#endif
             }
         }
 
@@ -338,10 +322,10 @@ namespace NccEngine2
 
             // initialize the debug system with the game and the name of the font 
             // we want to use for the debugging
-            debugSystem = DebugSystem.Initialize(this, "Content/Font");
+            DebugSystem = DebugSystem.Initialize(this, "Content/Font");
 
             // register a new command that lets us move a sprite on the screen
-            debugSystem.DebugCommandUI.RegisterCommand(
+            DebugSystem.DebugCommandUI.RegisterCommand(
                 "pos",              // Name of command
                 "set position",     // Description of command
                 PosCommand          // Command execution delegate
@@ -376,10 +360,6 @@ namespace NccEngine2
         /// </summary>
         protected override void LoadContent()
         {
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-            font = ContentManager.Load<SpriteFont>(ConstantNames.FontPath);
-            
-
             // create our blank texture
             blank = new Texture2D(GraphicsDevice, 1, 1);
             blank.SetData(new[] { Color.White });
@@ -402,10 +382,10 @@ namespace NccEngine2
         {
             // tell the TimeRuler that we're starting a new frame. you always want
             // to call this at the start of Update
-            debugSystem.TimeRuler.StartFrame();
+            DebugSystem.TimeRuler.StartFrame();
 
             // Start measuring time for "Update".
-            debugSystem.TimeRuler.BeginMark("Update", Color.Blue);
+            DebugSystem.TimeRuler.BeginMark("Update", Color.Blue);
 
             // Update other components.
             //UpdateZoomyText(gameTime);
@@ -413,7 +393,7 @@ namespace NccEngine2
             base.Update(gameTime);
 
             // Stop measuring time for "Update".
-            debugSystem.TimeRuler.EndMark("Update");
+            DebugSystem.TimeRuler.EndMark("Update");
         }
 
        
@@ -424,7 +404,7 @@ namespace NccEngine2
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            debugSystem.TimeRuler.BeginMark("Draw", Color.Yellow);
+            DebugSystem.TimeRuler.BeginMark("Draw", Color.Yellow);
 
             Device.Clear(BackgroundColor);
 
@@ -436,7 +416,7 @@ namespace NccEngine2
 
             DrawZoomyText();
 
-            debugSystem.TimeRuler.EndMark("Draw");
+            DebugSystem.TimeRuler.EndMark("Draw");
             // Apply device changes
             if (!applyDeviceChanges) return;
             GraphicsDeviceManager.ApplyChanges();
@@ -575,15 +555,14 @@ namespace NccEngine2
 
         public static void RestorSamplerState()
         {
-            var lastSamplerState0 = Device.SamplerStates[0];
+            var samplerState = new SamplerState
+                                   {
+                                       Filter = TextureFilter.Anisotropic,
+                                       AddressU = TextureAddressMode.Wrap,
+                                       AddressV = TextureAddressMode.Wrap,
+                                       AddressW = TextureAddressMode.Wrap
+                                   };
 
-            var samplerState = new SamplerState();
-            samplerState.Filter = TextureFilter.Anisotropic;
-            samplerState.AddressU = TextureAddressMode.Wrap;
-            samplerState.AddressV = TextureAddressMode.Wrap;
-            samplerState.AddressW = TextureAddressMode.Wrap;
-          //  sazzmplerState.MipMapLevelOfDetailBias = 0;
-        
             Device.SamplerStates[0] =samplerState;
             }
 

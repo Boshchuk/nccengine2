@@ -15,7 +15,7 @@ namespace NccEngine2.GameComponents.Graphics.Screens.Menu
         /// <summary>
         /// Gets or sets the text of this menu entry.
         /// </summary>
-        public virtual string Text { get; set; }
+        public string Text { get; set; }
 
         /// <summary>
         /// Tracks a fading selection effect on the entry.
@@ -76,7 +76,8 @@ namespace NccEngine2.GameComponents.Graphics.Screens.Menu
         public void Draw(MenuScreen screen, Vector2 position, bool isSelected, GameTime gameTime)
         {
             // Draw the selected entry in yellow, otherwise white.
-            var color = isSelected ? Color.Yellow : Color.White;
+            //var color = isSelected ? Color.Yellow : Color.White;
+            var color = isSelected ? Color.White : Color.Gray;
 
             // Pulsate the size of the selected menu entry.
             var time = gameTime.TotalGameTime.TotalSeconds;
@@ -123,7 +124,7 @@ namespace NccEngine2.GameComponents.Graphics.Screens.Menu
 
         Vector2 positionOffset;
 
-        protected MenuEntry()
+        private MenuEntry()
         {
             
         }
@@ -132,7 +133,7 @@ namespace NccEngine2.GameComponents.Graphics.Screens.Menu
         /// <summary>
         /// Draws the menu entry.
         /// </summary>
-        public virtual void Draw(SpriteBatch spriteBatch, SpriteFont font, Texture2D blankTexture)
+        public void Draw(SpriteBatch spriteBatch, SpriteFont font, Texture2D blankTexture)
         {
             positionOffset = new Vector2(0, (Height - font.LineSpacing) / 2);
 
@@ -143,7 +144,7 @@ namespace NccEngine2.GameComponents.Graphics.Screens.Menu
         /// <summary>
         /// Handles clicks on this menu entry.
         /// </summary>
-        public virtual void OnClicked()
+        public void OnClicked()
         {
             // If we have a click delegate, call that now.
             if (Clicked != null)
@@ -162,7 +163,7 @@ namespace NccEngine2.GameComponents.Graphics.Screens.Menu
         /// <summary>
         /// Handles dragging this menu entry from left to right.
         /// </summary>
-        public virtual void OnDragged(float delta)
+        public void OnDragged(float delta)
         {
         }
     }

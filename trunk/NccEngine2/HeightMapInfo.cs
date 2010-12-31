@@ -164,8 +164,8 @@ namespace NccEngine2
             float terrainScale = input.ReadSingle();
             int width = input.ReadInt32();
             int height = input.ReadInt32();
-            float[,] heights = new float[width, height];
-            Vector3[,] normals = new Vector3[width, height];
+            var heights = new float[width, height];
+            var normals = new Vector3[width, height];
 
             for (int x = 0; x < width; x++)
             {

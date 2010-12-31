@@ -47,8 +47,8 @@
     include the entire CJK character region.
     -->
     <ResourceFiles>
-      <Resx>..\..\AntiTankGame\Strings.resx</Resx>
-      <Resx>..\..\AntiTankGame\Strings.ru.resx</Resx>
+      <Resx>..\AntiTankGame2\Localization\Strings.resx</Resx>
+      <Resx>..\AntiTankGame2\Localization\Strings.ru.resx</Resx>
       <!--
       <Resx>.\AntiTankGame\Strings.da.resx</Resx>
       <Resx>.\AntiTankGame\Strings.fr.resx</Resx>

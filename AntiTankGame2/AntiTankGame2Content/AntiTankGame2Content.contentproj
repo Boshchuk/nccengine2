@@ -45,7 +45,7 @@
     <Compile Include="Fonts\LocalizatedFont.spritefont">
       <Name>LocalizatedFont</Name>
       <Importer>FontDescriptionImporter</Importer>
-      <Processor>FontDescriptionProcessor</Processor>
+      <Processor>LocalizedFontProcessor</Processor>
       <SubType>Designer</SubType>
     </Compile>
   </ItemGroup>
@@ -142,11 +142,16 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Tanks\New For Fbx\M1_ABRAM.bmp">
+    <Compile Include="Models\Tanks\Abrams\M1_Abrams.FBX">
+      <Name>M1_Abrams</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <None Include="Models\Tanks\New For Fbx\M1_ABRAM.bmp">
       <Name>M1_ABRAM</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
-    </Compile>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Tanks\new.X">
@@ -177,11 +182,6 @@
       <Name>ground</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="terrain.bmp">
-      <Name>terrain</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TerrainProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -224,17 +224,12 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </None>
-    <None Include="rocks.bmp">
-      <Name>rocks</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\terrain.bmp">
+    <Compile Include="terrain.bmp">
       <Name>terrain</Name>
       <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
+      <Processor>TerrainProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -342,6 +337,13 @@
       <Name>flash</Name>
       <Importer>XmlImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\Ready.png">
+      <Name>Ready</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

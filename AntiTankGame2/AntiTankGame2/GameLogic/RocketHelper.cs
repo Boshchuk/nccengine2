@@ -5,16 +5,27 @@ namespace AntiTankGame2.GameLogic
 {
     public static class RocketHelper
     {
-        public static Vector3 RocketPos(Vector3 rocketPos,
+        /// <summary>
+        /// Determinates current rocket position
+        /// </summary>
+        /// <param name="rocketPos"></param>
+        /// <param name="targetPos"></param>
+        /// <param name="lastTargetPos"></param>
+        /// <returns></returns>
+        public static Vector3 RocketPos(GameTime gametime, Vector3 rocketPos,
              Vector3 targetPos, Vector3 lastTargetPos)
         {
-            const float rocketSpeed = 0.45f;
 
-            var speed = rocketSpeed*25/BaseEngine.DebugSystem.FpsCounter.Fps;
+            var time =  gametime.ElapsedGameTime.TotalMilliseconds;
+
+            const float rocketSpeed = 0.0012f;
+
+            //var speed = rocketSpeed*25/BaseEngine.DebugSystem.FpsCounter.Fps;
+            var speed = rocketSpeed*time;
 
             var distanceTarget =  InRange(rocketPos, targetPos, lastTargetPos);
-
-            return Vector3.SmoothStep(rocketPos, distanceTarget, speed);
+             
+            return Vector3.Lerp/*SmoothStep*/(rocketPos, distanceTarget, (float) speed);
         }
 
         /// <summary>

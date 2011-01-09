@@ -87,10 +87,11 @@ namespace AntiTankGame2.GameObjects.Tanks
             var currentGamePadState = input.CurrentGamePadState;
             var currentKeyboardState = input.CurrentKeyboardState;
 
-            var part = 25 / BaseEngine.DebugSystem.FpsCounter.Fps;
+            //var part = 25 / BaseEngine.DebugSystem.FpsCounter.Fps;
+            var part = gameTime.ElapsedGameTime.Milliseconds ;
 
-            var turnSpeed = 4*part;
-            var moveSpeed = 40*part;
+            float turnSpeed =(float) 0.04*part;
+            float moveSpeed =(float) 0.80*part;
 
             // First, we want to check to see if the tank should turn. turnAmount will 
             // be an accumulation of all the different possible inputs.

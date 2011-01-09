@@ -63,7 +63,7 @@ namespace AntiTankGame2.GameScreens
         static readonly Rectangle Dest3 = new Rectangle(BaseEngine.Height / 2 - CrossBarTextureWidthHalf, BaseEngine.Height / 2 - CrossBarTextureHeightHalf + CrossBarTextureHeight, BaseEngine.Width, BaseEngine.Height);
         static readonly Rectangle Dest4 = new Rectangle(BaseEngine.Width / 2 - CrossBarTextureWidthHalf + CrossBarTextureWidth, BaseEngine.Height / 2 - CrossBarTextureHeightHalf, BaseEngine.Width, BaseEngine.Height);
         
-        //Vector2 textStartPosition = new Vector2(10, 20);
+        Vector2 textStartPosition = new Vector2(10, 20);
         private readonly Color fontColor;
 
         private bool drawCross = true;
@@ -321,7 +321,7 @@ namespace AntiTankGame2.GameScreens
             if (!zapusk) return;
             if (!col2)
             {
-                roket.Position = RocketHelper.RocketPos(roket.Position, endPoint.Position, lastendPointPos);
+                roket.Position = RocketHelper.RocketPos(gameTime, roket.Position, endPoint.Position, lastendPointPos);
             }
             else
             {
@@ -336,16 +336,6 @@ namespace AntiTankGame2.GameScreens
                     wasSound = true;
                 }
             }
-
-
-            //if (col2)
-            //{
-            //    if(!wasSound)
-            //    {
-            //        AudioManager.PlaySound("Start");
-            //        wasSound = true;
-            //    }
-            //}
         }
 
         private static bool Collsison(INccSceneObject rocket, INccSceneObject target)
@@ -705,17 +695,17 @@ namespace AntiTankGame2.GameScreens
 
             //var particleMessage = string.Format("Particle pos : {0}",smokePlumeParticles.);
             //var mess = string.Format("Modelrad: {0}");
-            //var mess = string.Format("Culled: {0}, Occuled {1}", SceneGraphManager.Culled, SceneGraphManager.Occluded);
+            var mess = string.Format(GC.CollectionCount(0) + " " + GC.CollectionCount(1));
 
             #region SpriteBatch Drawing
-            //ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend/*AlphaBlend*//*,SaveStateMode.SaveState*/);
+            ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend/*AlphaBlend*//*,SaveStateMode.SaveState*/);
             //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, cameraMessage, new Vector2(textStartPosition.X, textStartPosition.Y + 30), fontColor);
-           // ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, mess, new Vector2(textStartPosition.X, textStartPosition.Y + 60), fontColor);
+           ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, mess, new Vector2(textStartPosition.X, textStartPosition.Y + 60), fontColor);
             //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, col, new Vector2(textStartPosition.X, textStartPosition.Y + 120), fontColor);
             //// //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, particleMessage, new Vector2(textPosition.X, textPosition.Y + 120), color);
             //// //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, cameraAngle, new Vector2(textPosition.X, textPosition.Y + 90), color);
             //// //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, bloomInfo, new Vector2(textPosition.X+550, textPosition.Y ), color);
-            //ScreenManager.SpriteBatch.End();
+            ScreenManager.SpriteBatch.End();
             #endregion
 
         }

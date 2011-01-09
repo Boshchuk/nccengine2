@@ -20,7 +20,7 @@ namespace AntiTankGame2.GameScreens
         private const string BackGroundTextureName = ContentConstants.BackgroundTexureName;
 
         private Texture2D skyRocketTexture;
-        private Vector2 skyRoketPos = new Vector2(0,0);
+        private readonly Vector2 skyRoketPos = new Vector2(0,0);
         
         Matrix matrix;
 

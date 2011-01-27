@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NccEngine2.GameComponents.CameraManagment;
 using NccEngine2.GameComponents.Models;
-using NccEngine2.GameComponents.Physics;
 
 namespace NccEngine2.GameComponents.Scene.SceneObject
 {
@@ -12,30 +11,17 @@ namespace NccEngine2.GameComponents.Scene.SceneObject
         /// <summary>
         /// Is this object ready to render?
         /// </summary>
-        public bool ReadyToRender { get; set; }
+        protected bool ReadyToRender { get; set; }
 
         public virtual Matrix World
         {
             get
             {
-                if (this is INccPhysics)
-                {
-                    var physicsObject = (INccPhysics)this;
-                    if (physicsObject.Body != null && physicsObject.Body.CollisionSkin != null)
-                    {
-                        return Matrix.CreateScale(Scale) * physicsObject.Body.CollisionSkin.GetPrimitiveLocal(0).Transform.Orientation * physicsObject.Body.Orientation * Matrix.CreateTranslation(physicsObject.Body.Position);
-                    }
-                    /*else*/
-                    if (physicsObject.Body != null)
-                    {
-                        return Matrix.CreateScale(Scale) * physicsObject.Body.Orientation * Matrix.CreateTranslation(physicsObject.Body.Position);
-                    }
-                }
                 return Matrix.CreateScale(Scale) * Matrix.CreateFromQuaternion(Rotation) * Matrix.CreateTranslation(position);
             }
         }
 
-        public Material Material { get; set; }
+        private Material Material { get; set; }
 
         public string ModelName { get; set; }
 
@@ -69,7 +55,7 @@ namespace NccEngine2.GameComponents.Scene.SceneObject
         /// </summary>
         public Vector3 Scale { get; set; }
 
-        public NccSceneObject()
+        protected NccSceneObject()
         {
             Rotation = Quaternion.Identity;
             Scale = Vector3.One;
@@ -87,11 +73,8 @@ namespace NccEngine2.GameComponents.Scene.SceneObject
         {
             get
             {
-                if (ReadyToRender)
-                    return Vector3.Distance(CameraManager.ActiveCamera.Position, World.Translation);
-                return 0.0f;
+                return ReadyToRender ? Vector3.Distance(CameraManager.ActiveCamera.Position, World.Translation) : 0.0f;
             }
-
         }
 
         /// <summary>
@@ -101,48 +84,46 @@ namespace NccEngine2.GameComponents.Scene.SceneObject
         /// </summary>
         public void MeasureModel()
         {
-            if (ReadyToRender)
+            if (!ReadyToRender) return;
+            var model = ModelManager.GetModel(ModelName);
+            if (model != null && model.ReadyToRender)
             {
-                INccModel model = ModelManager.GetModel(ModelName);
-                if (model != null && model.ReadyToRender)
+
+
+                // Look up the absolute bone transforms for this model.
+                var transforms = new Matrix[model.BaseModel.Bones.Count];
+                model.BaseModel.CopyAbsoluteBoneTransformsTo(transforms);
+
+                // Compute an (approximate) model center position by
+                // averaging the center of each mesh bounding sphere.
+                ModelCenter = Vector3.Zero;
+
+                foreach (var mesh in model.BaseModel.Meshes)
                 {
+                    var meshBounds = mesh.BoundingSphere;
+                    var transform = transforms[mesh.ParentBone.Index];
+                    Vector3 meshCenter = Vector3.Transform(meshBounds.Center, transform);
 
+                    ModelCenter += meshCenter;
+                }
 
-                    // Look up the absolute bone transforms for this model.
-                    var transforms = new Matrix[model.BaseModel.Bones.Count];
-                    model.BaseModel.CopyAbsoluteBoneTransformsTo(transforms);
+                ModelCenter /= model.BaseModel.Meshes.Count;
 
-                    // Compute an (approximate) model center position by
-                    // averaging the center of each mesh bounding sphere.
-                    ModelCenter = Vector3.Zero;
+                // Now we know the center point, we can compute the model radius
+                // by examining the radius of each mesh bounding sphere.
+                modelRadius = 0;
 
-                    foreach (var mesh in model.BaseModel.Meshes)
-                    {
-                        var meshBounds = mesh.BoundingSphere;
-                        var transform = transforms[mesh.ParentBone.Index];
-                        Vector3 meshCenter = Vector3.Transform(meshBounds.Center, transform);
+                foreach (ModelMesh mesh in model.BaseModel.Meshes)
+                {
+                    BoundingSphere meshBounds = mesh.BoundingSphere;
+                    Matrix transform = transforms[mesh.ParentBone.Index];
+                    Vector3 meshCenter = Vector3.Transform(meshBounds.Center, transform);
 
-                        ModelCenter += meshCenter;
-                    }
+                    var transformScale = transform.Forward.Length();
 
-                    ModelCenter /= model.BaseModel.Meshes.Count;
+                    var meshRadius = (meshCenter - ModelCenter).Length() + (meshBounds.Radius * transformScale);
 
-                    // Now we know the center point, we can compute the model radius
-                    // by examining the radius of each mesh bounding sphere.
-                    modelRadius = 0;
-
-                    foreach (ModelMesh mesh in model.BaseModel.Meshes)
-                    {
-                        BoundingSphere meshBounds = mesh.BoundingSphere;
-                        Matrix transform = transforms[mesh.ParentBone.Index];
-                        Vector3 meshCenter = Vector3.Transform(meshBounds.Center, transform);
-
-                        float transformScale = transform.Forward.Length();
-
-                        float meshRadius = (meshCenter - ModelCenter).Length() + (meshBounds.Radius * transformScale);
-
-                        modelRadius = Math.Max(modelRadius, meshRadius);
-                    }
+                    modelRadius = Math.Max(modelRadius, meshRadius);
                 }
             }
         }
@@ -184,7 +165,6 @@ namespace NccEngine2.GameComponents.Scene.SceneObject
 
         public virtual void DrawCulling(GameTime gameTime)
         {
-
         }
 
         public override string ToString()

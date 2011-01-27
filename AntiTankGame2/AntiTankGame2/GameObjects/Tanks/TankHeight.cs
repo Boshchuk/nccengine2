@@ -1,3 +1,5 @@
+#region UsingStastment
+using System;
 using AntiTankGame2.Localization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -6,11 +8,13 @@ using NccEngine2;
 using NccEngine2.GameComponents.CameraManagment;
 using NccEngine2.GameComponents.Models;
 using NccEngine2.GameComponents.NccInput;
+#endregion
 
 namespace AntiTankGame2.GameObjects.Tanks
 {
     /// <summary>
     /// This tank can be placed on Height Map
+    /// He can move on terrain
     /// </summary>
     sealed class TankHeight : LittleTank, IAcceptNccInput
     {
@@ -75,7 +79,9 @@ namespace AntiTankGame2.GameObjects.Tanks
             
         }
         #endregion
-      
+
+        #region Update and Draw
+
 
         /// <summary>
         /// This function is called when the game is Updating in response to user input.
@@ -172,6 +178,18 @@ namespace AntiTankGame2.GameObjects.Tanks
             
         }
 
+        public override void Update(GameTime gameTime)
+        {
+           // var time = (float)gameTime.TotalGameTime.TotalSeconds;
+
+            //TurretRotation = (float)/*Math.Sin(time * 0.75)*/time ;
+
+            // Update the animation properties on the tank object. In a real game
+            // you would probably take this data from user inputs or the physics
+            // system, rather than just making everything rotate like this!
+            base.Update(gameTime);
+        }
+
         public override void Draw(GameTime gameTime)
         {
             if (!ReadyToRender) return;
@@ -183,15 +201,20 @@ namespace AntiTankGame2.GameObjects.Tanks
             var model = ModelManager.GetModel(ModelName);
             if (model != null && model.ReadyToRender)
             {
-                var bonesTransforms = new Matrix[model.BaseModel.Bones.Count];
-                model.BaseModel.CopyAbsoluteBoneTransformsTo(bonesTransforms);
+                Matrix turretRotation = Matrix.CreateRotationY(TurretRotation);
+
+                turretBone.Transform = turretRotation*turretTransform;
+
+
+                //bonesTransforms = new Matrix[model.BaseModel.Bones.Count];
+                model.BaseModel.CopyAbsoluteBoneTransformsTo(boneTransforms);
 
                 foreach (var mesh in model.BaseModel.Meshes)
                 {
                     foreach (BasicEffect effect in mesh.Effects)
                     {
 
-                        effect.World = bonesTransforms[mesh.ParentBone.Index]*worldMatrix;
+                        effect.World = boneTransforms[mesh.ParentBone.Index]*worldMatrix;
                         effect.View = CameraManager.ActiveCamera.View;
                         effect.Projection = CameraManager.ActiveCamera.Projection;
 
@@ -236,5 +259,7 @@ namespace AntiTankGame2.GameObjects.Tanks
                 Occluded = true;
             }
         }
+
+        #endregion
     }
 }

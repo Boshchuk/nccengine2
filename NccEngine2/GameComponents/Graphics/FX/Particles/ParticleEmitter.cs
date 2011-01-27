@@ -64,7 +64,7 @@ namespace NccEngine2.GameComponents.Graphics.FX.Particles
             if (elapsedTime > 0)
             {
                 // Work out how fast we are moving.
-                Vector3 velocity = (newPosition - previousPosition) / elapsedTime;
+                var velocity = (newPosition - previousPosition) / elapsedTime;
 
                 // If we had any time left over that we didn't use during the
                 // previous update, add that to the current elapsed time.

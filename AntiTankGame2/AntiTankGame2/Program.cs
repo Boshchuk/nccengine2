@@ -1,14 +1,14 @@
-//#define TRY
+#define TRY
 
-//using System;
+using System;
 using AntiTankGame2.GameScreens;
-//using AntiTankGame2.Localization;
+using AntiTankGame2.Localization;
 using NccEngine2;
 using NccEngine2.GameComponents.Graphics.Screens;
 
 #if !XBOX
-//using System.Windows.Forms;
-//using MessageBoxIcon = System.Windows.Forms.MessageBoxIcon;
+using System.Windows.Forms;
+using MessageBoxIcon = System.Windows.Forms.MessageBoxIcon;
 
 #endif
 

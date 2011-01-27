@@ -245,12 +245,22 @@ namespace NccEngine2
                 }
                 //else
                 {
-  //                  presentParams.MultiSampleCount = 2;
+                    presentParams.MultiSampleCount = 2;
 //#if !DEBUG
- //                  presentParams.PresentationInterval = PresentInterval.Two;
+                   presentParams.PresentationInterval = PresentInterval.Two;
 //#endif
                 }
 #endif
+
+                // Add support for NVidia PerfHUD.
+                //foreach (var currentAdapter in GraphicsAdapter.Adapters)
+                //{
+                //    if (!currentAdapter.Description.Contains("Perf")) continue;
+                //    e.GraphicsDeviceInformation.Adapter = currentAdapter;
+                //    //e.GraphicsDeviceInformation. DeviceType = DeviceType.Reference;
+                //    break;
+                //}
+
             }
         }
 
@@ -383,12 +393,8 @@ namespace NccEngine2
             // tell the TimeRuler that we're starting a new frame. you always want
             // to call this at the start of Update
             DebugSystem.TimeRuler.StartFrame();
-
             // Start measuring time for "Update".
             DebugSystem.TimeRuler.BeginMark("Update", Color.Blue);
-
-            // Update other components.
-            //UpdateZoomyText(gameTime);
 
             base.Update(gameTime);
 

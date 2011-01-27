@@ -104,6 +104,7 @@
     <Compile Include="GameComponents\Graphics\FX\Bloom\BloomSettings.cs" />
     <Compile Include="GameComponents\Graphics\FX\LensFlare\LensFlareComponent.cs" />
     <Compile Include="GameComponents\Graphics\FX\Particles\ParticleSettings.cs" />
+    <Compile Include="GameComponents\Graphics\FX\Water\WaterEffect.cs" />
     <Compile Include="GameComponents\Graphics\Screens\Menu\BoolMenuEntry.cs" />
     <Compile Include="GameComponents\Graphics\Screens\Menu\MenuEntry.cs" />
     <Compile Include="GameComponents\Graphics\Screens\Menu\MenuScreen.cs" />

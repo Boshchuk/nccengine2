@@ -372,6 +372,12 @@ namespace AntiTankGame2.GameScreens
                     zapusk = true;
                 }
 
+                if (input.CurrentKeyboardState.IsKeyDown(Keys.X))
+                {
+                    //TODO shake here
+                    //  camera.Shake(25f, 2f);
+                    CameraManager.ActiveCamera.Shake(25f,2f);
+                }
 
 
                 #region BloomHandle
@@ -416,7 +422,7 @@ namespace AntiTankGame2.GameScreens
 
                 #endregion
 
-
+                #region particcles
 #if DRAWPARTICLE
 
                 #region Partilces Handle
@@ -468,6 +474,7 @@ namespace AntiTankGame2.GameScreens
 
 #endif
 
+                #endregion
                 #region Blend
 
                 if (input.CurrentKeyboardState.IsKeyDown(Keys.Y))
@@ -760,27 +767,7 @@ namespace AntiTankGame2.GameScreens
             return result;
         }
      
-        /* TODO  спрятать это куда-нить а лучше и сжечь вовсе ....
-Хочу тебя обнять,
-Хочу прижать к груди как можно ближе
-Насколько сильно, так, как будто что бы не сломать
-Шипы у роз на тонких стебельках
-И кровью истекать, и со слезами с глаз
-Нот так, что б ни когда не отпускать...
-
-Мой разум поглащен тобой,
-Ты в мыслях и надежда и проклятье...
-Пусти поближе или напрочь прогони
-Без правды я не могу никак иначе....
-         * 
-         * Всех чувств не передать словами
-         Не не нарисуешь их в рисунке самом ярком
-Сказть, как я люблю тебя, родная...
-Смогу лишь страстно обнимая...
-
-ps. жду встречи
-         
-         */
+       
         #endregion
         
     }

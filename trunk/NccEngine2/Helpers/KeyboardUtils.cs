@@ -32,8 +32,8 @@ namespace NccEngine2.Helpers
         {
             public CharPair(char normalChar, Nullable<char> shiftChar)
             {
-                this.NormalChar = normalChar;
-                this.ShiftChar = shiftChar;
+                NormalChar = normalChar;
+                ShiftChar = shiftChar;
             }
 
             public char NormalChar;

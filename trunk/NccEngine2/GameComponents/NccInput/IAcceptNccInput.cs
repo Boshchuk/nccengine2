@@ -4,7 +4,7 @@ using NccEngine2.GameComponents.Scene.SceneObject;
 namespace NccEngine2.GameComponents.NccInput
 {
     /// <summary>
-    /// Allows a NccSceneObject to handle input.
+    /// Allows a NccSceneObject and ather entityes to handle input.
     /// </summary>
     public interface IAcceptNccInput : INccSceneObject
     {

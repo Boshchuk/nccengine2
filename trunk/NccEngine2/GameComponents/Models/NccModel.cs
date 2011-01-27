@@ -11,7 +11,7 @@ namespace NccEngine2.GameComponents.Models
         public string FileName { get; set; }
 
         ///<summary>
-        ///Gets the underlying Effect.
+        ///The basic xna model
         ///</summary>
         public Model BaseModel { get; set; }
 
@@ -43,7 +43,6 @@ namespace NccEngine2.GameComponents.Models
             BaseModel = BaseEngine.ContentManager.Load<Model>(FileName);
             ReadyToRender = true;
         }
-
 
     }
 

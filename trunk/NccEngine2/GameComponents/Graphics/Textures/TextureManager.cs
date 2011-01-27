@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Microsoft.Xna.Framework;
 
@@ -11,13 +12,13 @@ namespace NccEngine2.GameComponents.Graphics.Textures
         /// <summary>
         /// Is the TextureManagers Initialized, used for test cases and setup of Effects.
         /// </summary>
-        public static bool Initialized { get; private set; }
+        private static bool Initialized { get; set; }
 
         /// <summary>
         /// The number of textures that are currently loaded.
         /// Use this for user loading bar feedback.
         /// </summary>
-        public static int TexturesLoaded { get; private set; }
+        private static int TexturesLoaded { get; set; }
 
         /// <summary>
         /// Create the shader Managers.
@@ -93,13 +94,10 @@ namespace NccEngine2.GameComponents.Graphics.Textures
 
             ThreadStart threadStarter = delegate
             {
-                foreach (var texture in textures.Values)
+                foreach (var texture in textures.Values.Where(texture => !texture.ReadyToRender))
                 {
-                    if (!texture.ReadyToRender)
-                    {
-                        texture.LoadContent();
-                        TexturesLoaded++;
-                    }
+                    texture.LoadContent();
+                    TexturesLoaded++;
                 }
             };
             var loadingThread = new Thread(threadStarter);

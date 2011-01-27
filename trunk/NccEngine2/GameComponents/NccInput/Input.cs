@@ -106,13 +106,10 @@ namespace NccEngine2.GameComponents.NccInput
             {
                 return IsNewKeyPress(Keys.Up) ||
 #if !XBOX
- (CurrentSimpleGamePadState.DPad.Up == ButtonState.Pressed &&
- LastGamePadState.DPad.Up == ButtonState.Released) ||
+ (CurrentSimpleGamePadState.DPad.Up == ButtonState.Pressed && LastGamePadState.DPad.Up == ButtonState.Released) ||
 #endif
- (CurrentGamePadState.DPad.Up == ButtonState.Pressed &&
-                        LastGamePadState.DPad.Up == ButtonState.Released) ||
-                       (CurrentGamePadState.ThumbSticks.Left.Y > 0 &&
-                        LastGamePadState.ThumbSticks.Left.Y <= 0);
+ (CurrentGamePadState.DPad.Up == ButtonState.Pressed &&LastGamePadState.DPad.Up == ButtonState.Released) ||
+ (CurrentGamePadState.ThumbSticks.Left.Y > 0 &&LastGamePadState.ThumbSticks.Left.Y <= 0);
             }
         }
 
@@ -125,14 +122,11 @@ namespace NccEngine2.GameComponents.NccInput
             {
                 return IsNewKeyPress(Keys.Down) ||
 #if !XBOX
- (CurrentSimpleGamePadState.DPad.Down == ButtonState.Pressed &&
-                     LastGamePadState.DPad.Down == ButtonState.Released) ||
+ (CurrentSimpleGamePadState.DPad.Down == ButtonState.Pressed &&LastGamePadState.DPad.Down == ButtonState.Released) ||
                      (CurrentSimpleGamePadState.ThumbSticks.Left.Y < 0 && LastSimpleGamePadState.ThumbSticks.Left.Y >= 0) ||
 #endif
- (CurrentGamePadState.DPad.Down == ButtonState.Pressed &&
-                        LastGamePadState.DPad.Down == ButtonState.Released) ||
-                       (CurrentGamePadState.ThumbSticks.Left.Y < 0 &&
-                        LastGamePadState.ThumbSticks.Left.Y >= 0);
+ (CurrentGamePadState.DPad.Down == ButtonState.Pressed &&LastGamePadState.DPad.Down == ButtonState.Released) ||
+                       (CurrentGamePadState.ThumbSticks.Left.Y < 0 &&LastGamePadState.ThumbSticks.Left.Y >= 0);
             }
         }
 
@@ -165,7 +159,7 @@ namespace NccEngine2.GameComponents.NccInput
             {
                 return IsNewKeyPress(Keys.Escape) ||
                        (CurrentGamePadState.Buttons.B == ButtonState.Pressed &&
-                        LastGamePadState.Buttons.B == ButtonState.Released) ||
+                       LastGamePadState.Buttons.B == ButtonState.Released) ||
 
                        (CurrentGamePadState.Buttons.Back == ButtonState.Pressed &&
                         LastGamePadState.Buttons.Back == ButtonState.Released);

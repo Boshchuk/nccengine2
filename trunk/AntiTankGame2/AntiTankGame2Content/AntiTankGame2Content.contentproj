@@ -50,6 +50,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\CustomEffectPipeline\CustomEffectPipeline.csproj">
+      <Project>{54478695-083C-4AD4-B10A-08179B1E7E58}</Project>
+      <Name>CustomEffectPipeline</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\LocalizationPipeline\LocalizationPipeline.csproj">
       <Project>{67970F83-993D-4921-B3E1-465F2B0569BA}</Project>
       <Name>LocalizationPipeline</Name>
@@ -142,8 +146,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Tanks\Abrams\M1_Abrams.FBX">
-      <Name>M1_Abrams</Name>
+    <Compile Include="Models\Tanks\Abrams\M1_Abrams2.FBX">
+      <Name>M1_Abrams2</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
@@ -297,6 +301,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Shaders\DrawModel.fx">
+      <Name>DrawModel</Name>
+      <Importer>EffectImporter</Importer>
+      <Processor>EffectProcessor</Processor>
+    </Compile>
     <None Include="Textures\sand.jpg">
       <Name>sand</Name>
       <Importer>TextureImporter</Importer>
@@ -342,6 +351,13 @@
   <ItemGroup>
     <Compile Include="Textures\Ready.png">
       <Name>Ready</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\Tanks\M1_ABRAM.bmp">
+      <Name>M1_ABRAM</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

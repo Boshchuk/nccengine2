@@ -12,6 +12,8 @@ namespace NccEngine2.GameComponents.Graphics.Screens.Menu
     /// </summary>
     public class MenuEntry
     {
+        #region Fields
+
         /// <summary>
         /// Gets or sets the text of this menu entry.
         /// </summary>
@@ -25,11 +27,32 @@ namespace NccEngine2.GameComponents.Graphics.Screens.Menu
         /// </remarks>
         float selectionFade;
 
+       
+       
+
+        #endregion
+
+        #region additional fields
+        // ReSharper disable UnusedAutoPropertyAccessor.Global
+        public Vector2 Position { get; set; }
+
+        public bool IsFocused { get; set; }
+
+        public bool IsDraggable { get; set; }
+        public Action Clicked { get; set; }
+
+        Vector2 positionOffset;
+        // ReSharper restore UnusedAutoPropertyAccessor.Global
+
+        //New fechares
+
+        public const int Height = 64;
+        public const int Border = 32;
+        #endregion
         /// <summary>
         /// Event raised when the menu entry is selected.
         /// </summary>
         public event EventHandler<EventArgs> Selected;
-
         /// <summary>
         /// Method for raising the Selected event.
         /// </summary>
@@ -57,16 +80,9 @@ namespace NccEngine2.GameComponents.Graphics.Screens.Menu
             // When the menu selection changes, entries gradually fade between
             // their selected and deselected appearance, rather than instantly
             // popping to the new state.
-            float fadeSpeed = (float)gameTime.ElapsedGameTime.TotalSeconds * 4;
+            var fadeSpeed = (float)gameTime.ElapsedGameTime.TotalSeconds * 4;
 
-            if (isSelected)
-            {
-                selectionFade = Math.Min(selectionFade + fadeSpeed, 1);
-            }
-            else
-            {
-                selectionFade = Math.Max(selectionFade - fadeSpeed, 0);
-            }
+            selectionFade = isSelected ? Math.Min(selectionFade + fadeSpeed, 1) : Math.Max(selectionFade - fadeSpeed, 0);
         }
 
 
@@ -91,9 +107,9 @@ namespace NccEngine2.GameComponents.Graphics.Screens.Menu
 
             // Draw text, centered on the middle of each line.
 
-            // ReSharper disable PossibleLossOfFraction
-            var origin = new Vector2(0, ScreenManager.Font.LineSpacing / 2);
-            // ReSharper restore PossibleLossOfFraction
+          
+            var origin = new Vector2(0, (float) ScreenManager.Font.LineSpacing / 2);
+          
 
             ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, Text, new Vector2(position.X + 1, position.Y + 1), Color.Black, 0, origin, scale, SpriteEffects.None, 0);
             ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, Text, position, color, 0, origin, scale, SpriteEffects.None, 0);
@@ -109,37 +125,17 @@ namespace NccEngine2.GameComponents.Graphics.Screens.Menu
             return ScreenManager.Font.LineSpacing;
         }
 
-        //New fechares
-
-        public const int Height = 64;
-        public const int Border = 32;
-
-        public Vector2 Position { get; set; }
-        public bool IsFocused { get; set; }
-
-        public bool IsDraggable { get; set; }
-        public Action Clicked { get; set; }
-
-        public Color Color { get { return IsFocused ? Color.Blue : Color.White; } }
-
-        Vector2 positionOffset;
-
-        private MenuEntry()
-        {
-            
-        }
-
+        private Color Color { get { return IsFocused ? Color.Blue : Color.White; } }
 
         /// <summary>
         /// Draws the menu entry.
         /// </summary>
         public void Draw(SpriteBatch spriteBatch, SpriteFont font, Texture2D blankTexture)
         {
-            positionOffset = new Vector2(0, (Height - font.LineSpacing) / 2);
+            positionOffset = new Vector2(0, (float) (Height - font.LineSpacing) / 2);
 
             spriteBatch.DrawString(font, Text, Position + positionOffset, Color);
         }
-
 
         /// <summary>
         /// Handles clicks on this menu entry.
@@ -154,11 +150,9 @@ namespace NccEngine2.GameComponents.Graphics.Screens.Menu
             // If we are not draggable, spawn a visual feedback effect.
             if (!IsDraggable)
             {
-             //TODO Impiment
                 BaseEngine.SpawnZoomyText(Text, Position + positionOffset);
             }
         }
-
 
         /// <summary>
         /// Handles dragging this menu entry from left to right.
@@ -167,5 +161,4 @@ namespace NccEngine2.GameComponents.Graphics.Screens.Menu
         {
         }
     }
-
 }

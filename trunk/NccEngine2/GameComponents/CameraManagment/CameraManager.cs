@@ -10,6 +10,9 @@ namespace NccEngine2.GameComponents.CameraManagment
     {
         public enum CameraNumber
         {
+            /// <summary>
+            /// Used as active camera
+            /// </summary>
             Default = 1,
             Dolly = 2,
             ThreeNumber = 3,
@@ -58,7 +61,7 @@ namespace NccEngine2.GameComponents.CameraManagment
 
             AddCamera(new FirstPersonCamera(), CameraNumber.Default);
             SetActiveCamera(CameraNumber.Default);
-            AddCamera(new FirstPersonCamera(), CameraNumber.Dolly);
+            //Note AddCamera(new FirstPersonCamera(), CameraNumber.Dolly);
 
             Initialized = true;
         }

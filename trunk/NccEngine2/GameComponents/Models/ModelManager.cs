@@ -53,7 +53,7 @@ namespace NccEngine2.GameComponents.Models
         }
 
         /// <summary>
-        /// Get a texture
+        /// Get a Model
         /// </summary>
         /// <param name="modelName"></param>
         /// <returns></returns>

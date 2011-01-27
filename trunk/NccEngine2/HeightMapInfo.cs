@@ -103,9 +103,8 @@ namespace NccEngine2
             // positionOnHeightmap is. Remember that integer division always rounds
             // down, so that the result of these divisions is the indices of the "upper
             // left" of the 4 corners of that cell.
-            int left, top;
-            left = (int)positionOnHeightmap.X / (int)terrainScale;
-            top = (int)positionOnHeightmap.Z / (int)terrainScale;
+            var left = (int)positionOnHeightmap.X / (int)terrainScale;
+            var top = (int)positionOnHeightmap.Z / (int)terrainScale;
 
             // next, we'll use modulus to find out how far away we are from the upper
             // left corner of the cell. Mod will give us a value from 0 to terrainScale,

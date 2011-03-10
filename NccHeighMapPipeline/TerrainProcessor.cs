@@ -11,6 +11,7 @@ using System.ComponentModel;
 
 namespace NccHeightMapPipeline
 {
+    // ReSharper disable UnusedMember.Global
     /// <summary>
     /// Custom content processor for creating terrain meshes. Given an
     /// input heightfield texture, this processor uses the MeshBuilder
@@ -58,12 +59,13 @@ namespace NccHeightMapPipeline
         /// Controls the how often the texture applied to the terrain will be repeated.
         /// </summary>
         [DefaultValue(.1f)]
-        [Description("Controls how often the texture will be repeated " +
-                     "across the terrain.")]
-        public float TexCoordScale
+        [Description("Controls how often the texture will be repeated across the terrain.")]
+        private float TexCoordScale
         {
             get { return texCoordScale; }
+// ReSharper disable UnusedMember.Local
             set { texCoordScale = value; }
+// ReSharper restore UnusedMember.Local
         }
         private float texCoordScale = 0.1f;
 
@@ -74,13 +76,14 @@ namespace NccHeightMapPipeline
         /// </summary>
         //[DefaultValue("rocks.bmp")]
         [DefaultValue("Textures/sand.jpg")]
-        [Description("Controls the texture that will be applied to the terrain. If " +
-                     "no value is supplied, a texture will not be applied.")]
+        [Description("Controls the texture that will be applied to the terrain. If no value is supplied, a texture will not be applied.")]
         [DisplayName("Terrain Texture")]
-        public string TerrainTexture
+        private string TerrainTexture
         {
             get { return terrainTexture; }
+// ReSharper disable UnusedMember.Local
             set { terrainTexture = value; }
+// ReSharper restore UnusedMember.Local
         }
         private string terrainTexture = "Textures/ground.png";
 
@@ -90,10 +93,9 @@ namespace NccHeightMapPipeline
         /// <summary>
         /// Generates a terrain mesh from an input heightfield texture.
         /// </summary>
-        public override ModelContent Process(Texture2DContent input,
-                                             ContentProcessorContext context)
+        public override ModelContent Process(Texture2DContent input, ContentProcessorContext context)
         {
-            MeshBuilder builder = MeshBuilder.StartMesh("terrain");
+            var builder = MeshBuilder.StartMesh("terrain");
 
             // Convert the input texture to float format, for ease of processing.
             input.ConvertBitmapType(typeof(PixelBitmapContent<float>));
@@ -102,9 +104,9 @@ namespace NccHeightMapPipeline
             var heightfield = (PixelBitmapContent<float>)input.Mipmaps[0];
 
             // Create the terrain vertices.
-            for (int y = 0; y < heightfield.Height; y++)
+            for (var y = 0; y < heightfield.Height; y++)
             {
-                for (int x = 0; x < heightfield.Width; x++)
+                for (var x = 0; x < heightfield.Width; x++)
                 {
                     Vector3 position;
 
@@ -120,14 +122,13 @@ namespace NccHeightMapPipeline
             }
 
             // Create a material, and point it at our terrain texture.
-            var material = new BasicMaterialContent();
-            material.SpecularColor = new Vector3(.4f, .4f, .4f);
+            var material = new BasicMaterialContent {SpecularColor = new Vector3(.4f, .4f, .4f)};
 
             if (!string.IsNullOrEmpty(TerrainTexture))
             {
-                string directory = Path.GetDirectoryName(input.Identity.SourceFilename);
+                var directory = Path.GetDirectoryName(input.Identity.SourceFilename);
 // ReSharper disable AssignNullToNotNullAttribute
-                string texture = Path.Combine(directory, TerrainTexture);
+                var texture = Path.Combine(directory, TerrainTexture);
 // ReSharper restore AssignNullToNotNullAttribute
 
                 material.Texture = new ExternalReference<TextureContent>(texture);
@@ -136,12 +137,12 @@ namespace NccHeightMapPipeline
             builder.SetMaterial(material);
 
             // Create a vertex channel for holding texture coordinates.
-            int texCoordId = builder.CreateVertexChannel<Vector2>(VertexChannelNames.TextureCoordinate(0));
+            var texCoordId = builder.CreateVertexChannel<Vector2>(VertexChannelNames.TextureCoordinate(0));
 
             // Create the individual triangles that make up our terrain.
-            for (int y = 0; y < heightfield.Height - 1; y++)
+            for (var y = 0; y < heightfield.Height - 1; y++)
             {
-                for (int x = 0; x < heightfield.Width - 1; x++)
+                for (var x = 0; x < heightfield.Width - 1; x++)
                 {
                     AddVertex(builder, texCoordId, heightfield.Width, x, y);
                     AddVertex(builder, texCoordId, heightfield.Width, x + 1, y);
@@ -154,10 +155,10 @@ namespace NccHeightMapPipeline
             }
 
             // Chain to the ModelProcessor so it can convert the mesh we just generated.
-            MeshContent terrainMesh = builder.FinishMesh();
+            var terrainMesh = builder.FinishMesh();
 
 
-            ModelContent model = context.Convert<MeshContent, ModelContent>(terrainMesh,"ModelProcessor");
+            var model = context.Convert<MeshContent, ModelContent>(terrainMesh,"ModelProcessor");
 
             // generate information about the height map, and attach it to the finished
             // model's tag.
@@ -178,4 +179,5 @@ namespace NccHeightMapPipeline
             builder.AddTriangleVertex(x + y * w);
         }
     }
+    // ReSharper restore UnusedMember.Global
 }

@@ -1,9 +1,9 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content.Pipeline;
+﻿using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 
 namespace NccHeightMapPipeline
 {
+    // ReSharper disable UnusedMember.Global
     /// <summary>
     /// A TypeWriter for HeightMapInfo, which tells the content pipeline how to save the
     /// data in HeightMapInfo. This class should match HeightMapInfoReader: whatever the
@@ -18,11 +18,11 @@ namespace NccHeightMapPipeline
 
             output.Write(value.Height.GetLength(0));
             output.Write(value.Height.GetLength(1));
-            foreach (float height in value.Height)
+            foreach (var height in value.Height)
             {
                 output.Write(height);
             }
-            foreach (Vector3 normal in value.Normals)
+            foreach (var normal in value.Normals)
             {
                 output.Write(normal);
             }
@@ -47,4 +47,5 @@ namespace NccHeightMapPipeline
             return "NccEngine2.HeightMapInfoReader, NccEngine2, Version=1.0.0.0, Culture=neutral";
         }
     }
+    // ReSharper restore UnusedMember.Global
 }

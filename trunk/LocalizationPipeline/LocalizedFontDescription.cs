@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 
 namespace LocalizationPipeline
 {
+    // ReSharper disable ClassNeverInstantiated.Global
     /// <summary>
     /// Normally, when you add a .spritefont file to your project, this data is
     /// deserialized into a FontDescription object, which is then built into a
@@ -20,11 +21,8 @@ namespace LocalizationPipeline
         /// <summary>
         /// Constructor.
         /// </summary>
-        public LocalizedFontDescription()
-            : base("Arial", 14, 0)
-        {
-        }
-
+        public LocalizedFontDescription(): base("Arial", 14, 0)
+        {}
 
         /// <summary>
         /// Add a new property to our font description, which will allow us to
@@ -34,11 +32,13 @@ namespace LocalizationPipeline
         /// can be imported as well.
         /// </summary>
         [ContentSerializer(Optional = true, CollectionItemName = "Resx")]
+// ReSharper disable ReturnTypeCanBeEnumerable.Global
         public List<string> ResourceFiles
         {
             get { return resourceFiles; }
         }
-
-        List<string> resourceFiles = new List<string>();
+        // ReSharper restore ReturnTypeCanBeEnumerable.Global
+        readonly List<string> resourceFiles = new List<string>();
     }
+    // ReSharper restore ClassNeverInstantiated.Global
 }

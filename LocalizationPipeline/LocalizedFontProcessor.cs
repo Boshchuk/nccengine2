@@ -1,5 +1,6 @@
 #region Using Statements
 using System.IO;
+using System.Linq;
 using System.Xml;
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
@@ -8,6 +9,7 @@ using Microsoft.Xna.Framework.Content.Pipeline.Processors;
 
 namespace LocalizationPipeline
 {
+    // ReSharper disable UnusedMember.Global
     /// <summary>
     /// Custom processor extends the SpriteFont build process to scan over the resource
     /// strings used by the game, automatically adding whatever characters it finds in
@@ -21,6 +23,7 @@ namespace LocalizationPipeline
     /// </summary>
     [ContentProcessor]
     class LocalizedFontProcessor : ContentProcessor<LocalizedFontDescription,SpriteFontContent>
+
     {
         /// <summary>
         /// Converts a font description into SpriteFont format.
@@ -28,10 +31,8 @@ namespace LocalizationPipeline
         public override SpriteFontContent Process(LocalizedFontDescription input,ContentProcessorContext context)
         {
             // Scan each .resx file in turn.
-            foreach (string resourceFile in input.ResourceFiles)
+            foreach (var absolutePath in input.ResourceFiles.Select(Path.GetFullPath))
             {
-                string absolutePath = Path.GetFullPath(resourceFile);
-
                 // Make sure the .resx file really does exist.
                 if (!File.Exists(absolutePath))
                 {
@@ -44,15 +45,13 @@ namespace LocalizationPipeline
                 xmlDocument.Load(absolutePath);
 
                 // Scan each string from the .resx file.
-                foreach (XmlNode xmlNode in xmlDocument.SelectNodes("root/data/value"))
-                {
-                    string resourceString = xmlNode.InnerText;
 
-                    // Scan each character of the string.
-                    foreach (char usedCharacter in resourceString)
-                    {
-                        input.Characters.Add(usedCharacter);
-                    }
+                foreach (var usedCharacter in
+// ReSharper disable AssignNullToNotNullAttribute
+                    xmlDocument.SelectNodes("root/data/value").Cast<XmlNode>().Select(xmlNode => xmlNode.InnerText).SelectMany(resourceString => resourceString))
+// ReSharper restore AssignNullToNotNullAttribute
+                {
+                    input.Characters.Add(usedCharacter);
                 }
 
                 // Mark that this font should be rebuilt if the resource file changes.
@@ -64,4 +63,5 @@ namespace LocalizationPipeline
             return context.Convert<FontDescription,SpriteFontContent>(input, "FontDescriptionProcessor");
         }
     }
+    // ReSharper restore UnusedMember.Global
 }

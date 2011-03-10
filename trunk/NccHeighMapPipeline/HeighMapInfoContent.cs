@@ -28,7 +28,9 @@ namespace NccHeightMapPipeline
         public Vector3[,] Normals
         {
             get { return normals; }
+// ReSharper disable UnusedMember.Global
             set { normals = value; }
+// ReSharper restore UnusedMember.Global
         }
         private Vector3[,] normals;
 
@@ -38,11 +40,7 @@ namespace NccHeightMapPipeline
         /// For example, if TerrainScale is 30, Height[0,0] and Height[1,0] are 30
         /// units apart.
         /// </summary>
-        public float TerrainScale
-        {
-            get { return terrainScale; }
-        }
-        private float terrainScale;
+        public float TerrainScale { get; private set; }
 
         /// <summary>
         /// This constructor will initialize the height array from the values in the 
@@ -66,7 +64,7 @@ namespace NccHeightMapPipeline
                 throw new ArgumentOutOfRangeException("terrainLength");
             }
 
-            this.terrainScale = terrainScale;
+            TerrainScale = terrainScale;
 
             // create new arrays of the requested size.
             Height = new float[terrainWidth, terrainLength];
@@ -74,12 +72,12 @@ namespace NccHeightMapPipeline
 
             // to fill those arrays, we'll look at the position and normal data
             // contained in the terrainMesh.
-            GeometryContent geometry = terrainMesh.Geometry[0];
+            var geometry = terrainMesh.Geometry[0];
             // we'll go through each vertex....
-            for (int i = 0; i < geometry.Vertices.VertexCount; i++)
+            for (var i = 0; i < geometry.Vertices.VertexCount; i++)
             {
                 // ... and look up its position and normal.
-                Vector3 position = geometry.Vertices.Positions[i];
+                var position = geometry.Vertices.Positions[i];
                 var normal = (Vector3)geometry.Vertices.Channels
                     [VertexChannelNames.Normal()][i];
 

@@ -9,7 +9,9 @@ namespace NccParticleSettings
     /// Settings class describes all the tweakable options used
     /// to control the appearance of a particle system.
     /// </summary>
+// ReSharper disable UnusedMember.Global
     public class ParticleSettings
+
     {
         // Name of the texture used by this particle system.
 // ReSharper disable RedundantDefaultFieldInitializer
@@ -94,27 +96,29 @@ namespace NccParticleSettings
         // ReSharper restore RedundantDefaultFieldInitializer
 
         // Alpha blending settings.
-        [ContentSerializerIgnore]
-        public BlendState BlendState = BlendState.NonPremultiplied;
+        [ContentSerializerIgnore] private BlendState blendState = BlendState.NonPremultiplied;
 
-
+        // ReSharper disable UnusedMember.Local
         [ContentSerializer(ElementName = "BlendState")]
         private string BlendStateSerializationHelper
+
         {
-            get { return BlendState.Name.Replace("BlendState.", string.Empty); }
+            get { return blendState.Name.Replace("BlendState.", string.Empty); }
 
             set
             {
                 switch (value)
                 {
-                    case "AlphaBlend": BlendState = BlendState.AlphaBlend; break;
-                    case "Additive": BlendState = BlendState.Additive; break;
-                    case "NonPremultiplied": BlendState = BlendState.NonPremultiplied; break;
+                    case "AlphaBlend": blendState = BlendState.AlphaBlend; break;
+                    case "Additive": blendState = BlendState.Additive; break;
+                    case "NonPremultiplied": blendState = BlendState.NonPremultiplied; break;
 
                     default:
                         throw new ArgumentException("Unknown blend state " + value);
                 }
             }
         }
+        // ReSharper restore UnusedMember.Local
     }
+    // ReSharper restore UnusedMember.Global
 }

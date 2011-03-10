@@ -17,25 +17,19 @@ namespace AntiTankGame2.GameScreens
     class MessageBoxScreen : GameScreen
     {
         private const string Texture = ContentConstants.MessageBoxTexureName;
-        private string message;
+        private readonly string message;
 
         public event EventHandler<EventArgs> Accepted;
+// ReSharper disable EventNeverSubscribedTo.Global
         public event EventHandler<EventArgs> Cancelled;
+// ReSharper restore EventNeverSubscribedTo.Global
 
-
-        /// <summary>
-        /// Constructor automatically includes the standard "A=ok, B=cancel"
-        /// usage text prompt.
-        /// </summary>
-        public MessageBoxScreen(string message)
-            : this(message, true)
-        { }
 
         /// <summary>
         /// Constructor lets the caller specify whether to include the standard
         /// "A=ok, B=cancel" usage text prompt.
         /// </summary>
-        public MessageBoxScreen(string message, bool includeUsageText)
+        public MessageBoxScreen(string message, bool includeUsageText = true)
         {
 
             var usageText = string.Format(Strings.UsageText, Environment.NewLine);

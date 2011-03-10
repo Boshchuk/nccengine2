@@ -1,3 +1,4 @@
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NccEngine2.GameComponents.Audio;
@@ -43,7 +44,9 @@ namespace AntiTankGame2.GameObjects.TestLogic
             Position = Vector3.Zero;
         }
 
+// ReSharper disable UnusedMember.Global
         public EndPoint(Vector3 newPosition)
+// ReSharper restore UnusedMember.Global
         {
             Position = newPosition;
             Scale = new Vector3(0.1f, 0.1f, 0.1f);
@@ -110,41 +113,33 @@ namespace AntiTankGame2.GameObjects.TestLogic
             //var elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             var model = ModelManager.GetModel(ModelName);
-            if (model != null && model.ReadyToRender && !ReadyToRender)
+            if (model == null || !model.ReadyToRender || ReadyToRender) return;
+            var transforms = new Matrix[model.BaseModel.Bones.Count];
+            model.BaseModel.CopyAbsoluteBoneTransformsTo(transforms);
+
+            BoundingBox = new BoundingBox();
+
+            foreach (var mesh in model.BaseModel.Meshes.Where(mesh => !BoundingBoxCreated))
             {
-                var transforms = new Matrix[model.BaseModel.Bones.Count];
-                model.BaseModel.CopyAbsoluteBoneTransformsTo(transforms);
-
-                BoundingBox = new BoundingBox();
-
-                foreach (var mesh in model.BaseModel.Meshes)
-                {
-                    if (!BoundingBoxCreated)
-                    {
-                        BoundingBox = BoundingBox.CreateMerged(BoundingBox, BoundingBox.CreateFromSphere(mesh.BoundingSphere));
-                    }
-                }
-                BoundingBoxCreated = true;
-
-                Vector3 min, max;
-                min = BoundingBox.Min;
-                max = BoundingBox.Max;
-
-                BoundingBox = new BoundingBox(min, max);
-
-                ReadyToRender = true;
+                BoundingBox = BoundingBox.CreateMerged(BoundingBox, BoundingBox.CreateFromSphere(mesh.BoundingSphere));
             }
+            BoundingBoxCreated = true;
+
+            var min = BoundingBox.Min;
+            var max = BoundingBox.Max;
+
+            BoundingBox = new BoundingBox(min, max);
+
+            ReadyToRender = true;
         }
 
         #endregion
 
         #region methds
 
-        public bool DrawBoundingBox
-        {
-            get;
-            set;
-        }
+// ReSharper disable UnusedMember.Global
+        public bool DrawBoundingBox {get; set;}
+// ReSharper restore UnusedMember.Global
 
         public BoundingBox GetBoundingBoxTransformed()
         {

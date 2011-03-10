@@ -153,13 +153,10 @@
 	<data name="ErrorOutOfVideoMemory" xml:space="preserve">
     <value>Недостаточно видео памяти. {0}{0} Установите минимальные настройки графики , перезапустите приложение {0}{0} Если сообщение продолжает появляться, ваша ситема не сответствует минимальным требованиям</value>
   </data>
-	<data name="GameName" xml:space="preserve">
-    <value>AntiTankGame</value>
-  </data>
 	<data name="PauseMenu" xml:space="preserve">
     <value>Меню Паузы</value>
   </data>
 	<data name="SystemRequirements" xml:space="preserve">
-    <value>This adapter does not support Shader Model 2.0.</value>
+    <value>"Ваш адаптер не поддерживает Shader Model 2.0.</value>
   </data>
 </root>

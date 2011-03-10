@@ -178,17 +178,7 @@ namespace AntiTankGame2.GameObjects.Tanks
             
         }
 
-        public override void Update(GameTime gameTime)
-        {
-           // var time = (float)gameTime.TotalGameTime.TotalSeconds;
-
-            //TurretRotation = (float)/*Math.Sin(time * 0.75)*/time ;
-
-            // Update the animation properties on the tank object. In a real game
-            // you would probably take this data from user inputs or the physics
-            // system, rather than just making everything rotate like this!
-            base.Update(gameTime);
-        }
+       
 
         public override void Draw(GameTime gameTime)
         {

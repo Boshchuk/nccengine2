@@ -1,13 +1,13 @@
 //#define MENUMUSIC
 
 using System;
-using AntiTankGame2.GameObjects.Tanks;
+//using AntiTankGame2.GameObjects.Tanks;
 using AntiTankGame2.GameObjects.Terrain;
 using AntiTankGame2.Localization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NccEngine2;
-using NccEngine2.GameComponents.Audio;
+//using NccEngine2.GameComponents.Audio;
 using NccEngine2.GameComponents.CameraManagment;
 using NccEngine2.GameComponents.Graphics.Screens;
 using NccEngine2.GameComponents.Graphics.Textures;
@@ -19,10 +19,12 @@ namespace AntiTankGame2.GameScreens
     {
         private const string BackGroundTextureName = ContentConstants.BackgroundTexureName;
 
-        private Texture2D skyRocketTexture;
-        private readonly Vector2 skyRoketPos = new Vector2(0,0);
+        //private Texture2D skyRocketTexture;
+        //private readonly Vector2 skyRoketPos = new Vector2(0,0);
         
         Matrix matrix;
+
+        RenderTarget2D lightmap;
 
 
         /// <summary>
@@ -42,14 +44,18 @@ namespace AntiTankGame2.GameScreens
         {
             base.LoadContent();
 
-            skyRocketTexture = BaseEngine.ContentManager.Load<Texture2D>("Content/Textures/LensFlare/flare2");
+            //skyRocketTexture = BaseEngine.ContentManager.Load<Texture2D>("Content/Textures/LensFlare/flare2");
             
             TextureManager.AddTexture(new NccTexture(ContentConstants.BackgroundTexurePath), BackGroundTextureName);
-            
-            var model = new BigTank();
-            SceneGraphManager.AddObject(model);
 
-            var plane = new SimplePlane {Scale = new Vector3(5, 5, 5), Position = new Vector3(0, 0, 0)};
+            lightmap = new RenderTarget2D(BaseEngine.Device, 512, 512, false, SurfaceFormat.Color, DepthFormat.Depth16);
+
+           // var model = new BigTank();
+           // SceneGraphManager.AddObject(model);
+
+            var plane = new ShadowPlane(lightmap) {Scale = new Vector3(5, 5, 5), Position = new Vector3(0, 0, 0)};
+            //new SimplePlane {Scale = new Vector3(1, 1, 1), Position = new Vector3(0, 0, 0)};
+
             SceneGraphManager.AddObject(plane);
             SceneGraphManager.LoadContent();
 
@@ -90,20 +96,22 @@ namespace AntiTankGame2.GameScreens
 
             CameraManager.ActiveCamera.View = matrix;
             CameraManager.ActiveCamera.View =  matrix* Matrix.CreateTranslation(100,-100,-600) ;
-            
-            BaseEngine.Device.Clear(Color.Black);
+
+
+
+            BaseEngine.Device.Clear(Color.CornflowerBlue);
 
             //Note drawing perf
-            ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null);
+            //ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null);
             //if (TextureManager.GetTexture(BackGroundTextureName).ReadyToRender)
             //{
             //    ScreenManager.SpriteBatch.Draw(TextureManager.GetTexture(BackGroundTextureName).BaseTexture as Texture2D, fullscreen, new Color(fade, fade, fade));
             //}
-            ScreenManager.SpriteBatch.Draw(skyRocketTexture, skyRoketPos,  Color.White );
+            //ScreenManager.SpriteBatch.Draw(skyRocketTexture, skyRoketPos,  Color.White );
 
-            ScreenManager.SpriteBatch.End();
-            
+            //ScreenManager.SpriteBatch.End();
             SceneGraphManager.Draw(gameTime);
+           
           
         }
     }

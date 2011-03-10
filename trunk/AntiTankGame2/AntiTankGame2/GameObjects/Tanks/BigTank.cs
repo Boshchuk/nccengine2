@@ -5,7 +5,9 @@ using NccEngine2.GameComponents.Scene.Graph.Interfaces;
 
 namespace AntiTankGame2.GameObjects.Tanks
 {
+// ReSharper disable UnusedMember.Global
     public class BigTank : BaseTank, INccLoadable
+
     {
         public void LoadContent()
         {
@@ -20,4 +22,5 @@ namespace AntiTankGame2.GameObjects.Tanks
             GC.Collect();
         }
     }
+    // ReSharper restore UnusedMember.Global
 }

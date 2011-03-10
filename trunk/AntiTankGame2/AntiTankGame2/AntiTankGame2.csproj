@@ -14,7 +14,7 @@
     </TargetFrameworkProfile>
     <XnaFrameworkVersion>v4.0</XnaFrameworkVersion>
     <XnaPlatform>Windows</XnaPlatform>
-    <XnaProfile>Reach</XnaProfile>
+    <XnaProfile>HiDef</XnaProfile>
     <XnaCrossPlatformGroupID>4a9e6704-5457-48c4-abc6-05a0cea6e0f3</XnaCrossPlatformGroupID>
     <XnaOutputType>Game</XnaOutputType>
     <ApplicationIcon>Game.ico</ApplicationIcon>
@@ -127,11 +127,16 @@
     <Compile Include="GameObjects\NccSkySphere.cs" />
     <Compile Include="GameObjects\Tanks\AlphaTank.cs" />
     <Compile Include="GameObjects\Tanks\BigTank.cs" />
+    <Compile Include="GameObjects\Tanks\HeightBaseObject.cs" />
     <Compile Include="GameObjects\Tanks\LittleTank.cs" />
     <Compile Include="GameObjects\Tanks\TankHeight.cs" />
+    <Compile Include="GameObjects\Terrain\ShadowPlane.cs" />
     <Compile Include="GameObjects\Terrain\SimplePlane.cs" />
     <Compile Include="GameObjects\Tanks\BaseTank.cs" />
     <Compile Include="GameObjects\TestLogic\EndPoint.cs" />
+    <Compile Include="GameObjects\Trees\BaseTree.cs" />
+    <Compile Include="GameObjects\Trees\DualTexturedTree3.cs" />
+    <Compile Include="GameObjects\Trees\HeightTree.cs" />
     <Compile Include="GameScreens\BackgroundScreen.cs" />
     <Compile Include="GameScreens\GameplayScreen.cs" />
     <Compile Include="GameScreens\LoadingScreen.cs" />

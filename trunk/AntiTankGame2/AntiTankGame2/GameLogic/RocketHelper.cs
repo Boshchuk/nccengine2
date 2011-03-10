@@ -1,5 +1,5 @@
 using Microsoft.Xna.Framework;
-using NccEngine2;
+
 
 namespace AntiTankGame2.GameLogic
 {
@@ -8,6 +8,7 @@ namespace AntiTankGame2.GameLogic
         /// <summary>
         /// Determinates current rocket position
         /// </summary>
+        /// <param name="gametime"></param>
         /// <param name="rocketPos"></param>
         /// <param name="targetPos"></param>
         /// <param name="lastTargetPos"></param>

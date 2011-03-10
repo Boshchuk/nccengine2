@@ -9,7 +9,9 @@ using NccEngine2.GameComponents.Graphics.FX.Particles;
 
 namespace AntiTankGame2
 {
+// ReSharper disable UnusedMember.Global
     public class Particled : EngineManager
+
     {
 
         #region Particles
@@ -28,7 +30,7 @@ namespace AntiTankGame2
 
         // The explosions effect works by firing projectiles up into the
         // air, so we need to keep track of all the active projectiles.
-        List<Projectile> projectiles = new List<Projectile>();
+        readonly List<Projectile> projectiles = new List<Projectile>();
 
         TimeSpan timeToNextProjectile = TimeSpan.Zero;
 
@@ -169,4 +171,5 @@ namespace AntiTankGame2
             fireParticles.SetCamera(CameraManager.ActiveCamera.View, CameraManager.ActiveCamera.Projection);
         }
     }
+// ReSharper restore UnusedMember.Global
 }

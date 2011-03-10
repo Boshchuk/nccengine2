@@ -10,6 +10,7 @@ using AntiTankGame2.GameLogic;
 using AntiTankGame2.GameObjects;
 using AntiTankGame2.GameObjects.Tanks;
 using AntiTankGame2.GameObjects.TestLogic;
+using AntiTankGame2.GameObjects.Trees;
 using AntiTankGame2.Localization;
 using AntiTankGame2.ParcileHelpers;
 using Microsoft.Xna.Framework;
@@ -32,6 +33,9 @@ using NccEngine2.GameDebugTools;
 
 namespace AntiTankGame2.GameScreens
 {
+    /// <summary>
+    /// Class where gameplay logic must be consctructed
+    /// </summary>
     public class GameplayScreen : GameScreen 
     {
         #region fields
@@ -43,6 +47,7 @@ namespace AntiTankGame2.GameScreens
 #pragma warning restore 649
 
         private TankHeight targetTank;
+        private HeightTree tree;
         private EndPoint endPoint;
         private Vector3 lastendPointPos;
         private EndPoint roket;
@@ -87,17 +92,17 @@ namespace AntiTankGame2.GameScreens
 
         private Vector3 tempSmokePos = Vector3.Zero;
 
-        ParticleSystem explosionParticles;
-        ParticleSystem explosionSmokeParticles;
-        ParticleSystem projectileTrailParticles;
-        ParticleSystem smokePlumeParticles;
-        ParticleSystem fireParticles;
+        readonly ParticleSystem explosionParticles;
+        readonly ParticleSystem explosionSmokeParticles;
+        readonly ParticleSystem projectileTrailParticles;
+        readonly ParticleSystem smokePlumeParticles;
+        readonly ParticleSystem fireParticles;
 
         ParticleState currentState = ParticleState.SmokePlume;
 
         // The explosions effect works by firing projectiles up into the
         // air, so we need to keep track of all the active projectiles.
-        List<Projectile> projectiles = new List<Projectile>();
+        readonly List<Projectile> projectiles = new List<Projectile>();
 
         TimeSpan timeToNextProjectile = TimeSpan.Zero;
 
@@ -198,6 +203,8 @@ namespace AntiTankGame2.GameScreens
 
             fontColor = new Color(255, 255, 255, TransitionAlpha);
            // SetupCamera();
+
+            //Stop music if it played before
             AudioManager.StopMusic();
 
 #if (DRAWPARTICLE)
@@ -269,20 +276,27 @@ namespace AntiTankGame2.GameScreens
             endPoint = new EndPoint { Position = new Vector3(100.0f, 0.0f, 0.0f), Scale = new Vector3(20f, 20f, 20f) };
             SceneGraphManager.AddObject(endPoint);
             
-            roket = new EndPoint { Position = new Vector3(-1624, -590, -1654), Scale = new Vector3(20f, 20f, 20f) };
+            //roket = new EndPoint { Position = new Vector3(-1624, -590, -1654), Scale = new Vector3(20f, 20f, 20f) };
+            roket = new EndPoint { Position = new Vector3(800, 740, 105), Scale = new Vector3(20f, 20f, 20f) };
             SceneGraphManager.AddObject(roket);
 
-            var sk = new NccSkySphere {Position = Vector3.Zero};
-            SceneGraphManager.AddObject(sk);
+            var skySphere = new NccSkySphere {Position = Vector3.Zero};
+            SceneGraphManager.AddObject(skySphere);
 
+
+            tree = new /*BaseTree*/ HeightTree(heightMapInfo, new Vector3(800, 740, 105));
+            ;
+                            //{FacingDirection = MathHelper.ToRadians(-110)};
+            SceneGraphManager.AddObject(tree);
+
+            BaseEngine.AudioManager.LoadSound("Start", "Start");
+
+            BaseEngine.Bloom.Visible = false;
             SceneGraphManager.LoadContent();
 
             // once the load has finished, we use ResetElapsedTime to tell the game's
             // timing mechanism that we have just finished a very long frame, and that
             // it should not try to catch up.
-            BaseEngine.AudioManager.LoadSound("Start", "Start");
-            
-            BaseEngine.Bloom.Visible = false;
             EngineManager.Game.ResetElapsedTime();
         }
 
@@ -307,14 +321,12 @@ namespace AntiTankGame2.GameScreens
                 }
             }
 #endif
-            
-
             base.Update(gameTime, otherScreenHasFocusParameter, coveredByOtherScreen);
             delta = gameTime.ElapsedGameTime.TotalSeconds;
          
             HandleCube();
 
-            Collsison(roket, endPoint);
+           // Collsison(roket, endPoint);
 
             col2 = Int(roket, targetTank);
 
@@ -338,13 +350,13 @@ namespace AntiTankGame2.GameScreens
             }
         }
 
-        private static bool Collsison(INccSceneObject rocket, INccSceneObject target)
-        {
-            var rock = new BoundingSphere(rocket.Position,10);
-            var targ = new BoundingSphere(target.Position,10);
+        //private static bool Collsison(INccSceneObject rocket, INccSceneObject target)
+        //{
+        //    var rock = new BoundingSphere(rocket.Position, 10);
+        //    var targ = new BoundingSphere(target.Position, 10);
 
-            return rock.Intersects(targ);
-        }
+        //    return rock.Intersects(targ);
+        //}
 
         private static bool Int(INccSceneObject rocket, INccSceneObject target)
         {
@@ -395,7 +407,7 @@ namespace AntiTankGame2.GameScreens
                 {
 
                     bloomSettingsIndex = (bloomSettingsIndex + 1)%BloomSettings.PresetSettings.Length;
-                    BaseEngine.Bloom.Settings = BloomSettings.PresetSettings[bloomSettingsIndex];
+                    BloomComponent.Settings = BloomSettings.PresetSettings[bloomSettingsIndex];
                     BaseEngine.Bloom.Visible = true;
 
                 }
@@ -675,8 +687,6 @@ namespace AntiTankGame2.GameScreens
             BaseEngine.LensFlareComponent.View = CameraManager.ActiveCamera.View;
 #endif 
 #endif
-
-
         }
 
         public override void PostUIDraw(GameTime gameTime)
@@ -699,15 +709,19 @@ namespace AntiTankGame2.GameScreens
             //var cameraAngle = string.Format("Angle hor {0} vert {1}", MathHelper.ToDegrees(CameraManager.ActiveCamera.Yaw), MathHelper.ToDegrees(CameraManager.ActiveCamera.Pitch));
             //var bloomInfo = string.Format("F5 = settings ({0}{1}F6 = toggle bloom ({2}){1}F7 = show buffer ({3})", EngineManager.Bloom.Settings.Name, Environment.NewLine, (EngineManager.Bloom.Visible ? "on" : "off"), EngineManager.Bloom.ShowBuffer);
             //var particleMessage = string.Format("Current effect: {0}!!!{1}Hit space bar to switch.",currentState,Environment.NewLine);
+            var cameraMessage = string.Format("cameraPos x{0} y{1} z{2}",
+                CameraManager.ActiveCamera.Position.X,
+                CameraManager.ActiveCamera.Position.Y,
+                CameraManager.ActiveCamera.Position.Z);
 
             //var particleMessage = string.Format("Particle pos : {0}",smokePlumeParticles.);
-            //var mess = string.Format("Modelrad: {0}");
-            var mess = string.Format(GC.CollectionCount(0) + " " + GC.CollectionCount(1));
+            var mess = string.Format("x{0} y{1} z{2}",tree.Position.X,tree.Position.Y,tree.Position.Z);
+            //var mess = string.Format(GC.CollectionCount(0) + " " + GC.CollectionCount(1));
 
             #region SpriteBatch Drawing
             ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend/*AlphaBlend*//*,SaveStateMode.SaveState*/);
-            //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, cameraMessage, new Vector2(textStartPosition.X, textStartPosition.Y + 30), fontColor);
-           ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, mess, new Vector2(textStartPosition.X, textStartPosition.Y + 60), fontColor);
+            ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, cameraMessage, new Vector2(textStartPosition.X, textStartPosition.Y + 30), fontColor);
+            ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, mess, new Vector2(textStartPosition.X, textStartPosition.Y + 60), fontColor);
             //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, col, new Vector2(textStartPosition.X, textStartPosition.Y + 120), fontColor);
             //// //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, particleMessage, new Vector2(textPosition.X, textPosition.Y + 120), color);
             //// //ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, cameraAngle, new Vector2(textPosition.X, textPosition.Y + 90), color);
@@ -739,8 +753,6 @@ namespace AntiTankGame2.GameScreens
             endPoint.Position = AbstractTargetCoordinates();
         }
 
-
-
         /// <summary>
         /// Возвращает координаты, той точки, до которой может долететь ракета...
         /// </summary>
@@ -766,9 +778,6 @@ namespace AntiTankGame2.GameScreens
 
             return result;
         }
-     
-       
         #endregion
-        
     }
 }

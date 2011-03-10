@@ -10,7 +10,7 @@ namespace AntiTankGame2.GameScreens
 {
     public class LoadingScreen : GameScreen
     {
-        bool loadingIsSlow;
+        readonly bool loadingIsSlow;
         bool otherScreensAreGone;
 
         readonly GameScreen[] screensToLoad;
@@ -42,7 +42,7 @@ namespace AntiTankGame2.GameScreens
             if (!otherScreensAreGone) return;
             ScreenManager.RemoveScreen(this);
 
-            foreach (GameScreen screen in screensToLoad.Where(screen => screen != null))
+            foreach (var screen in screensToLoad.Where(screen => screen != null))
             {
                 ScreenManager.AddScreen(screen);
             }
@@ -65,8 +65,8 @@ namespace AntiTankGame2.GameScreens
             var viewport = BaseEngine.Device.Viewport;
           
             var viewportSize = new Vector2(viewport.Width, viewport.Height);
-            Vector2 textSize = ScreenManager.Font.MeasureString(message);
-            Vector2 textPosition = (viewportSize - textSize)/2;
+            var textSize = ScreenManager.Font.MeasureString(message);
+            var textPosition = (viewportSize - textSize)/2;
 
             var color = new Color(255, 255, 255, TransitionAlpha);
 

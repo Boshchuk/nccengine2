@@ -5,14 +5,13 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace AntiTankGame2.GameObjects.Tanks
 {
+// ReSharper disable UnusedMember.Global
     public class AlphaTank
+// ReSharper restore UnusedMember.Global
     {
         #region Fields
-
-
         // The XNA framework Model object that we are going to display.
         Model tankModel;
-
 
         // Shortcut references to the bones that we are going to animate.
         // We could just look these up inside the Draw method, but it is more
@@ -27,7 +26,6 @@ namespace AntiTankGame2.GameObjects.Tanks
         ModelBone cannonBone;
         ModelBone hatchBone;
 
-
         // Store the original transform matrix for each animating bone.
         Matrix leftBackWheelTransform;
         Matrix rightBackWheelTransform;
@@ -39,79 +37,48 @@ namespace AntiTankGame2.GameObjects.Tanks
         Matrix cannonTransform;
         Matrix hatchTransform;
 
-
         // Array holding all the bone transform matrices for the entire model.
         // We could just allocate this locally inside the Draw method, but it
         // is more efficient to reuse a single array, as this avoids creating
         // unnecessary garbage.
         Matrix[] boneTransforms;
 
-
         // Current animation positions.
-        float wheelRotationValue;
-        float steerRotationValue;
-        float turretRotationValue;
-        float cannonRotationValue;
-        float hatchRotationValue;
-
 
         #endregion
 
         #region Properties
 
-
         /// <summary>
         /// Gets or sets the wheel rotation amount.
         /// </summary>
-        public float WheelRotation
-        {
-            get { return wheelRotationValue; }
-            set { wheelRotationValue = value; }
-        }
-
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+        public float WheelRotation { get; set; }
+// ReSharper restore UnusedAutoPropertyAccessor.Global
 
         /// <summary>
         /// Gets or sets the steering rotation amount.
         /// </summary>
-        public float SteerRotation
-        {
-            get { return steerRotationValue; }
-            set { steerRotationValue = value; }
-        }
-
+        public float SteerRotation { get; set; }
 
         /// <summary>
         /// Gets or sets the turret rotation amount.
         /// </summary>
-        public float TurretRotation
-        {
-            get { return turretRotationValue; }
-            set { turretRotationValue = value; }
-        }
-
+        public float TurretRotation { get; set; }
 
         /// <summary>
         /// Gets or sets the cannon rotation amount.
         /// </summary>
-        public float CannonRotation
-        {
-            get { return cannonRotationValue; }
-            set { cannonRotationValue = value; }
-        }
-
+        public float CannonRotation { get; set; }
 
         /// <summary>
         /// Gets or sets the entry hatch rotation amount.
         /// </summary>
-        public float HatchRotation
-        {
-            get { return hatchRotationValue; }
-            set { hatchRotationValue = value; }
-        }
-
-
+        public float HatchRotation { get; set; }
+        // ReSharper restore MemberCanBePrivate.Global
         #endregion
-
+        // ReSharper disable UnusedMember.Global
 
         /// <summary>
         /// Loads the tank model.
@@ -147,7 +114,6 @@ namespace AntiTankGame2.GameObjects.Tanks
             boneTransforms = new Matrix[tankModel.Bones.Count];
         }
 
-
         /// <summary>
         /// Animates the tank model.
         /// </summary>
@@ -162,7 +128,6 @@ namespace AntiTankGame2.GameObjects.Tanks
             HatchRotation = MathHelper.Clamp((float)Math.Sin(time * 2) * 2, -1, 0);
         }
 
-
         /// <summary>
         /// Draws the tank model, using the current animation settings.
         /// </summary>
@@ -172,11 +137,11 @@ namespace AntiTankGame2.GameObjects.Tanks
             tankModel.Root.Transform = world;
 
             // Calculate matrices based on the current animation position.
-            Matrix wheelRotation = Matrix.CreateRotationX(wheelRotationValue);
-            Matrix steerRotation = Matrix.CreateRotationY(steerRotationValue);
-            Matrix turretRotation = Matrix.CreateRotationY(turretRotationValue);
-            Matrix cannonRotation = Matrix.CreateRotationX(cannonRotationValue);
-            Matrix hatchRotation = Matrix.CreateRotationX(hatchRotationValue);
+            var wheelRotation = Matrix.CreateRotationX(WheelRotation);
+            var steerRotation = Matrix.CreateRotationY(SteerRotation);
+            var turretRotation = Matrix.CreateRotationY(TurretRotation);
+            var cannonRotation = Matrix.CreateRotationX(CannonRotation);
+            var hatchRotation = Matrix.CreateRotationX(HatchRotation);
 
             // Apply matrices to the relevant bones.
             leftBackWheelBone.Transform = wheelRotation * leftBackWheelTransform;
@@ -193,7 +158,7 @@ namespace AntiTankGame2.GameObjects.Tanks
             tankModel.CopyAbsoluteBoneTransformsTo(boneTransforms);
 
             // Draw the model.
-            foreach (ModelMesh mesh in tankModel.Meshes)
+            foreach (var mesh in tankModel.Meshes)
             {
                 foreach (BasicEffect effect in mesh.Effects)
                 {
@@ -214,6 +179,6 @@ namespace AntiTankGame2.GameObjects.Tanks
                 mesh.Draw();
             }
         }
-
+        // ReSharper restore UnusedMember.Global
     }
 }

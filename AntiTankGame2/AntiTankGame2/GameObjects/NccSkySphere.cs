@@ -1,5 +1,7 @@
 using System;
+using System.Linq;
 using AntiTankGame2.Localization;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NccEngine2;
 using NccEngine2.GameComponents.CameraManagment;
@@ -24,12 +26,9 @@ namespace AntiTankGame2.GameObjects
             skySphereEffect.Parameters["ProjectionMatrix"].SetValue(CameraManager.ActiveCamera.Projection);
             skySphereEffect.Parameters["SkyboxTexture"].SetValue(skyboxTexture);
             // Set the Skysphere Effect to each part of the Skysphere model
-            foreach (ModelMesh mesh in skySphere.Meshes)
+            foreach (var part in skySphere.Meshes.SelectMany(mesh => mesh.MeshParts))
             {
-                foreach (ModelMeshPart part in mesh.MeshParts)
-                {
-                    part.Effect = skySphereEffect;
-                }
+                part.Effect = skySphereEffect;
             }
         }
 
@@ -38,7 +37,7 @@ namespace AntiTankGame2.GameObjects
             GC.Collect();   
         }
 
-        public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
+        public override void Draw(GameTime gameTime)
         {
 
             // Set the View and Projection matrix for the effect
@@ -51,8 +50,7 @@ namespace AntiTankGame2.GameObjects
             }
 
             // Undo the renderstate settings from the shader
-            //            GraphicsDevice.RenderState.CullMode =
-            //                CullMode.CullCounterClockwiseFace;
+            //            GraphicsDevice.RenderState.CullMode = CullMode.CullCounterClockwiseFace;
             //            GraphicsDevice.RenderState.DepthBufferWriteEnable = true;
 
             base.Draw(gameTime);

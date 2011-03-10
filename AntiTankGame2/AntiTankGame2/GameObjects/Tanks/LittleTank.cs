@@ -16,28 +16,36 @@ namespace AntiTankGame2.GameObjects.Tanks
         // Shortcut references to the bones that we are going to animate.
         // We could just look these up inside the Draw method, but it is more
         // efficient to do the lookups while loading and cache the results.
-        protected ModelBone turretBone;
-        protected ModelBone bodyBone;
+        protected ModelBone TurretBone;
+        private ModelBone bodyBone;
         #endregion
 
         #region Transform Matrixes
         // Store the original transform matrix for each animating bone.
-        protected Matrix turretTransform;
-        protected Matrix bodyTransform;
+        protected Matrix TurretTransform;
+// ReSharper disable UnaccessedField.Local
+        private Matrix bodyTransform;
+// ReSharper restore UnaccessedField.Local
 
         // Array holding all the bone transform matrices for the entire model.
         // We could just allocate this locally inside the Draw method, but it
         // is more efficient to reuse a single array, as this avoids creating
         // unnecessary garbage.
-        protected Matrix[] boneTransforms;
+        protected Matrix[] BoneTransforms;
 
         #endregion
 
         #region Rotation
 
         // Current animation positions.
-        public float TurretRotation { get; set; }
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Local
+        protected float TurretRotation { get; private set; }
+// ReSharper restore UnusedAutoPropertyAccessor.Local
+// ReSharper restore UnusedAutoPropertyAccessor.Global
+// ReSharper disable UnusedMember.Global
         public float BodyRotation { get; set; }
+// ReSharper restore UnusedMember.Global
 
         #endregion
 
@@ -52,13 +60,13 @@ namespace AntiTankGame2.GameObjects.Tanks
 
             // Look up shortcut references to the bones we are going to animate.
 
-            turretBone = model.BaseModel.Bones["turret"];
+            TurretBone = model.BaseModel.Bones["turret"];
             bodyBone = model.BaseModel.Bones["body"];
 
-            turretTransform = turretBone.Transform;
+            TurretTransform = TurretBone.Transform;
             bodyTransform = bodyBone.Transform;
 
-            boneTransforms = new Matrix[model.BaseModel.Bones.Count];
+            BoneTransforms = new Matrix[model.BaseModel.Bones.Count];
         }
 
         public void UnloadContent()

@@ -53,18 +53,18 @@ namespace AntiTankGame2.GameObjects.Tanks
 
         public void LoadContent()
         {
-            var model = new NccModel(ContentConstants.TankHeightModel);
+            var model = new NccModel(ContentConstants.TankModelName);
             ModelManager.AddModel(model, ContentConstants.TankModelName);
             ModelName = ContentConstants.TankModelName;
             OcclusionModelName = ContentConstants.TankModelName;
 
             // Look up shortcut references to the bones we are going to animate.
 
-            TurretBone = model.BaseModel.Bones["turret"];
-            bodyBone = model.BaseModel.Bones["body"];
+            //TurretBone = model.BaseModel.Bones["turret"];
+            //bodyBone = model.BaseModel.Bones["body"];
 
-            TurretTransform = TurretBone.Transform;
-            bodyTransform = bodyBone.Transform;
+            //TurretTransform = TurretBone.Transform;
+            //bodyTransform = bodyBone.Transform;
 
             BoneTransforms = new Matrix[model.BaseModel.Bones.Count];
         }

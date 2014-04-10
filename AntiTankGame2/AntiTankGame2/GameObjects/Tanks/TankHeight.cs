@@ -193,10 +193,10 @@ namespace AntiTankGame2.GameObjects.Tanks
             {
                 Matrix turretRotation = Matrix.CreateRotationY(TurretRotation);
 
-                turretBone.Transform = turretRotation*turretTransform;
+                //turretBone.Transform = turretRotation*turretTransform;
 
 
-                //bonesTransforms = new Matrix[model.BaseModel.Bones.Count];
+                var boneTransforms = new Matrix[model.BaseModel.Bones.Count];
                 model.BaseModel.CopyAbsoluteBoneTransformsTo(boneTransforms);
 
                 foreach (var mesh in model.BaseModel.Meshes)

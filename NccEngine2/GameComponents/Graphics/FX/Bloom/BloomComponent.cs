@@ -24,8 +24,8 @@ namespace NccEngine2.GameComponents.Graphics.FX.Bloom
 
 
         // Choose what display settings the bloom should use.
-        private BloomSettings settings = BloomSettings.PresetSettings[0];
-        public BloomSettings Settings
+        private static BloomSettings settings = BloomSettings.PresetSettings[0];
+        public static BloomSettings Settings
         {
             get { return settings = BloomSettings.PresetSettings[0]; }
             set { settings = BloomSettings.PresetSettings[0] = value; }

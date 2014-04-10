@@ -53,8 +53,8 @@ namespace AntiTankGame2.GameScreens
            // var model = new BigTank();
            // SceneGraphManager.AddObject(model);
 
-            var plane = new ShadowPlane(lightmap) {Scale = new Vector3(5, 5, 5), Position = new Vector3(0, 0, 0)};
-            //new SimplePlane {Scale = new Vector3(1, 1, 1), Position = new Vector3(0, 0, 0)};
+            var plane = //new ShadowPlane(lightmap) {Scale = new Vector3(5, 5, 5), Position = new Vector3(0, 0, 0)};
+            new SimplePlane {Scale = new Vector3(1, 1, 1), Position = new Vector3(0, 0, 0)};
 
             SceneGraphManager.AddObject(plane);
             SceneGraphManager.LoadContent();

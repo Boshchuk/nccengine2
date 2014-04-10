@@ -12,23 +12,23 @@ namespace AntiTankGame2.GameObjects
 {
     public class NccSkySphere : BaseNccSceneObject, INccLoadable
     {
-        private Effect skySphereEffect;
-        private Model skySphere;
+     //   private Effect skySphereEffect;
+     //   private Model skySphere;
 
         public void LoadContent()
         {
-            skySphereEffect = BaseEngine.ContentManager.Load<Effect>(ContentConstants.SkySphereEffectPath);
-            var skyboxTexture = BaseEngine.ContentManager.Load<TextureCube>(ContentConstants.SkyboxTexturePath);
-            skySphere = BaseEngine.ContentManager.Load<Model>(ContentConstants.SkySpherePath);
+           // skySphereEffect = BaseEngine.ContentManager.Load<Effect>(ContentConstants.SkySphereEffectPath);
+     //       var skyboxTexture = BaseEngine.ContentManager.Load<TextureCube>(ContentConstants.SkyboxTexturePath);
+     //       skySphere = BaseEngine.ContentManager.Load<Model>(ContentConstants.SkySpherePath);
 
             // Set the parameters of the effect
-            skySphereEffect.Parameters["ViewMatrix"].SetValue(CameraManager.ActiveCamera.View);
-            skySphereEffect.Parameters["ProjectionMatrix"].SetValue(CameraManager.ActiveCamera.Projection);
-            skySphereEffect.Parameters["SkyboxTexture"].SetValue(skyboxTexture);
+       //     skySphereEffect.Parameters["ViewMatrix"].SetValue(CameraManager.ActiveCamera.View);
+       //     skySphereEffect.Parameters["ProjectionMatrix"].SetValue(CameraManager.ActiveCamera.Projection);
+       //     skySphereEffect.Parameters["SkyboxTexture"].SetValue(skyboxTexture);
             // Set the Skysphere Effect to each part of the Skysphere model
-            foreach (var part in skySphere.Meshes.SelectMany(mesh => mesh.MeshParts))
+         //   foreach (var part in skySphere.Meshes.SelectMany(mesh => mesh.MeshParts))
             {
-                part.Effect = skySphereEffect;
+         //       part.Effect = skySphereEffect;
             }
         }
 
@@ -41,13 +41,13 @@ namespace AntiTankGame2.GameObjects
         {
 
             // Set the View and Projection matrix for the effect
-            skySphereEffect.Parameters["ViewMatrix"].SetValue(CameraManager.ActiveCamera.View);
-            skySphereEffect.Parameters["ProjectionMatrix"].SetValue(CameraManager.ActiveCamera.Projection);
+        //    skySphereEffect.Parameters["ViewMatrix"].SetValue(CameraManager.ActiveCamera.View);
+        //    skySphereEffect.Parameters["ProjectionMatrix"].SetValue(CameraManager.ActiveCamera.Projection);
             // Draw the sphere model that the effect projects onto
-            foreach (var mesh in skySphere.Meshes)
-            {
-                mesh.Draw();
-            }
+        //    foreach (var mesh in skySphere.Meshes)
+        //    {
+        //        mesh.Draw();
+        //    }
 
             // Undo the renderstate settings from the shader
             //            GraphicsDevice.RenderState.CullMode = CullMode.CullCounterClockwiseFace;

@@ -616,9 +616,9 @@ namespace AntiTankGame2.GameScreens
                 if (dualshock)
                     // ReSharper restore ConditionIsAlwaysTrueOrFalse
                 {
-                    CameraManager.ActiveCamera.RotateX(input.CurrentSimpleGamePadState.ThumbSticks.Right.Y);
+                 //   CameraManager.ActiveCamera.RotateX(input.CurrentSimpleGamePadState.ThumbSticks.Right.Y);
 
-                    CameraManager.ActiveCamera.RotateY(-input.CurrentSimpleGamePadState.ThumbSticks.Right.X);
+//                    CameraManager.ActiveCamera.RotateY(-input.CurrentSimpleGamePadState.ThumbSticks.Right.X);
                 }
 
 
@@ -627,17 +627,17 @@ namespace AntiTankGame2.GameScreens
 
 
 
-                var paramY = input.CurrentSimpleGamePadState.ThumbSticks.Left.Y;
-                var paramX = input.CurrentSimpleGamePadState.ThumbSticks.Left.X;
+  //              var paramY = input.CurrentSimpleGamePadState.ThumbSticks.Left.Y;
+    //            var paramX = input.CurrentSimpleGamePadState.ThumbSticks.Left.X;
 
-                if ((paramY > pistonCompensatorProcY) || (paramY < -pistonCompensatorProcY))
-                {
-                    CameraManager.ActiveCamera.RotateX(input.CurrentSimpleGamePadState.ThumbSticks.Left.Y);
-                }
-                if ((paramX > pistonCompensatorProcX) || (paramX < -pistonCompensatorProcX))
-                {
-                    CameraManager.ActiveCamera.RotateY(-input.CurrentSimpleGamePadState.ThumbSticks.Left.X);
-                }
+                //if ((paramY > pistonCompensatorProcY) || (paramY < -pistonCompensatorProcY))
+                //{
+                //    CameraManager.ActiveCamera.RotateX(input.CurrentSimpleGamePadState.ThumbSticks.Left.Y);
+                //}
+                //if ((paramX > pistonCompensatorProcX) || (paramX < -pistonCompensatorProcX))
+                //{
+                //    CameraManager.ActiveCamera.RotateY(-input.CurrentSimpleGamePadState.ThumbSticks.Left.X);
+                //}
 
 #endif
 

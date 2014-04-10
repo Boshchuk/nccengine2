@@ -128,12 +128,6 @@
     <Compile Include="DirectNcc\DirectInputGamepad.cs" />
     <Compile Include="DirectNcc\DirectInputDPad.cs" />
     <Compile Include="DirectNcc\DirectInputButtons.cs" />
-    <Compile Include="DualShock\PcDualShock.cs" />
-    <Compile Include="DualShock\PcDualShockDPad.cs" />
-    <Compile Include="DualShock\PcDualShockState.cs" />
-    <Compile Include="DualShock\PcDualShockPadButtons.cs" />
-    <Compile Include="DualShock\PcDualShockThumbSticks.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <NestedContentProject Include="Content\Content.contentproj">
@@ -182,6 +176,10 @@
       <ProductName>Microsoft XNA Framework Redistributable 4.0</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DualShock\" />
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />

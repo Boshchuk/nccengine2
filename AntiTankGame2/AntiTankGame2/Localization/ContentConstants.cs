@@ -36,7 +36,7 @@
         public const string FireSettings = "Content/ParticleSettings/FireSettings";
 
         public const string TankHeightModel = "Content/Models/Tanks/new"; //m1a1
-        public const string TankModelName = "tankH";
+        public const string TankModelName = "Content/Models/Tanks/new";
         /// <summary>
         /// Tank model
         /// </summary>

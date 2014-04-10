@@ -11,10 +11,10 @@ namespace AntiTankGame2.GameObjects.Tanks
     {
         public void LoadContent()
         {
-            var model = new NccModel(ContentConstants.TankBigModel);
-            ModelManager.AddModel(model, ContentConstants.TankBigName);
-            ModelName = ContentConstants.TankBigName;
-            OcclusionModelName = ContentConstants.TankBigName;
+            var model = new NccModel(ContentConstants.TankHeightModel);
+            ModelManager.AddModel(model, ContentConstants.TankHeightModel);
+            ModelName = ContentConstants.TankHeightModel;
+            OcclusionModelName = ContentConstants.TankHeightModel;
         }
 
         public void UnloadContent()

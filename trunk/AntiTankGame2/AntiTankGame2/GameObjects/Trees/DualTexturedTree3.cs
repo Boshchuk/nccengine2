@@ -6,6 +6,8 @@ using NccEngine2.GameComponents.CameraManagment;
 
 namespace AntiTankGame2.GameObjects.Trees
 {
+    using NccEngine2.GameComponents.Models;
+
     /// <summary>
     /// Special kind of tree)
     /// </summary>
@@ -21,7 +23,7 @@ namespace AntiTankGame2.GameObjects.Trees
             // Compute camera matrices.
             //var time = (float)gameTime.TotalGameTime.TotalSeconds;
             
-            var transforms = new Matrix[Model.BaseModel.Bones.Count];
+            var transforms = new Matrix[ Model.BaseModel.Bones.Count];
 
             Model.BaseModel.CopyAbsoluteBoneTransformsTo(transforms);
 

@@ -6,15 +6,17 @@ using NccEngine2.GameComponents.Scene.SceneObject;
 
 namespace AntiTankGame2.GameObjects.Trees
 {
+    using Microsoft.Xna.Framework.Graphics;
+
     public class BaseTree : BaseNccSceneObject, INccLoadable
     {
-        //protected NccModel Model;
+        protected NccModel Model;
         public void LoadContent()
         {
-            Model = new NccModel(ContentConstants.Tree3);
-            ModelManager.AddModel(Model, ContentConstants.Tree3);
-            ModelName = ContentConstants.Tree3;
-            OcclusionModelName = ContentConstants.Tree3;
+            Model = new NccModel(ContentConstants.TankHeightModel);
+            ModelManager.AddModel(Model, ContentConstants.TankHeightModel);
+            ModelName = ContentConstants.TankHeightModel;
+            OcclusionModelName = ContentConstants.TankHeightModel;
         }
 
         public void UnloadContent()

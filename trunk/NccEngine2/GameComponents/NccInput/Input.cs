@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Input;
 
 #if !XBOX
 using NccEngine2.GameDebugTools;
-using NccPcGamePad.DualShock;
+//using NccPcGamePad.DualShock;
 #endif
 
 namespace NccEngine2.GameComponents.NccInput
@@ -35,8 +35,8 @@ namespace NccEngine2.GameComponents.NccInput
 
         public Vector2 MouseMoved { get; private set; }
 
-        public PcDualShockState CurrentSimpleGamePadState;
-        public PcDualShockState LastSimpleGamePadState;
+      //  public PcDualShockState CurrentSimpleGamePadState;
+      //  public PcDualShockState LastSimpleGamePadState;
 
         private static bool wasError; //By default  no Error
 
@@ -68,7 +68,7 @@ namespace NccEngine2.GameComponents.NccInput
 
             CurrentMouseState = Mouse.GetState();
 
-            LastSimpleGamePadState = CurrentSimpleGamePadState;
+            //LastSimpleGamePadState = CurrentSimpleGamePadState;
 
             //#warning может плодить ошибки если джойстик не подключен... //TODO придумать решение проблемыс октлюченным контролером
             if (!wasError)
@@ -77,7 +77,7 @@ namespace NccEngine2.GameComponents.NccInput
                 {
                     // #if !DEGUG
                     //TODO check the type of geme pad...
-                    CurrentSimpleGamePadState = PcDualShock.GetState(PlayerIndex.One);
+                  //  CurrentSimpleGamePadState = PcDualShock.GetState(PlayerIndex.One);
 
                     //  #endif
                 }
@@ -104,14 +104,14 @@ namespace NccEngine2.GameComponents.NccInput
         {
             get
             {
-                return IsNewKeyPress(Keys.Up) ||
-#if !XBOX
- (CurrentSimpleGamePadState.DPad.Up == ButtonState.Pressed && LastGamePadState.DPad.Up == ButtonState.Released) ||
-#endif
- (CurrentGamePadState.DPad.Up == ButtonState.Pressed &&LastGamePadState.DPad.Up == ButtonState.Released) ||
- (CurrentGamePadState.ThumbSticks.Left.Y > 0 &&LastGamePadState.ThumbSticks.Left.Y <= 0);
+                return IsNewKeyPress((Keys.Up)); // ||
+                //#if !XBOX
+                //// (//CurrentSimpleGamePadState.DPad.Up == ButtonState.Pressed && LastGamePadState.DPad.Up == ButtonState.Released) ||
+                //#endif
+                // //(CurrentGamePadState.DPad.Up == ButtonState.Pressed &&LastGamePadState.DPad.Up == ButtonState.Released) ||
+                // (CurrentGamePadState.ThumbSticks.Left.Y > 0 &&LastGamePadState.ThumbSticks.Left.Y <= 0));
+                           }
             }
-        }
 
         /// <summary>
         /// Checks for a "menu down" input action (on either keyboard or gamepad).
@@ -122,8 +122,8 @@ namespace NccEngine2.GameComponents.NccInput
             {
                 return IsNewKeyPress(Keys.Down) ||
 #if !XBOX
- (CurrentSimpleGamePadState.DPad.Down == ButtonState.Pressed &&LastGamePadState.DPad.Down == ButtonState.Released) ||
-                     (CurrentSimpleGamePadState.ThumbSticks.Left.Y < 0 && LastSimpleGamePadState.ThumbSticks.Left.Y >= 0) ||
+ //(CurrentSimpleGamePadState.DPad.Down == ButtonState.Pressed &&LastGamePadState.DPad.Down == ButtonState.Released) ||
+ //                    (CurrentSimpleGamePadState.ThumbSticks.Left.Y < 0 && LastSimpleGamePadState.ThumbSticks.Left.Y >= 0) ||
 #endif
  (CurrentGamePadState.DPad.Down == ButtonState.Pressed &&LastGamePadState.DPad.Down == ButtonState.Released) ||
                        (CurrentGamePadState.ThumbSticks.Left.Y < 0 &&LastGamePadState.ThumbSticks.Left.Y >= 0);
@@ -142,11 +142,11 @@ namespace NccEngine2.GameComponents.NccInput
                        (CurrentGamePadState.Buttons.A == ButtonState.Pressed &&
                         LastGamePadState.Buttons.A == ButtonState.Released) ||
 #if !XBOX
- (CurrentSimpleGamePadState.Buttons.Start == ButtonState.Pressed && LastSimpleGamePadState.Buttons.Start == ButtonState.Released) ||
+ (//CurrentSimpleGamePadState.Buttons.Start == ButtonState.Pressed && LastSimpleGamePadState.Buttons.Start == ButtonState.Released) ||
 #endif
 
  (CurrentGamePadState.Buttons.Start == ButtonState.Pressed &&
-                        LastGamePadState.Buttons.Start == ButtonState.Released);
+                        LastGamePadState.Buttons.Start == ButtonState.Released));
             }
         }
 
@@ -185,7 +185,7 @@ namespace NccEngine2.GameComponents.NccInput
             {
                 if (IsNewKeyPress(Keys.Space) ||
 #if !XBOX
- (CurrentSimpleGamePadState.Buttons.Start == ButtonState.Pressed && LastSimpleGamePadState.Buttons.Start == ButtonState.Released) ||
+ //(CurrentSimpleGamePadState.Buttons.Start == ButtonState.Pressed && LastSimpleGamePadState.Buttons.Start == ButtonState.Released) ||
 #endif
  (CurrentGamePadState.Buttons.Start == ButtonState.Pressed &&
                         LastGamePadState.Buttons.Start == ButtonState.Released))

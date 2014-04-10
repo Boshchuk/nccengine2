@@ -124,6 +124,7 @@
       <Name>ground</Name>
       <Importer>TextureImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </None>
     <Compile Include="SkyBox\Sky.dds">
       <Name>Sky</Name>
@@ -136,6 +137,7 @@
       <Name>plane</Name>
       <Importer>XImporter</Importer>
       <Processor>ModelProcessor</Processor>
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -144,18 +146,6 @@
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Models\Tanks\Abrams\M1_Abrams2.FBX">
-      <Name>M1_Abrams2</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-    <None Include="Models\Tanks\New For Fbx\M1_ABRAM.bmp">
-      <Name>M1_ABRAM</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Tanks\new.X">
@@ -284,6 +274,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Models\Tanks\New For Fbx\" />
     <Folder Include="Videos\" />
   </ItemGroup>
   <ItemGroup>
@@ -356,7 +347,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Tanks\M1_ABRAM.bmp">
+    <Compile Include="Models\Tanks\Abrams\M1_ABRAM.BMP">
       <Name>M1_ABRAM</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
